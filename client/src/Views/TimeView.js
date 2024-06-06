@@ -1,51 +1,45 @@
 import DatePicker from "react-datepicker";
 import { useCallback, useState } from "react";
+import { start } from "http-errors";
 
-const TimeView = () => {
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
-
-  const handleStartTimeChange = useCallback(
-    (time) => {
-      setStartTime(time);
-      if (endTime !== undefined) {
-        setEndTime(undefined);
-      }
-    },
-    [endTime],
-  );
+const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
+  // const [startTime, setStartTime] = useState();
+  // const [endTime, setEndTime] = useState();
+  const minStart = parseInt(startTime?.substring(0, 2));
 
   return (
     <>
       <div className="form-title">Select Start Time*:</div>
       <DatePicker
         className="input-box"
-        selected={startTime}
-        onChange={handleStartTimeChange}
+        value={startTime}
+        onChange={onChangeStart}
         showTimeSelect
         showTimeSelectOnly
+        portalId="root-portal"
         minTime={new Date().setHours(6)}
         maxTime={new Date().setHours(21)}
         timeIntervals={30}
         timeCaption="Time"
-        dateFormat="h:mm aa"
+        dateFormat="h:mm "
         placeholderText="Click to Select Start Time"
       />
 
       <div className="form-title">Select End Time*:</div>
       {/*  TODO : fix this*/}
       <DatePicker
-        className={true ? "error-box" : "input-box"}
+        className={startTime ? "input-box" : "error-box"}
         disabled={!startTime}
-        selected={endTime}
-        onChange={(time) => setEndTime(time)}
+        value={endTime}
+        onChange={onChangeEnd}
         showTimeSelect
         showTimeSelectOnly
-        minTime={startTime + 360000}
+        portalId="root-portal"
+        minTime={new Date().setHours(minStart)}
         maxTime={new Date().setHours(22)}
         timeIntervals={30}
         timeCaption="Time"
-        dateFormat="h:mm aa"
+        dateFormat="h:mm "
         placeholderText={
           startTime ? "Select End Time" : "Select Start Time First!"
         }

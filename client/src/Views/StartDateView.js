@@ -1,17 +1,19 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 
-const StartDateView = () => {
-  const [startDate, setStartDate] = useState();
+const StartDateView = ({ onChange, selected }) => {
   return (
     <>
       <div className="form-title">Select a Date*</div>
       <DatePicker
         showIcon
         toggleCalendarOnIconClick
+        id="startDate"
         className="input-box"
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
+        value={selected}
+        // selected={selected}
+        portalId="root-portal"
+        onChange={onChange}
         dateFormat="MM/dd/yyyy"
         minDate={new Date()}
         placeholderText="Click to select a date"

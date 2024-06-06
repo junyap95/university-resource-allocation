@@ -14,6 +14,11 @@ input[type=number]::-webkit-inner-spin-button {
 /*  opacity: 0.3;*/
 /*}*/
 
+#root-portal {
+  position: relative;
+  z-index: 9999; /* Ensure the portal is on top of other elements */
+}
+
 button {
   font-weight: 700;
   height: 50px;
@@ -32,6 +37,7 @@ button {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  height: 100vh;
 }
 
 .sub-container {
@@ -79,7 +85,6 @@ button {
   justify-content: space-between;
   align-items: center;
   color: #72243c;
-
 }
 
 .nav-bar-sub {
@@ -115,13 +120,17 @@ button {
   border: solid #72243c 1px;
 }
 
+.input-box:hover {
+  cursor: pointer;
+}
+
 .error-box {
   font-size: large;
   text-align: center;
   height: 40px;
   width: 300px;
   border-radius: 20px;
-  border: solid #72243c 1px;
+  border: transparent ;
 }
 
 .capacity-box {

@@ -1,4 +1,4 @@
-export default function FormInputBox({ title, id, placeholder }) {
+export default function FormInputBox({ title, id, placeholder, onChange }) {
   return (
     <>
       <div className="form-title">{title}*</div>
@@ -7,6 +7,8 @@ export default function FormInputBox({ title, id, placeholder }) {
         type="text"
         id={id}
         placeholder={placeholder}
+        onChange={onChange}
+        required="true"
       />
     </>
   );
