@@ -25,4 +25,4 @@ const getAllClients = () => {
   });
 };
 
-module.exports = { getAllClients };
+module.exports = pool.promise();

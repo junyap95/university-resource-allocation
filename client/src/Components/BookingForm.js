@@ -7,7 +7,7 @@ import CapacityView from "../Views/CapacityView";
 import FormSubmitMessage from "./FormSubmitMessage";
 import {
   useHandleStartTime,
-  useHandleChangeName,
+  useHandleChangeDetail,
   useHandleCapacity,
   useHandleEndTime,
   useHandleChangeDate,
@@ -18,14 +18,16 @@ const BookingForm = forwardRef((props, ref) => {
     firstName: "",
     lastName: "",
     phoneNum: "",
+    email: "",
     capacity: 5,
     startDate: "",
     startTime: "",
     endTime: "",
   });
+  const [error, setError] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChangeName = useHandleChangeName(setFormData);
+  const handleChangeDetail = useHandleChangeDetail(setFormData, setError);
   const handleChangeDate = useHandleChangeDate(setFormData);
   const handleStartTime = useHandleStartTime(setFormData, formData);
   const handleEndTime = useHandleEndTime(setFormData);
@@ -33,9 +35,7 @@ const BookingForm = forwardRef((props, ref) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
-    console.log(formData);
-    // const response = await fetch("/time-greedy", {
+    // const response = await fetch("/validation", {
     //   method: "POST",
     //   body: JSON.stringify(formData),
     // });
@@ -57,30 +57,43 @@ const BookingForm = forwardRef((props, ref) => {
     });
   };
 
-  // const isInvalidEndData = startTime >= endTime;
-
   return !isSubmitted ? (
     <div className="main-container" ref={ref}>
       <form onSubmit={handleSubmit} className="sub-container">
         <FormInputBox
           title="First Name"
+          type="text"
           id="firstName"
           placeholder="ex. John"
-          onChange={handleChangeName}
+          onChange={handleChangeDetail}
+          error={error.firstName}
         />
 
         <FormInputBox
           title="Last Name"
+          type="text"
           id="lastName"
           placeholder="ex. Smith"
-          onChange={handleChangeName}
+          onChange={handleChangeDetail}
+          error={error.lastName}
         />
 
         <FormInputBox
           title="Phone Number"
+          type="text"
           id="phoneNum"
           placeholder="ex. 07711448788"
-          onChange={handleChangeName}
+          onChange={handleChangeDetail}
+          error={error.phoneNum}
+        />
+
+        <FormInputBox
+          title="Email Address"
+          type="email"
+          id="email"
+          placeholder="ex. john.smith@gmail.com"
+          onChange={handleChangeDetail}
+          error={error.email}
         />
 
         <StartDateView

@@ -8,7 +8,7 @@ const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
   const minStart = parseInt(startTime?.substring(0, 2));
 
   return (
-    <>
+    <div className="form-container">
       <div className="form-title">Select Start Time*:</div>
       <DatePicker
         className="input-box"
@@ -26,7 +26,6 @@ const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
       />
 
       <div className="form-title">Select End Time*:</div>
-      {/*  TODO : fix this*/}
       <DatePicker
         className={startTime ? "input-box" : "error-box"}
         disabled={!startTime}
@@ -44,7 +43,7 @@ const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
           startTime ? "Select End Time" : "Select Start Time First!"
         }
       />
-    </>
+    </div>
   );
 };
 

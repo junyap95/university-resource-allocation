@@ -33,21 +33,23 @@ button {
 }
 
 .main-container {
-  margin: 5vh 0;
+  margin: 3vh 0;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  height: 100vh;
+  /*height: fit-content;*/
 }
 
 .sub-container {
-  padding: 5vh 0;
+  /*padding: 5vh 0;*/
   border: solid #72243c 2px;
-  width: 30vw;
+  /*width: 30vw;*/
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 20px;
+  width: fit-content;
+  padding: 3vh 8vh;
 }
 
 .sub-container > div {
@@ -111,13 +113,28 @@ button {
   font-weight: bolder;
 }
 
-.input-box {
-  font-size: large;
+.form-container {
+  position: relative;
   text-align: center;
+
+}
+
+.input-box {
+  text-align: center;
+  font-size: large;
   height: 40px;
   width: 300px;
   border-radius: 20px;
   border: solid #72243c 1px;
+  margin-bottom: 5px;
+}
+
+small {
+  color: #72243c;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
 }
 
 .input-box:hover {

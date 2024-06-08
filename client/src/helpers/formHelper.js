@@ -1,16 +1,46 @@
 import { useCallback } from "react";
 
-const useHandleChangeName = (setFormData) =>
+const isEmail = (email) => {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email,
+  );
+};
+
+const isPhoneNum = (phoneNum) => {
+  return /^\d+$/.test(phoneNum);
+};
+
+const errorSetter = (setError, key, message) => {
+  setError((prev) => ({
+    ...prev,
+    [key]: message,
+  }));
+};
+
+const useHandleChangeDetail = (setFormData, setError) =>
   useCallback(
     (e) => {
       const value = e.target.value;
       const key = e.target.id;
-      setFormData((prev) => ({
-        ...prev,
-        [key]: value,
-      }));
+      if (!value) {
+        errorSetter(setError, key, "This field cannot be blank");
+      } else if (key === "email" && !isEmail(value)) {
+        errorSetter(setError, key, "Invalid Email");
+      } else if (
+        key === "phoneNum" &&
+        (!isPhoneNum(value) || value.length < 8)
+      ) {
+        errorSetter(setError, key, "Invalid Phone Number");
+      } else {
+        errorSetter(setError, key, "");
+
+        setFormData((prev) => ({
+          ...prev,
+          [key]: value,
+        }));
+      }
     },
-    [setFormData],
+    [setFormData, setError],
   );
 
 const useHandleChangeDate = (setFormData) =>
@@ -76,7 +106,7 @@ const useHandleCapacity = (setFormData) =>
   );
 
 export {
-  useHandleChangeName,
+  useHandleChangeDetail,
   useHandleStartTime,
   useHandleEndTime,
   useHandleChangeDate,

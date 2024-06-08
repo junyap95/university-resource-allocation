@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 
 const StartDateView = ({ onChange, selected }) => {
   return (
-    <>
+    <div className="form-container">
       <div className="form-title">Select a Date*</div>
       <DatePicker
         showIcon
@@ -18,7 +18,7 @@ const StartDateView = ({ onChange, selected }) => {
         minDate={new Date()}
         placeholderText="Click to select a date"
       />
-    </>
+    </div>
   );
 };
 
