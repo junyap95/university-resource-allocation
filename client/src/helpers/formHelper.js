@@ -17,6 +17,13 @@ const errorSetter = (setError, key, message) => {
   }));
 };
 
+const formSetter = (setFormData, key, value) => {
+  setFormData((prev) => ({
+    ...prev,
+    [key]: value,
+  }));
+};
+
 const useHandleChangeDetail = (setFormData, setError) =>
   useCallback(
     (e) => {
@@ -33,11 +40,7 @@ const useHandleChangeDetail = (setFormData, setError) =>
         errorSetter(setError, key, "Invalid Phone Number");
       } else {
         errorSetter(setError, key, "");
-
-        setFormData((prev) => ({
-          ...prev,
-          [key]: value,
-        }));
+        formSetter(setFormData, key, value);
       }
     },
     [setFormData, setError],
@@ -47,10 +50,7 @@ const useHandleChangeDate = (setFormData) =>
   useCallback(
     (e) => {
       const dateString = new Date(e).toLocaleDateString();
-      setFormData((prev) => ({
-        ...prev,
-        startDate: dateString,
-      }));
+      formSetter(setFormData, "startDate", dateString);
     },
     [setFormData],
   );
@@ -62,15 +62,10 @@ const useHandleStartTime = (setFormData, formData) =>
       const timeString = new Date(e).toLocaleTimeString([], {
         timeStyle: "short",
       });
-      setFormData((prev) => ({
-        ...prev,
-        startTime: timeString,
-      }));
+      formSetter(setFormData, "startTime", timeString);
+
       if (formData?.endTime !== undefined) {
-        setFormData((prev) => ({
-          ...prev,
-          endTime: "",
-        }));
+        formSetter(setFormData, "endTime", "");
       }
     },
     [setFormData, formData],
@@ -82,10 +77,7 @@ const useHandleEndTime = (setFormData) =>
       const timeString = new Date(e).toLocaleTimeString([], {
         timeStyle: "short",
       });
-      setFormData((prev) => ({
-        ...prev,
-        endTime: timeString,
-      }));
+      formSetter(setFormData, "endTime", timeString);
     },
     [setFormData],
   );
@@ -96,10 +88,7 @@ const useHandleCapacity = (setFormData) =>
       const key = e.target.id;
       const value = e.target.value;
       if (value >= 5 && value <= 500) {
-        setFormData((prev) => ({
-          ...prev,
-          [key]: value,
-        }));
+        formSetter(setFormData, key, value);
       }
     },
     [setFormData],

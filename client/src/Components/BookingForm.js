@@ -14,6 +14,7 @@ import {
 } from "../helpers/formHelper";
 
 const BookingForm = forwardRef((props, ref) => {
+  // data acquired from user input
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,6 +25,7 @@ const BookingForm = forwardRef((props, ref) => {
     startTime: "",
     endTime: "",
   });
+  // error state - to dynamically display validation error on UI
   const [error, setError] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -34,13 +36,19 @@ const BookingForm = forwardRef((props, ref) => {
   const handleCapacity = useHandleCapacity(setFormData);
 
   const handleSubmit = async (e) => {
+    console.log("submitted");
     e.preventDefault();
-    // const response = await fetch("/validation", {
-    //   method: "POST",
-    //   body: JSON.stringify(formData),
-    // });
-    // const data = response.json();
-    // console.log(data);
+    console.log("formdata", formData);
+
+    const response = await fetch("http://localhost:3001/booking-auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const data = await response.json();
+    console.log(data);
     setIsSubmitted(true);
   };
 
@@ -53,7 +61,6 @@ const BookingForm = forwardRef((props, ref) => {
       startDate: "",
       startTime: "",
       endTime: "",
-      addRequirement: "",
     });
   };
 

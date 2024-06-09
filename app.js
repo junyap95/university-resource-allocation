@@ -8,6 +8,7 @@ const cors = require("cors");
 const indexRouter = require("./src/routes");
 const usersRouter = require("./src/routes/users");
 const timeGreedyRouter = require("./src/routes/greedyAllocation");
+const bookingAuthRouter = require("./src/routes/auth");
 const sqlRouter = require("./src/configs/mysql");
 require("dotenv").config();
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/time-greedy", timeGreedyRouter);
+app.use("/booking-auth", bookingAuthRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
