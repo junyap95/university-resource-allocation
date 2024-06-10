@@ -2,7 +2,7 @@
  * first algorithm test: allocate the earliest start time
  */
 
-const timeGreedy = (bookingMap, hallMap) => {
+export const timeGreedy = (bookingMap, hallMap) => {
   // sort bookings by start time
   const sortedBookings = bookingMap.sort((a, b) => a.start_time - b.start_time);
   console.log(sortedBookings);
@@ -33,5 +33,3 @@ const timeGreedy = (bookingMap, hallMap) => {
   }
   return result;
 };
-
-module.exports = { timeGreedy };

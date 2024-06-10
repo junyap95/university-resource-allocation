@@ -2,8 +2,9 @@
  * This file is to initialise the database
  * and export some functions to query the database
  */
-const mysql = require("mysql2");
-require("dotenv").config();
+import mysql from "mysql2";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Create the connection to database
 const pool = mysql.createPool({
@@ -13,7 +14,7 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-const getAllClients = () => {
+export const getAllClients = () => {
   return new Promise((resolve, reject) => {
     pool.query("SELECT * FROM client", (err, rows, fields) => {
       if (err) {
@@ -25,4 +26,4 @@ const getAllClients = () => {
   });
 };
 
-module.exports = pool.promise();
+export const dbPool = pool.promise();

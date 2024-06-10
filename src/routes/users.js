@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { getAllClients } = require("../configs/mysql");
+import { getAllClients } from "../configs/mysql.js";
 
 /* GET users listing. */
 router.get("/", async (req, res, next) => {
@@ -10,4 +10,4 @@ router.get("/", async (req, res, next) => {
   res.send(result);
 });
 
-module.exports = router;
+export default router;
