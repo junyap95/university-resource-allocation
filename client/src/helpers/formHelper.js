@@ -29,6 +29,11 @@ const useHandleChangeDetail = (setFormData, setError) =>
     (e) => {
       const value = e.target.value;
       const key = e.target.id;
+
+      // Update the form data state with the new value
+      formSetter(setFormData, key, value);
+
+      // Validate the input and set error messages
       if (!value) {
         errorSetter(setError, key, "This field cannot be blank");
       } else if (key === "email" && !isEmail(value)) {
@@ -40,7 +45,6 @@ const useHandleChangeDetail = (setFormData, setError) =>
         errorSetter(setError, key, "Invalid Phone Number");
       } else {
         errorSetter(setError, key, "");
-        formSetter(setFormData, key, value);
       }
     },
     [setFormData, setError],
@@ -58,7 +62,6 @@ const useHandleChangeDate = (setFormData) =>
 const useHandleStartTime = (setFormData, formData) =>
   useCallback(
     (e) => {
-      console.log(e);
       const timeString = new Date(e).toLocaleTimeString([], {
         timeStyle: "short",
       });

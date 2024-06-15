@@ -8,10 +8,7 @@ const insertClient = async (request) => {
     request.firstName[0].toUpperCase() +
     request.lastName[0].toUpperCase() +
     nanoid(8);
-  const firstName = request.firstName;
-  const lastName = request.lastName;
-  const email = request.email;
-  const phoneNum = request.phoneNum;
+  const { firstName, lastName, email, phoneNum } = request;
   try {
     // Check if a client with the same details already exists
     const [existingClients] = await dbPool.execute(
@@ -34,20 +31,26 @@ const insertClient = async (request) => {
       INSERT INTO client (client_id, first_name, last_name, email_address, phone_num)
       VALUES (?, ?, ?, ?, ?)
     `;
-    await dbPool.execute(preparedStatement, [
+    const [result, fields] = await dbPool.execute(preparedStatement, [
       clientID,
       firstName,
       lastName,
       email,
       phoneNum,
     ]);
-    return { message: "Insert successful", operation: true };
+    console.log(result);
+    console.log(fields);
+    return {
+      message: "Client inserted successfully",
+      operation: true,
+      clientID: clientID,
+    };
   } catch (error) {
     // if one tries to use an email that already exists in the table
     // no new row will be created
     if (error.code === "ER_DUP_ENTRY") {
       return {
-        message: "Client already exists",
+        message: "Client email already exists",
         operation: false,
         clientID: undefined,
       };
@@ -58,24 +61,61 @@ const insertClient = async (request) => {
   }
 };
 
-const insertBooking = async (insertClient, request) => {
+const convertDateToSQLFormat = (dateString) => {
+  const [day, month, year] = dateString.split("/");
+  return `${year}-${month}-${day}`;
+};
+
+const insertBooking = async (request) => {
   const res = await insertClient(request);
-  if (res.operation === true) {
-    const requestID = nanoid(12);
-    const clientID = res.clientID;
-    // todo : retrieve request information
+  if (res.operation) {
+    try {
+      const requestID = nanoid(12);
+      // this id is generated from insertClient function
+      const clientID = res.clientID;
+      const startDate = convertDateToSQLFormat(request.startDate);
+      const startTime = request.startTime;
+      const endTime = request.endTime;
+
+      console.log(requestID, clientID, startDate, startTime, endTime);
+
+      const preparedStatement = `
+      INSERT INTO booking_request (request_id, client_id, start_date, start_time, end_time, booking_status)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+      await dbPool.execute(preparedStatement, [
+        requestID,
+        clientID,
+        startDate,
+        startTime,
+        endTime,
+        "pending",
+      ]);
+
+      return {
+        message: "Booking inserted successfully",
+        operation: true,
+        clientID: clientID,
+      };
+    } catch (error) {
+      console.error("Error Inserting Booking Request: ", error);
+      throw error;
+    }
+  } else {
+    return { message: "your email address is already in used!" };
   }
 };
 
 router.post("/", async (req, res) => {
   try {
-    const request = await req.body;
-    const insertResult = await insertClient(request);
-    console.log(insertResult);
+    // const request = await req.body;
+    const bookingRes = await insertBooking(req.body);
+    console.log("booking result ", bookingRes);
 
-    res.send({ test: "success" });
+    res.send(bookingRes);
   } catch (e) {
-    res.status(404).send(e);
+    res.status(500).send(e);
   }
 });
 

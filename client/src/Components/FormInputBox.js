@@ -5,6 +5,7 @@ export default function FormInputBox({
   placeholder,
   onChange,
   error,
+  value,
 }) {
   return (
     <div className="form-container">
@@ -16,6 +17,7 @@ export default function FormInputBox({
         placeholder={placeholder}
         onChange={onChange}
         required={true}
+        value={value}
       />
 
       <small>{error}</small>

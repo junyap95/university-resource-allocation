@@ -5,6 +5,7 @@ import StartDateView from "../Views/StartDateView";
 import TimeView from "../Views/TimeView";
 import CapacityView from "../Views/CapacityView";
 import FormSubmitMessage from "./FormSubmitMessage";
+import BookingConfirmation from "./BookingConfirmation";
 import {
   useHandleStartTime,
   useHandleChangeDetail,
@@ -28,12 +29,18 @@ const BookingForm = forwardRef((props, ref) => {
   // error state - to dynamically display validation error on UI
   const [error, setError] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const handleChangeDetail = useHandleChangeDetail(setFormData, setError);
   const handleChangeDate = useHandleChangeDate(setFormData);
   const handleStartTime = useHandleStartTime(setFormData, formData);
   const handleEndTime = useHandleEndTime(setFormData);
   const handleCapacity = useHandleCapacity(setFormData);
+
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    setIsConfirmed(true);
+  };
 
   const handleSubmit = async (e) => {
     console.log("submitted");
@@ -53,6 +60,10 @@ const BookingForm = forwardRef((props, ref) => {
   };
 
   const handleGoBack = () => {
+    setIsConfirmed(false);
+  };
+
+  const handleMakeNew = () => {
     setIsSubmitted(false);
     setFormData({
       firstName: "",
@@ -66,70 +77,82 @@ const BookingForm = forwardRef((props, ref) => {
 
   return !isSubmitted ? (
     <div className="main-container" ref={ref}>
-      <form onSubmit={handleSubmit} className="sub-container">
-        <FormInputBox
-          title="First Name"
-          type="text"
-          id="firstName"
-          placeholder="ex. John"
-          onChange={handleChangeDetail}
-          error={error.firstName}
-        />
+      {!isConfirmed ? (
+        <form onSubmit={handleConfirm} className="sub-container">
+          <FormInputBox
+            title="First Name"
+            type="text"
+            id="firstName"
+            value={formData.firstName}
+            placeholder="ex. John"
+            onChange={handleChangeDetail}
+            error={error.firstName}
+          />
 
-        <FormInputBox
-          title="Last Name"
-          type="text"
-          id="lastName"
-          placeholder="ex. Smith"
-          onChange={handleChangeDetail}
-          error={error.lastName}
-        />
+          <FormInputBox
+            title="Last Name"
+            type="text"
+            id="lastName"
+            placeholder="ex. Smith"
+            onChange={handleChangeDetail}
+            error={error.lastName}
+            value={formData?.lastName}
+          />
 
-        <FormInputBox
-          title="Phone Number"
-          type="text"
-          id="phoneNum"
-          placeholder="ex. 07711448788"
-          onChange={handleChangeDetail}
-          error={error.phoneNum}
-        />
+          <FormInputBox
+            title="Phone Number"
+            type="text"
+            id="phoneNum"
+            placeholder="ex. 07711448788"
+            onChange={handleChangeDetail}
+            error={error.phoneNum}
+            value={formData?.phoneNum}
+          />
 
-        <FormInputBox
-          title="Email Address"
-          type="email"
-          id="email"
-          placeholder="ex. john.smith@gmail.com"
-          onChange={handleChangeDetail}
-          error={error.email}
-        />
+          <FormInputBox
+            title="Email Address"
+            type="email"
+            id="email"
+            placeholder="ex. john.smith@gmail.com"
+            onChange={handleChangeDetail}
+            error={error.email}
+            value={formData?.email}
+          />
 
-        <StartDateView
-          id="eventDate"
-          onChange={handleChangeDate}
-          selected={formData?.startDate}
-        />
+          <StartDateView
+            id="eventDate"
+            onChange={handleChangeDate}
+            selected={formData?.startDate}
+          />
 
-        <TimeView
-          onChangeStart={handleStartTime}
-          onChangeEnd={handleEndTime}
-          startTime={formData?.startTime}
-          endTime={formData?.endTime}
-        />
+          <TimeView
+            onChangeStart={handleStartTime}
+            onChangeEnd={handleEndTime}
+            startTime={formData?.startTime}
+            endTime={formData?.endTime}
+          />
 
-        <CapacityView
-          handleCapacity={handleCapacity}
-          capacity={formData?.capacity}
-        />
+          <CapacityView
+            handleCapacity={handleCapacity}
+            capacity={formData?.capacity}
+          />
 
-        <div>
-          <button className="search-button" type="submit">
-            Submit Booking
-          </button>
-        </div>
-      </form>
+          <div>
+            <button className="search-button" type="submit">
+              Submit Booking
+            </button>
+          </div>
+        </form>
+      ) : (
+        <BookingConfirmation
+          formData={formData}
+          onConfirm={handleSubmit}
+          onGoBack={handleGoBack}
+        />
+      )}
     </div>
   ) : (
-    <FormSubmitMessage onGoBack={handleGoBack} />
+    <FormSubmitMessage onGoBack={handleMakeNew} />
   );
 });
 
