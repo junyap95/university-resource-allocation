@@ -1,11 +1,11 @@
 import "react-datepicker/dist/react-datepicker.css";
-import { useState, forwardRef, useCallback } from "react";
+import { useState, forwardRef } from "react";
 import FormInputBox from "./FormInputBox";
 import StartDateView from "../Views/StartDateView";
 import TimeView from "../Views/TimeView";
 import CapacityView from "../Views/CapacityView";
 import FormSubmitMessage from "./FormSubmitMessage";
-import BookingConfirmation from "./BookingConfirmation";
+import BookingConfirmationForm from "./BookingConfirmationForm";
 import {
   useHandleStartTime,
   useHandleChangeDetail,
@@ -30,6 +30,7 @@ const BookingForm = forwardRef((props, ref) => {
   const [error, setError] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [bookingMessage, setBookingMessage] = useState({});
 
   const handleChangeDetail = useHandleChangeDetail(setFormData, setError);
   const handleChangeDate = useHandleChangeDate(setFormData);
@@ -43,20 +44,30 @@ const BookingForm = forwardRef((props, ref) => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("submitted");
     e.preventDefault();
-    console.log("formdata", formData);
 
-    const response = await fetch("http://localhost:3001/booking-auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await response.json();
-    console.log(data);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch("http://localhost:3001/booking-auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Check if the response is OK (status code 200-299)
+      if (response.ok) {
+        const data = await response.json();
+        setBookingMessage(data);
+        setIsSubmitted(true);
+      }
+    } catch (error) {
+      // Handle errors gracefully, e.g., by setting an error message state
+      console.error("Submission error:", error);
+      setBookingMessage({
+        message: "Failed to submit booking. Please try again later.",
+      });
+    }
   };
 
   const handleGoBack = () => {
@@ -65,9 +76,12 @@ const BookingForm = forwardRef((props, ref) => {
 
   const handleMakeNew = () => {
     setIsSubmitted(false);
+    setIsConfirmed(false);
     setFormData({
       firstName: "",
       lastName: "",
+      phoneNum: "",
+      email: "",
       capacity: 5,
       startDate: "",
       startTime: "",
@@ -144,7 +158,7 @@ const BookingForm = forwardRef((props, ref) => {
           </div>
         </form>
       ) : (
-        <BookingConfirmation
+        <BookingConfirmationForm
           formData={formData}
           onConfirm={handleSubmit}
           onGoBack={handleGoBack}
@@ -152,7 +166,7 @@ const BookingForm = forwardRef((props, ref) => {
       )}
     </div>
   ) : (
-    <FormSubmitMessage onGoBack={handleMakeNew} />
+    <FormSubmitMessage onGoBack={handleMakeNew} messages={bookingMessage} />
   );
 });
 

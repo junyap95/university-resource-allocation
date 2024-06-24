@@ -1,7 +1,7 @@
 import React from "react";
 import FormConfirmationBox from "./FormConfirmationBox";
 
-const BookingConfirmation = ({ formData, onConfirm, onGoBack }) => {
+const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
   return (
     <div className="main-container">
       <div className="confirm-container">
@@ -50,4 +50,4 @@ const BookingConfirmation = ({ formData, onConfirm, onGoBack }) => {
   );
 };
 
-export default BookingConfirmation;
+export default BookingConfirmationForm;

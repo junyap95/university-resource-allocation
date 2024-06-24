@@ -9,7 +9,7 @@ function Footer() {
         </div>
         <div>
           <ul>
-            <li className="foot-head">KEEPCUP</li>
+            <li className="foot-head">BOOKBBK</li>
             <li>IMPACT AT BBK</li>
             <li>PRODUCT AUTHENTICITY</li>
             <li>MEDIA CENTRE</li>

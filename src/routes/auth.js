@@ -31,6 +31,7 @@ const insertClient = async (request) => {
       INSERT INTO client (client_id, first_name, last_name, email_address, phone_num)
       VALUES (?, ?, ?, ?, ?)
     `;
+
     const [result, fields] = await dbPool.execute(preparedStatement, [
       clientID,
       firstName,
@@ -40,6 +41,8 @@ const insertClient = async (request) => {
     ]);
     console.log(result);
     console.log(fields);
+
+    // to be passed down to the insertBooking function
     return {
       message: "Client inserted successfully",
       operation: true,
@@ -50,7 +53,8 @@ const insertClient = async (request) => {
     // no new row will be created
     if (error.code === "ER_DUP_ENTRY") {
       return {
-        message: "Client email already exists",
+        message:
+          "This email already exists, please use a different email address!",
         operation: false,
         clientID: undefined,
       };
@@ -68,6 +72,7 @@ const convertDateToSQLFormat = (dateString) => {
 
 const insertBooking = async (request) => {
   const res = await insertClient(request);
+  console.log("res inserting client", res);
   if (res.operation) {
     try {
       const requestID = nanoid(12);
@@ -97,13 +102,14 @@ const insertBooking = async (request) => {
         message: "Booking inserted successfully",
         operation: true,
         clientID: clientID,
+        requestID: requestID,
       };
     } catch (error) {
       console.error("Error Inserting Booking Request: ", error);
       throw error;
     }
   } else {
-    return { message: "your email address is already in used!" };
+    return { message: res.message, operation: false };
   }
 };
 
@@ -112,10 +118,11 @@ router.post("/", async (req, res) => {
     // const request = await req.body;
     const bookingRes = await insertBooking(req.body);
     console.log("booking result ", bookingRes);
-
     res.send(bookingRes);
-  } catch (e) {
-    res.status(500).send(e);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Internal server error", error: error.message });
   }
 });
 
