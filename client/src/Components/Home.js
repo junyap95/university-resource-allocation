@@ -1,6 +1,6 @@
 import Banner from "./Banner";
 import BookingForm from "./BookingForm";
-import Navigation from "./Navigation";
+import NavigationBar from "./NavigationBar";
 import { useRef } from "react";
 import Footer from "./Footer";
 
@@ -11,7 +11,7 @@ export default function Home() {
   };
   return (
     <>
-      <Navigation />
+      <NavigationBar />
       <Banner scrollToView={scrollToBooking} />
       <BookingForm ref={bookingRef} />
       <Footer />

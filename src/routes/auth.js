@@ -115,7 +115,6 @@ const insertBooking = async (request) => {
 
 router.post("/", async (req, res) => {
   try {
-    // const request = await req.body;
     const bookingRes = await insertBooking(req.body);
     console.log("booking result ", bookingRes);
     res.send(bookingRes);

@@ -26,4 +26,28 @@ export const getAllClients = () => {
   });
 };
 
+export const getAllHalls = () => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM lecture_hall", (err, rows, fields) => {
+      if (err) {
+        console.error("Error executing query:", err.stack);
+        return reject(err);
+      }
+      return resolve(rows); // Send the rows as JSON response
+    });
+  });
+};
+
+export const getAllBookingRequests = () => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM booking_request", (err, rows, fields) => {
+      if (err) {
+        console.error("Error executing query:", err.stack);
+        return reject(err);
+      }
+      return resolve(rows); // Send the rows as JSON response
+    });
+  });
+};
+
 export const dbPool = pool.promise();

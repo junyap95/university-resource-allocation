@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const CapacityView = ({ handleCapacity, capacity }) => {
   return (
     <div className="capacity-box">

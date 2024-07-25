@@ -1,10 +1,6 @@
 import DatePicker from "react-datepicker";
-import { useCallback, useState } from "react";
-import { start } from "http-errors";
 
 const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
-  // const [startTime, setStartTime] = useState();
-  // const [endTime, setEndTime] = useState();
   const minStart = parseInt(startTime?.substring(0, 2));
 
   return (
