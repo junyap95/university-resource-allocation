@@ -1,6 +1,6 @@
 function DynamicTable({ dataFromSQL }) {
   const headers = Object.keys(dataFromSQL[0]);
-  console.log(dataFromSQL, "rows");
+  // console.log(dataFromSQL, "rows");
 
   return (
     <>

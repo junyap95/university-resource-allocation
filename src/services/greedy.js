@@ -1,3 +1,8 @@
+// helper function to convert time string to seconds in order to sort calculate
+const timeStringToSeconds = (timeStr) => {
+  const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+  return hours * 3600 + minutes * 60 + seconds;
+};
 /**
  * first algorithm test: allocate the earliest start time
  */
@@ -8,8 +13,9 @@ export const timeGreedy = (bookingMap, hallMap) => {
   );
 
   const sortedByDuration = [...bookingMap].sort((a, b) => {
-    const duration1 = a.end_time - a.start_time;
-    const duration2 = b.end_time - b.start_time;
+    const duration1 = timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
+    const duration2 = timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
+    // if 2 durations are the same, compare their capacity instead, pick the one with higher capacity
     if (duration2 - duration1 === 0) return a.capacity - b.capacity;
     return duration2 - duration1;
   });
@@ -23,6 +29,7 @@ export const timeGreedy = (bookingMap, hallMap) => {
     // or if it clashes with other times
     for (const hall of hallMap) {
       // test whether all elements in the array pass the callBackFn test
+      // in the start, the array is always empty and will always return true
       const hallIsAvailable = result.every(
         (assigned) =>
           assigned.hall_assigned !== hall.id ||

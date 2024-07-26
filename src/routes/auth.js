@@ -73,20 +73,22 @@ const convertDateToSQLFormat = (dateString) => {
 const insertBooking = async (request) => {
   const res = await insertClient(request);
   console.log("res inserting client", res);
+  // if client inserted successfully
   if (res.operation) {
     try {
       const requestID = nanoid(12);
-      // this id is generated from insertClient function
+      // clientID is generated from insertClient function
       const clientID = res.clientID;
       const startDate = convertDateToSQLFormat(request.startDate);
       const startTime = request.startTime;
       const endTime = request.endTime;
+      const capacity = request.capacity;
 
       console.log(requestID, clientID, startDate, startTime, endTime);
 
       const preparedStatement = `
-      INSERT INTO booking_request (request_id, client_id, start_date, start_time, end_time, booking_status)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO booking_request (request_id, client_id, start_date, start_time, end_time, capacity, booking_status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
       await dbPool.execute(preparedStatement, [
@@ -95,6 +97,7 @@ const insertBooking = async (request) => {
         startDate,
         startTime,
         endTime,
+        capacity,
         "pending",
       ]);
 
