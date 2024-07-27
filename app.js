@@ -6,7 +6,7 @@ import logger from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import indexRouter from "./src/routes/index.js";
-import usersRouter from "./src/routes/users.js";
+import viewAllBookingsRouter from "./src/routes/viewAllBookings.js";
 import timeGreedyRouter from "./src/routes/greedyAllocation.js";
 import bookingAuthRouter from "./src/routes/auth.js";
 
@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/view-all-bookings", viewAllBookingsRouter);
 app.use("/time-greedy", timeGreedyRouter);
 app.use("/booking-auth", bookingAuthRouter);
 

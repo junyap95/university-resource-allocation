@@ -65,6 +65,7 @@ const insertClient = async (request) => {
   }
 };
 
+// do i need this? why not just varchar?
 const convertDateToSQLFormat = (dateString) => {
   const [day, month, year] = dateString.split("/");
   return `${year}-${month}-${day}`;

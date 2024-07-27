@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />}></Route>
       <Route path="/view-schedule" element={<ResourceManagement />}></Route>
-      <Route path="users" element={<ClientTable />}></Route>
+      <Route path="/view-all-bookings" element={<ClientTable />}></Route>
     </Routes>
   );
 }

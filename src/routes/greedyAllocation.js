@@ -1,62 +1,32 @@
 import express from "express";
 const router = express.Router();
-import { timeGreedy } from "../services/greedy.js";
-import { dbPool, getAllBookingRequests } from "../configs/mysql.js";
+import { durationGreedy, timeGreedy } from "../services/greedy.js";
+import { dbPool, getAllBookingRequests, getAllHalls } from "../configs/mysql.js";
 
 // retrieving written booking requests from db
-const bookingMap = await getAllBookingRequests();
-console.log(bookingMap);
+const allBookings = await getAllBookingRequests();
+const allHalls = await getAllHalls();
+console.log(allBookings, Object.keys(allBookings).length, "greedyalloc bookingmap");
+console.log(allHalls, Object.keys(allHalls).length, "greedyalloc hallMap");
 
-// const bookings = [
-//   {
-//     client_id: 1,
-//     start_time: 1000,
-//     end_time: 1200,
-//     capacity: 50,
-//   },
-//   {
-//     client_id: 3,
-//     start_time: 1100,
-//     end_time: 1300,
-//     capacity: 40,
-//   },
-//   {
-//     client_id: 2,
-//     start_time: 1200,
-//     end_time: 1400,
-//     capacity: 30,
-//   },
-//   {
-//     client_id: 4,
-//     start_time: 900,
-//     end_time: 1100,
-//     capacity: 30,
-//   },
-//   {
-//     client_id: 5,
-//     start_time: 900,
-//     end_time: 1100,
-//     capacity: 50,
-//   },
-// ];
+const bookingMap = allBookings.map(booking => ({
+  client_id: booking.client_id,
+  start_time: booking.start_time,
+  end_time: booking.end_time,
+  capacity: booking.capacity,
+}))
 
-const lectureHalls = [
-  {
-    id: 1,
-    capacity: 60,
-  },
-  {
-    id: 2,
-    capacity: 50,
-  },
-  {
-    id: 3,
-    capacity: 50,
-  },
-];
+const hallMap = allHalls.map(hall => ({
+  id: hall.hall_id,
+  capacity: hall.hall_size,
+}))
+
+console.log(bookingMap, "bookingMap");
+console.log(hallMap, "hallMap");
 
 router.get("/", (req, res, next) => {
-  const result = timeGreedy(bookingMap, lectureHalls);
+  const result = timeGreedy(bookingMap, hallMap);
+  // const result = durationGreedy(bookingMap, hallMap);
   res.send(result);
 });
 

@@ -5,18 +5,20 @@ const fetchData = async () => {
   // const delay = 750;
   try {
     // await new Promise((resolve) => setTimeout(resolve, delay));
-    const response = await fetch("http://localhost:3001/users");
+    const response = await fetch("http://localhost:3001/view-all-bookings");
     return await response.json();
   } catch (error) {
     console.error("Error fetching data: ", error);
   }
 };
 
+// the idea of this component is when a button is clicked its corresponding table will be shown
 function ClientTable() {
   const [clientData, setClientData] = useState([{}]);
   const [hallData, setHallData] = useState([{}]);
   const [bookingData, setBookingData] = useState([{}]);
   const [tableName, setTableName] = useState("client");
+  const [hasBookings, setHasBookings] = useState(false);
 
   useEffect(() => {
     console.log("useEffect initialised");
@@ -26,7 +28,7 @@ function ClientTable() {
       setHallData(data.allHalls);
       setBookingData(data.allRequests);
     });
-  }, []);
+  }, [tableName]);
 
   const tableNames = {
     client: clientData,
@@ -35,7 +37,14 @@ function ClientTable() {
   };
 
   const handleChangeTable = useCallback((e) => {
-    setTableName(e.target.value);
+    const event = e.target.value;
+    setTableName(event);
+    if (event === "booking") {
+      setHasBookings(true);
+    } else {
+      setHasBookings(false);
+    }
+
   }, []);
 
   return (
@@ -48,14 +57,17 @@ function ClientTable() {
       >
         Client
       </button>
-      <button
-        className="search-button"
-        type="button"
-        value="booking"
-        onClick={handleChangeTable}
-      >
-        Booking
-      </button>
+      <div>
+        <button
+          className="search-button"
+          type="button"
+          value="booking"
+          onClick={handleChangeTable}
+        >
+          Booking
+        </button>
+        {hasBookings ? <div>Hi</div> : null}
+      </div>
       <button
         className="search-button"
         type="button"
@@ -65,6 +77,8 @@ function ClientTable() {
         Hall
       </button>
       <DynamicTable dataFromSQL={tableNames[tableName]} />
+
+
     </>
   );
 }
