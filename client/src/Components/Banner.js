@@ -11,7 +11,7 @@ export default function Banner({ scrollToView }) {
         alt="university"
       />
       <button
-        className="banner-book-button"
+        className="btn banner-book-button"
         type="button"
         onClick={scrollToView}
       >

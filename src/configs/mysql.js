@@ -1,6 +1,6 @@
 /**
  * This file is to initialise the database
- * and export some functions to query the database
+ * and export various database queries
  */
 import mysql from "mysql2";
 import dotenv from "dotenv";
@@ -41,7 +41,7 @@ export const getAllHalls = () => {
 
 export const getAllBookingRequests = () => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM booking_request", (err, rows, fields) => {
+    pool.query("SELECT * FROM booking_request ORDER BY start_date DESC", (err, rows, fields) => {
       if (err) {
         console.error("Error executing query:", err.stack);
         return reject(err);
@@ -50,5 +50,23 @@ export const getAllBookingRequests = () => {
     });
   });
 };
+
+export const getAllBookingRequestsByDate = (date) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM booking_request WHERE start_date= ?", [date], (err, rows, fields) => {
+      if (err) {
+        console.error("Error executing query:", err.stack);
+        return reject(err);
+      }
+      return resolve(rows); // Send the rows as JSON response
+    });
+  });
+};
+
+export const updateBookingStatus = () => {
+  return new Promise((resolve, reject) => {
+    pool.query("UPDATE booking_request SET booking_status = ? WHERE ")
+  })
+}
 
 export const dbPool = pool.promise();

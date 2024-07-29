@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import DynamicTable from "./DynamicTable";
+import DateBasedAllocator from "./DateBasedAllocator";
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const fetchData = async () => {
   // const delay = 750;
@@ -19,11 +21,11 @@ function ClientTable() {
   const [bookingData, setBookingData] = useState([{}]);
   const [tableName, setTableName] = useState("client");
   const [hasBookings, setHasBookings] = useState(false);
+  const [allocatedData, setAllocatedData] = useState();
 
   useEffect(() => {
     console.log("useEffect initialised");
     fetchData().then((data) => {
-      console.log(" in", data);
       setClientData(data.allClients);
       setHallData(data.allHalls);
       setBookingData(data.allRequests);
@@ -49,36 +51,36 @@ function ClientTable() {
 
   return (
     <>
-      <button
-        className="search-button"
-        type="button"
-        value="client"
-        onClick={handleChangeTable}
-      >
-        Client
-      </button>
-      <div>
+      <ButtonGroup variant="contained" aria-label="Basic button group">
         <button
-          className="search-button"
+          className="btn search-button"
           type="button"
-          value="booking"
+          value="client"
           onClick={handleChangeTable}
         >
-          Booking
+          Client
         </button>
-        {hasBookings ? <div>Hi</div> : null}
-      </div>
-      <button
-        className="search-button"
-        type="button"
-        value="hall"
-        onClick={handleChangeTable}
-      >
-        Hall
-      </button>
+        <div>
+          <button
+            className="btn search-button"
+            type="button"
+            value="booking"
+            onClick={handleChangeTable}
+          >
+            Booking
+          </button>
+          {hasBookings ? <DateBasedAllocator bookingData={bookingData} setAllocatedData={setAllocatedData} /> : null}
+        </div>
+        <button
+          className="btn search-button"
+          type="button"
+          value="hall"
+          onClick={handleChangeTable}
+        >
+          Hall
+        </button>
+      </ButtonGroup>
       <DynamicTable dataFromSQL={tableNames[tableName]} />
-
-
     </>
   );
 }

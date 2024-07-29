@@ -52,7 +52,7 @@ function Footer() {
           </form>
           <div>You may unsubscribe from these communications at anytime</div>
           <div>
-            <button className="banner-book-button" type="button">
+            <button className="btn banner-book-button" type="button">
               SIGN UP
             </button>
           </div>
