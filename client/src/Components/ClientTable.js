@@ -21,7 +21,7 @@ function ClientTable() {
   const [bookingData, setBookingData] = useState([{}]);
   const [tableName, setTableName] = useState("client");
   const [hasBookings, setHasBookings] = useState(false);
-  const [allocatedData, setAllocatedData] = useState();
+  const [allocatedData, setAllocatedData] = useState({});
 
   useEffect(() => {
     console.log("useEffect initialised");
@@ -46,8 +46,11 @@ function ClientTable() {
     } else {
       setHasBookings(false);
     }
+    setAllocatedData({})
 
   }, []);
+
+  const { allocatedRequests, failedRequests } = allocatedData;
 
   return (
     <>
@@ -69,7 +72,26 @@ function ClientTable() {
           >
             Booking
           </button>
-          {hasBookings ? <DateBasedAllocator bookingData={bookingData} setAllocatedData={setAllocatedData} /> : null}
+          {hasBookings ?
+            <>
+              <DateBasedAllocator bookingData={bookingData} setAllocatedData={setAllocatedData} />
+              {allocatedRequests?.length > 0 && <><p>Allocated Requests</p>
+                {allocatedRequests?.map((e) => <> <p>
+                  Client ID: {e.client_id}
+                </p>
+                  <p>
+                    Hall Id: {e.hall_assigned}
+                  </p>
+                </>
+                )} </>}
+              {failedRequests?.length > 0 && <><p>Unallocated Requests</p>
+                {failedRequests?.map((e) =>
+                  <p>Client ID: {e.client_id}</p>
+                )}</>}
+
+            </> : null}
+
+
         </div>
         <button
           className="btn search-button"

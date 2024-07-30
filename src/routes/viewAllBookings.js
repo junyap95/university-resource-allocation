@@ -1,7 +1,5 @@
 import express from "express";
-
 const router = express.Router();
-
 import {
   getAllClients,
   getAllHalls,
@@ -10,7 +8,6 @@ import {
 
 /* GET users listing. */
 router.get("/", async (req, res, next) => {
-  console.log("called");
   const allClients = await getAllClients();
   const allHalls = await getAllHalls();
   const allRequests = await getAllBookingRequests();
@@ -22,4 +19,5 @@ router.get("/", async (req, res, next) => {
   });
 });
 
+// note: called in ClientTable Component
 export default router;

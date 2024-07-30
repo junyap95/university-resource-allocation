@@ -14,6 +14,7 @@ export default function DateBasedAllocator({ bookingData, setAllocatedData }) {
         setDate(event.target.value);
     };
 
+
     const handleAllocate = async (event) => {
         // prepare the payload
         try {
