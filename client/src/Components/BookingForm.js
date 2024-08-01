@@ -152,7 +152,7 @@ const BookingForm = forwardRef((props, ref) => {
           />
 
           <div>
-            <button className="btn search-button" type="submit">
+            <button className="btn main-btn" type="submit">
               Submit Booking
             </button>
           </div>

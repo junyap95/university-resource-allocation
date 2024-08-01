@@ -1,6 +1,5 @@
-function DynamicTable({ dataFromSQL }) {
-  const headers = Object.keys(dataFromSQL[0]);
-  // console.log(dataFromSQL, "rows");
+function DynamicTable({ data, highlightedDate }) {
+  const headers = Object.keys(data[0]);
 
   return (
     <>
@@ -14,10 +13,11 @@ function DynamicTable({ dataFromSQL }) {
         </thead>
         <tbody>
           <>
-            {dataFromSQL.map((row) => {
+            {data.map((row, rowIndex) => {
               const fields = Object.values(row);
+              const isHighlighted = row.start_date === highlightedDate;
               return (
-                <tr>
+                <tr key={rowIndex} style={{ backgroundColor: isHighlighted ? 'yellow' : 'transparent' }}>
                   {fields.map((value, index) => {
                     const header = headers[index];
                     if (header === "start_date") {

@@ -1,18 +1,19 @@
 import * as React from 'react';
+import { useCallback, useState } from "react";
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function DateBasedAllocator({ bookingData, setAllocatedData }) {
-    const [date, setDate] = React.useState('');
+export default function DateBasedAllocator({ bookingData, setAllocatedData, setHighlightedDate }) {
+    const [date, setDate] = useState('');
     // To convert a Set back into an array use the spread operator.
     const uniqueDates = [...new Set(bookingData.map(e => e.start_date))]
-    const handleChange = (event) => {
-        console.log(event.target.value);
+    const handleChange = useCallback((event) => {
         setDate(event.target.value);
-    };
+        setHighlightedDate(event.target.value);
+    }, [setHighlightedDate])
 
 
     const handleAllocate = async (event) => {
@@ -30,7 +31,6 @@ export default function DateBasedAllocator({ bookingData, setAllocatedData }) {
             // Check if the response is OK (status code 200-299)
             if (response.ok) {
                 const data = await response.json();
-                console.log("response from endpoint", data);
                 setAllocatedData(data);
             }
         } catch (error) {
@@ -40,23 +40,25 @@ export default function DateBasedAllocator({ bookingData, setAllocatedData }) {
     }
 
     return (
-        <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Select a Date</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={date}
-                    label="date"
-                    onChange={handleChange}
-                >
-                    {uniqueDates.map((uniqueDate, index) =>
-                        <MenuItem key={index} value={uniqueDate}>{uniqueDate}</MenuItem>
-                    )}
+        <div style={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ minWidth: 200 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Select a Date</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={date}
+                        label="date"
+                        onChange={handleChange}
+                    >
+                        {uniqueDates.map((uniqueDate, index) =>
+                            <MenuItem key={index} value={uniqueDate}>{uniqueDate}</MenuItem>
+                        )}
 
-                </Select>
-                <button onClick={handleAllocate}>Allocate this Date</button>
-            </FormControl>
-        </Box>
+                    </Select>
+                </FormControl>
+            </Box>
+            <button className='btn main-btn allocate-btn' onClick={handleAllocate}>Allocate this Date</button>
+        </div>
     );
 }

@@ -21,7 +21,7 @@ const FormSubmitMessage = ({ onGoBack, messages }) => {
             <img src={cross} alt="Your Icon" width="50" height="50" />
           </>
         )}
-        <button className="search-button" onClick={onGoBack}>
+        <button className="main-btn" onClick={onGoBack}>
           Go Back Home
         </button>
       </div>

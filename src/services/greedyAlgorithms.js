@@ -84,7 +84,6 @@ export const timeGreedy = (bookingMap, hallMap) => {
   const sortedBookings = sortBookingsByStartTime(bookingMap);
   const sortedHalls = sortHallsByCapacity(hallMap);
 
-  console.log(sortedBookings, "sorted Bookings");
   const result = [];
 
   for (const booking of sortedBookings) {

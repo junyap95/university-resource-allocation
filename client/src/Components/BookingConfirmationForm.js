@@ -38,10 +38,10 @@ const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
           />
         </div>
         <>
-          <button className="search-button" onClick={onGoBack}>
+          <button className="main-btn" onClick={onGoBack}>
             Edit
           </button>
-          <button className="search-button" onClick={onConfirm}>
+          <button className="main-btn" onClick={onConfirm}>
             Confirm
           </button>
         </>
