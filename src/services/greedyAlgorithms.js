@@ -7,7 +7,6 @@ const timeStringToSeconds = (timeStr) => {
 // Helper function to parse time string to hours and minutes
 const timeStringParser = (timeStr) => {
   const [hours, minutes] = timeStr.split(':').map(Number);
-  console.log("time string parsed ", hours * 100 + minutes)
   return hours * 100 + minutes;
 };
 
@@ -17,12 +16,14 @@ const sortHallsByCapacity = (hallMap) => {
 };
 
 // Helper function to check hall availability
+// time is converted from string HH:MM:SS to seconds to compare
 const isHallAvailable = (result, hall, booking) => {
   return result.every(
-    (assigned) =>
-      assigned.hall_assigned !== hall.id ||
-      booking.start_time >= assigned.end_time ||
-      booking.end_time <= assigned.start_time
+    (assigned) => {
+      return assigned.hall_assigned !== hall.id ||
+        timeStringToSeconds(booking.start_time) >= timeStringToSeconds(assigned.end_time) ||
+        timeStringToSeconds(booking.end_time) <= timeStringToSeconds(assigned.start_time)
+    }
   );
 };
 
@@ -31,12 +32,9 @@ const sortBookingsByDuration = (bookingMap) => {
   return [...bookingMap].sort((a, b) => {
     const duration1 = timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
     const duration2 = timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
-
-    // if 2 durations are not equal, sort them
     if (duration1 !== duration2) {
       return duration2 - duration1;
     }
-    // if durations are equal sort them by earlier start time (ascending)
     return timeStringParser(a.start_time) - timeStringParser(b.start_time);
   });
 };
@@ -51,18 +49,29 @@ const sortBookingsByStartTime = (bookingMap) => {
   });
 };
 
-// Function to allocate the longest duration
-export const durationGreedy = (bookingMap, hallMap) => {
-  const sortedByDuration = sortBookingsByDuration(bookingMap);
-  const sortedHalls = sortHallsByCapacity(hallMap);
+// Helper function to sort bookings randomly
+const sortBookingsRandomly = (bookingMap) => {
+  const bookingResult = [...bookingMap];
+  for (let i = bookingResult.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [bookingResult[i], bookingResult[j]] = [bookingResult[j], bookingResult[i]];
+  }
+  return bookingResult;
 
-  console.log(sortedByDuration);
+};
+
+// General algorithm to allocate halls based on a sorting strategy
+const allocateHalls = (bookingMap, hallMap, sortBookingsFn) => {
+  const sortedBookings = sortBookingsFn(bookingMap);
+  const sortedHalls = sortHallsByCapacity(hallMap);
+  console.log(sortedBookings, " sb ")
   const allocatedRequests = [];
   const failedRequests = [];
 
-  for (const request of sortedByDuration) {
+  for (const request of sortedBookings) {
     let isAllocated = false;
     for (const hall of sortedHalls) {
+      console.log("hall available ", isHallAvailable(allocatedRequests, hall, request))
       if (hall.capacity >= request.capacity && isHallAvailable(allocatedRequests, hall, request)) {
         allocatedRequests.push({ ...request, hall_assigned: hall.id });
         isAllocated = true;
@@ -70,29 +79,28 @@ export const durationGreedy = (bookingMap, hallMap) => {
       }
     }
     if (!isAllocated) {
-      failedRequests.push(request)
+      failedRequests.push(request);
     }
   }
+
+  console.log("result, ", allocatedRequests, failedRequests)
   return {
-    allocatedRequests: allocatedRequests,
-    failedRequests: failedRequests
+    allocatedRequests,
+    failedRequests,
   };
+};
+
+// Function to allocate the longest duration
+export const durationGreedy = (bookingMap, hallMap) => {
+  return allocateHalls(bookingMap, hallMap, sortBookingsByDuration);
 };
 
 // Function to allocate the earliest start time
 export const timeGreedy = (bookingMap, hallMap) => {
-  const sortedBookings = sortBookingsByStartTime(bookingMap);
-  const sortedHalls = sortHallsByCapacity(hallMap);
-
-  const result = [];
-
-  for (const booking of sortedBookings) {
-    for (const hall of sortedHalls) {
-      if (hall.capacity >= booking.capacity && isHallAvailable(result, hall, booking)) {
-        result.push({ ...booking, hall_assigned: hall.id });
-        break;
-      }
-    }
-  }
-  return result;
+  return allocateHalls(bookingMap, hallMap, sortBookingsByStartTime);
 };
+
+// Function to allocate requests randomly
+export const randomGreedy = (bookingMap, hallMap) => {
+  return allocateHalls(bookingMap, hallMap, sortBookingsRandomly)
+}

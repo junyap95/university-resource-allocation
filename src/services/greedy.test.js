@@ -1,81 +1,284 @@
 
-import { timeGreedy } from "./greedyAlgorithms";
+import { timeGreedy, durationGreedy, randomGreedy } from "./greedyAlgorithms";
 
-describe("timeGreedy", () => {
-    it("WHEN there is no overlap, THEN should allocate to all requests", () => {
-        const bookings = [
+describe("Greedy Algorithms - No Time Overlapping", () => {
+    const bookings = [
+        {
+            client_id: 1,
+            start_time: "9:00:00",
+            end_time: "11:00:00",
+            capacity: 30,
+        },
+        {
+            client_id: 2,
+            start_time: "12:00:00",
+            end_time: "13:00:00",
+            capacity: 35,
+        },
+    ];
+
+    const lectureHalls = [
+        {
+            id: 1,
+            capacity: 50,
+        },
+    ];
+
+    const expectedAllocation = {
+        allocatedRequests: [
             {
+                capacity: 30,
                 client_id: 1,
                 start_time: "9:00:00",
-                end_time: 1100,
-                capacity: 30,
-            },
-            {
-                client_id: 2,
-                start_time: 1100,
-                end_time: 1230,
-                capacity: 35,
-            },
-        ];
-
-        const lectureHalls = [
-            {
-                id: 1,
-                capacity: 50,
-            },
-        ];
-
-        const result = timeGreedy(bookings, lectureHalls);
-        expect(result).toEqual([
-            {
-                capacity: 30,
-                client_id: 1,
-                end_time: 1100,
+                end_time: "11:00:00",
                 hall_assigned: 1,
-                start_time: 900,
             },
             {
                 capacity: 35,
                 client_id: 2,
-                end_time: 1230,
+                start_time: "12:00:00",
+                end_time: "13:00:00",
                 hall_assigned: 1,
-                start_time: 1100,
             },
-        ]);
+        ],
+        failedRequests: [],
+    };
+
+    describe("timeGreedy", () => {
+        it("WHEN there is no overlap, THEN it should allocate to all requests", () => {
+            const timeGreedyResult = timeGreedy(bookings, lectureHalls);
+            expect(timeGreedyResult).toEqual(expectedAllocation);
+        });
     });
 
-    it("WHEN there is an overlap, THEN should allocate to earliest time ", () => {
-        const bookings = [
+    describe("durationGreedy", () => {
+        it("WHEN there is no overlap, THEN it should allocate to all requests", () => {
+            const durationGreedyResult = durationGreedy(bookings, lectureHalls);
+            expect(durationGreedyResult).toEqual(expectedAllocation);
+        });
+    });
+});
+
+describe("Greedy Algorithms - Time Overlapping", () => {
+    const bookings = [
+        {
+            client_id: 1,
+            start_time: "9:00:00",
+            end_time: "11:00:00",
+            capacity: 30,
+        },
+        {
+            client_id: 2,
+            start_time: "10:30:00",
+            end_time: "16:00:00",
+            capacity: 35,
+        },
+    ];
+
+    const lectureHalls = [
+        {
+            id: 1,
+            capacity: 50,
+        },
+    ];
+
+    const expectedAllocationTime = {
+        allocatedRequests: [
             {
-                client_id: 1,
-                start_time: 900,
-                end_time: 1100,
                 capacity: 30,
+                client_id: 1,
+                start_time: "9:00:00",
+                end_time: "11:00:00",
+                hall_assigned: 1,
             },
+        ],
+        failedRequests: [
+            {
+                capacity: 35,
+                client_id: 2,
+                start_time: "10:30:00",
+                end_time: "16:00:00",
+            },
+        ],
+    };
+
+    const expectedAllocationDuration = {
+        allocatedRequests: [
             {
                 client_id: 2,
-                start_time: 1000,
-                end_time: 1230,
+                start_time: "10:30:00",
+                end_time: "16:00:00",
+                hall_assigned: 1,
                 capacity: 35,
             },
-        ];
-
-        const lectureHalls = [
-            {
-                id: 1,
-                capacity: 50,
-            },
-        ];
-
-        const result = timeGreedy(bookings, lectureHalls);
-        expect(result).toEqual([
+        ],
+        failedRequests: [
             {
                 capacity: 30,
                 client_id: 1,
-                end_time: 1100,
-                hall_assigned: 1,
-                start_time: 900,
+                start_time: "9:00:00",
+                end_time: "11:00:00",
             },
-        ]);
+        ],
+    };
+
+    describe("timeGreedy", () => {
+        it("WHEN there is an overlap, THEN it should allocate to request that starts earlier", () => {
+            const timeGreedyResult = timeGreedy(bookings, lectureHalls);
+            expect(timeGreedyResult).toEqual(expectedAllocationTime);
+        });
+    });
+
+    describe("durationGreedy", () => {
+        it("WHEN there is an overlap, THEN it should allocate to all request that has longer duration", () => {
+            const durationGreedyResult = durationGreedy(bookings, lectureHalls);
+            expect(durationGreedyResult).toEqual(expectedAllocationDuration);
+        });
+    });
+});
+
+describe("Random Greedy Algorithm - No Time Overlapping", () => {
+    beforeAll(() => {
+        // Mock Math.random to return predictable values
+        jest.spyOn(Math, 'random').mockImplementation(() => 0.5);
+    });
+
+    afterAll(() => {
+        // Restore Math.random to its original implementation
+        Math.random.mockRestore();
+    });
+
+    const bookings = [
+        {
+            client_id: 1,
+            start_time: "9:00:00",
+            end_time: "11:00:00",
+            capacity: 30,
+        },
+        {
+            client_id: 2,
+            start_time: "12:00:00",
+            end_time: "13:00:00",
+            capacity: 35,
+        },
+        {
+            client_id: 3,
+            start_time: "15:00:00",
+            end_time: "18:00:00",
+            capacity: 40,
+        },
+    ];
+
+    const lectureHalls = [
+        {
+            id: 1,
+            capacity: 50,
+        },
+    ];
+
+    const expectedAllocation = {
+        allocatedRequests: [
+            {
+                capacity: 30,
+                client_id: 1,
+                start_time: "9:00:00",
+                end_time: "11:00:00",
+                hall_assigned: 1,
+            },
+            {
+                client_id: 3,
+                start_time: "15:00:00",
+                end_time: "18:00:00",
+                capacity: 40,
+                hall_assigned: 1,
+            },
+            {
+                capacity: 35,
+                client_id: 2,
+                start_time: "12:00:00",
+                end_time: "13:00:00",
+                hall_assigned: 1,
+            },
+        ],
+        failedRequests: [],
+    };
+
+    describe("randomGreedy", () => {
+        it("WHEN there is no overlap, THEN it should allocate to all requests regardless of randomness", () => {
+            const randomGreedyResult = randomGreedy(bookings, lectureHalls);
+            expect(randomGreedyResult).toEqual(expectedAllocation);
+        });
+    });
+});
+
+describe("Random Greedy Algorithm - Time Overlapping", () => {
+    beforeAll(() => {
+        // Mock Math.random to return predictable values
+        jest.spyOn(Math, 'random').mockImplementation(() => 0.5);
+    });
+
+    afterAll(() => {
+        // Restore Math.random to its original implementation
+        Math.random.mockRestore();
+    });
+
+    const bookings = [
+        {
+            client_id: 1,
+            start_time: "9:00:00",
+            end_time: "11:00:00",
+            capacity: 30,
+        },
+        {
+            client_id: 2,
+            start_time: "10:30:00",
+            end_time: "16:00:00",
+            capacity: 35,
+        },
+        {
+            client_id: 3,
+            start_time: "15:00:00",
+            end_time: "18:00:00",
+            capacity: 40,
+        },
+    ];
+
+    const lectureHalls = [
+        {
+            id: 1,
+            capacity: 50,
+        },
+    ];
+
+    const expectedAllocation = {
+        allocatedRequests: [
+            {
+                capacity: 30,
+                client_id: 1,
+                start_time: "9:00:00",
+                end_time: "11:00:00",
+                hall_assigned: 1,
+            }, {
+                client_id: 3,
+                start_time: "15:00:00",
+                end_time: "18:00:00",
+                capacity: 40,
+                hall_assigned: 1,
+            },
+        ],
+        failedRequests: [
+            {
+                capacity: 35,
+                client_id: 2,
+                start_time: "10:30:00",
+                end_time: "16:00:00",
+            },],
+    };
+
+    describe("randomGreedy", () => {
+        it("WHEN there is overlap, THEN it allocates randomly regardless of randomness", () => {
+            const randomGreedyResult = randomGreedy(bookings, lectureHalls);
+            expect(randomGreedyResult).toEqual(expectedAllocation);
+        });
     });
 });
