@@ -9,6 +9,7 @@ import indexRouter from "./src/routes/index.js";
 import viewAllBookingsRouter from "./src/routes/viewAllBookings.js";
 import timeGreedyRouter from "./src/routes/greedyAllocation.js";
 import bookingAuthRouter from "./src/routes/auth.js";
+import checkBookingRouter from "./src/routes/checkBooking.js"
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/", indexRouter);
 app.use("/view-all-bookings", viewAllBookingsRouter);
 app.use("/time-greedy", timeGreedyRouter);
 app.use("/booking-auth", bookingAuthRouter);
+app.use("/check-booking", checkBookingRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

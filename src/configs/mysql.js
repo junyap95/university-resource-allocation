@@ -22,7 +22,7 @@ export const getAllClients = () => {
         console.error("Error executing query:", err.stack);
         return reject(err);
       }
-      return resolve(rows); // Send the rows as JSON response
+      return resolve(rows);
     });
   });
 };
@@ -34,7 +34,7 @@ export const getAllHalls = () => {
         console.error("Error executing query:", err.stack);
         return reject(err);
       }
-      return resolve(rows); // Send the rows as JSON response
+      return resolve(rows);
     });
   });
 };
@@ -46,7 +46,7 @@ export const getAllBookingRequests = () => {
         console.error("Error executing query:", err.stack);
         return reject(err);
       }
-      return resolve(rows); // Send the rows as JSON response
+      return resolve(rows);
     });
   });
 };
@@ -58,14 +58,26 @@ export const getAllBookingRequestsByDate = (date) => {
         console.error("Error executing query:", err.stack);
         return reject(err);
       }
-      return resolve(rows); // Send the rows as JSON response
+      return resolve(rows);
     });
   });
 };
 
 export const updateBookingStatus = () => {
   return new Promise((resolve, reject) => {
-    pool.query("UPDATE booking_request SET booking_status = ? WHERE ")
+    pool.query("UPDATE booking_request SET booking_status = ? ")
+  })
+}
+
+export const checkBookingRequest = (reqID) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM booking_request b, client c WHERE b.client_id = c.client_id AND request_id = ? ", [reqID], (err, rows, fields) => {
+      if (err) {
+        console.error("Error executing query:", err.stack);
+        return reject(err);
+      }
+      return resolve(rows);
+    })
   })
 }
 

@@ -1,22 +1,16 @@
-import { useNavigate } from "react-router-dom";
-
-export default function NavigationBar() {
-  const navigate = useNavigate();
-  const routeChange = () => {
-    const path = `users`;
-    navigate(path);
-  };
-
+export default function NavigationBar({ color }) {
   return (
-    <div className="nav-bar-main">
-      <div className="nav-bar-sub">
+    <div className={color}>
+      <a href="/" className="nav-bar-sub">
         <h3>BOOKBBK</h3>
-      </div>
+      </a>
       <div className="nav-bar-sub">
-        <div>My Booking</div>
-        <div className="nav-btn" onClick={routeChange}>
-          Staff Login
-        </div>
+
+        <a href="/check-booking">My Booking</a>
+
+        <a href="/view-all-bookings" className="nav-btn">
+          BBK Staff
+        </a>
       </div>
     </div>
   );

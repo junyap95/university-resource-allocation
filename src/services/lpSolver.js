@@ -2,7 +2,7 @@ import solver from 'javascript-lp-solver';
 
 export const lpSolve = (model) => {
     solver.Solve(model)
-    console.log(solver.Solve(model));
+    // console.log(solver.Solve(model));
 }
 
 // const model = {
@@ -88,5 +88,5 @@ halls.forEach(hall => {
     model.constraints[`${hall.id}_capacity`] = { ...hallConstraint, "max": hall.capacity };
 });
 
-console.log(model);
+// console.log(model);
 lpSolve(model);

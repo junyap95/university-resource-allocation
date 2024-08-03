@@ -11,7 +11,7 @@ export default function Home() {
   };
   return (
     <>
-      <NavigationBar />
+      <NavigationBar color="nav-bar-transparent" />
       <Banner scrollToView={scrollToBooking} />
       <BookingForm ref={bookingRef} />
       <Footer />

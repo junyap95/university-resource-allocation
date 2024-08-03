@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { durationGreedy, timeGreedy } from "../services/greedyAlgorithms.js";
+import { durationGreedy, timeGreedy, randomGreedy } from "../services/greedyAlgorithms.js";
 import { dbPool, getAllBookingRequests, getAllBookingRequestsByDate, getAllHalls } from "../configs/mysql.js";
 
 // retrieving booking requests from db
@@ -22,10 +22,31 @@ router.post("/", async (req, res, next) => {
     capacity: booking.capacity,
   }))
 
-  // const resultTime = timeGreedy(bookingMap, hallMap);
-  const resultDuration = durationGreedy(bookingMap, hallMap);
+  // switch statement for greedy algorithm chosen by user
+  function handleRequest(algorithm) {
+    let allocationResults;
 
-  res.send(resultDuration);
+    switch (algorithm) {
+      case 'timeGreedy':
+        allocationResults = timeGreedy(bookingMap, hallMap)
+        break;
+
+      case 'durationGreedy':
+        allocationResults = durationGreedy(bookingMap, hallMap)
+        break;
+
+      case 'randomGreedy':
+        allocationResults = randomGreedy(bookingMap, hallMap)
+        break;
+
+      default:
+        console.log('Unknown algorithm');
+        break;
+    }
+    return allocationResults;
+  }
+
+  res.send(handleRequest(req.body.algorithm));
 });
 
 export default router;

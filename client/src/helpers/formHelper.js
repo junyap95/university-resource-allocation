@@ -54,7 +54,6 @@ const useHandleChangeDate = (setFormData) =>
   useCallback(
     (e) => {
       const dateString = new Date(e).toLocaleDateString();
-      console.log(e);
       formSetter(setFormData, "startDate", dateString);
     },
     [setFormData],

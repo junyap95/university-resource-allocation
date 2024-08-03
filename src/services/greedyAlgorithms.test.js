@@ -1,4 +1,3 @@
-
 import { timeGreedy, durationGreedy, randomGreedy } from "./greedyAlgorithms";
 
 describe("Greedy Algorithms - No Time Overlapping", () => {
@@ -32,16 +31,21 @@ describe("Greedy Algorithms - No Time Overlapping", () => {
                 start_time: "9:00:00",
                 end_time: "11:00:00",
                 hall_assigned: 1,
+                profit: 200,
+                space_utilised: "30/50",
             },
             {
                 capacity: 35,
                 client_id: 2,
                 start_time: "12:00:00",
                 end_time: "13:00:00",
+                profit: 100,
+                space_utilised: "35/50",
                 hall_assigned: 1,
             },
         ],
         failedRequests: [],
+        "totalProfit": 300,
     };
 
     describe("timeGreedy", () => {
@@ -90,6 +94,8 @@ describe("Greedy Algorithms - Time Overlapping", () => {
                 start_time: "9:00:00",
                 end_time: "11:00:00",
                 hall_assigned: 1,
+                profit: 200,
+                space_utilised: "30/50",
             },
         ],
         failedRequests: [
@@ -100,6 +106,7 @@ describe("Greedy Algorithms - Time Overlapping", () => {
                 end_time: "16:00:00",
             },
         ],
+        totalProfit: 200,
     };
 
     const expectedAllocationDuration = {
@@ -110,6 +117,8 @@ describe("Greedy Algorithms - Time Overlapping", () => {
                 end_time: "16:00:00",
                 hall_assigned: 1,
                 capacity: 35,
+                profit: 550,
+                space_utilised: "35/50",
             },
         ],
         failedRequests: [
@@ -120,6 +129,7 @@ describe("Greedy Algorithms - Time Overlapping", () => {
                 end_time: "11:00:00",
             },
         ],
+        totalProfit: 550,
     };
 
     describe("timeGreedy", () => {
@@ -184,6 +194,8 @@ describe("Random Greedy Algorithm - No Time Overlapping", () => {
                 start_time: "9:00:00",
                 end_time: "11:00:00",
                 hall_assigned: 1,
+                profit: 200,
+                space_utilised: "30/50",
             },
             {
                 client_id: 3,
@@ -191,6 +203,8 @@ describe("Random Greedy Algorithm - No Time Overlapping", () => {
                 end_time: "18:00:00",
                 capacity: 40,
                 hall_assigned: 1,
+                profit: 300,
+                space_utilised: "40/50",
             },
             {
                 capacity: 35,
@@ -198,9 +212,12 @@ describe("Random Greedy Algorithm - No Time Overlapping", () => {
                 start_time: "12:00:00",
                 end_time: "13:00:00",
                 hall_assigned: 1,
+                profit: 100,
+                space_utilised: "35/50",
             },
         ],
         failedRequests: [],
+        "totalProfit": 600,
     };
 
     describe("randomGreedy", () => {
@@ -228,6 +245,8 @@ describe("Random Greedy Algorithm - Time Overlapping", () => {
             start_time: "9:00:00",
             end_time: "11:00:00",
             capacity: 30,
+            profit: 200,
+            space_utilised: "30/50",
         },
         {
             client_id: 2,
@@ -258,12 +277,16 @@ describe("Random Greedy Algorithm - Time Overlapping", () => {
                 start_time: "9:00:00",
                 end_time: "11:00:00",
                 hall_assigned: 1,
+                profit: 200,
+                space_utilised: "30/50",
             }, {
                 client_id: 3,
                 start_time: "15:00:00",
                 end_time: "18:00:00",
                 capacity: 40,
                 hall_assigned: 1,
+                profit: 300,
+                space_utilised: "40/50",
             },
         ],
         failedRequests: [
@@ -273,6 +296,7 @@ describe("Random Greedy Algorithm - Time Overlapping", () => {
                 start_time: "10:30:00",
                 end_time: "16:00:00",
             },],
+        totalProfit: 500,
     };
 
     describe("randomGreedy", () => {

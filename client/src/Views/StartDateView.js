@@ -1,7 +1,6 @@
 import DatePicker from "react-datepicker";
 
 const StartDateView = ({ onChange, selected }) => {
-  console.log("selected", selected);
   return (
     <div className="form-container">
       <div className="form-title">Select a Date*</div>

@@ -39,8 +39,6 @@ const insertClient = async (request) => {
       email,
       phoneNum,
     ]);
-    console.log(result);
-    console.log(fields);
 
     // to be passed down to the insertBooking function
     return {
@@ -73,7 +71,6 @@ const convertDateToSQLFormat = (dateString) => {
 
 const insertBooking = async (request) => {
   const res = await insertClient(request);
-  console.log("res inserting client", res);
   // if client inserted successfully
   if (res.operation) {
     try {
@@ -84,8 +81,6 @@ const insertBooking = async (request) => {
       const startTime = request.startTime;
       const endTime = request.endTime;
       const capacity = request.capacity;
-
-      console.log(requestID, clientID, startDate, startTime, endTime);
 
       const preparedStatement = `
       INSERT INTO booking_request (request_id, client_id, start_date, start_time, end_time, capacity, booking_status)
@@ -120,7 +115,6 @@ const insertBooking = async (request) => {
 router.post("/", async (req, res) => {
   try {
     const bookingRes = await insertBooking(req.body);
-    console.log("booking result ", bookingRes);
     res.send(bookingRes);
   } catch (error) {
     res

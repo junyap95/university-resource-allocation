@@ -1,15 +1,16 @@
+import { timeStringToSeconds, timeStringParser } from "./timeConverter.js";
+import { calculateTotalProfit, calculateSingleProfit } from "./allocationCalculator.js";
 // Helper function to convert time string to seconds
-const timeStringToSeconds = (timeStr) => {
-  const [hours, minutes, seconds] = timeStr.split(':').map(Number);
-  return hours * 3600 + minutes * 60 + (seconds || 0);
-};
+// export const timeStringToSeconds = (timeStr) => {
+//   const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+//   return hours * 3600 + minutes * 60 + (seconds || 0);
+// };
 
-// Helper function to parse time string to hours and minutes
-const timeStringParser = (timeStr) => {
-  const [hours, minutes] = timeStr.split(':').map(Number);
-  return hours * 100 + minutes;
-};
-
+// // Helper function to parse time string to hours and minutes
+// export const timeStringParser = (timeStr) => {
+//   const [hours, minutes] = timeStr.split(':').map(Number);
+//   return hours * 100 + minutes;
+// };
 // Helper function to sort halls by capacity in ascending order
 const sortHallsByCapacity = (hallMap) => {
   return [...hallMap].sort((a, b) => a.capacity - b.capacity);
@@ -50,6 +51,7 @@ const sortBookingsByStartTime = (bookingMap) => {
 };
 
 // Helper function to sort bookings randomly
+// TODO: should we randomise hall as well?
 const sortBookingsRandomly = (bookingMap) => {
   const bookingResult = [...bookingMap];
   for (let i = bookingResult.length - 1; i > 0; i--) {
@@ -64,16 +66,19 @@ const sortBookingsRandomly = (bookingMap) => {
 const allocateHalls = (bookingMap, hallMap, sortBookingsFn) => {
   const sortedBookings = sortBookingsFn(bookingMap);
   const sortedHalls = sortHallsByCapacity(hallMap);
-  console.log(sortedBookings, " sb ")
   const allocatedRequests = [];
   const failedRequests = [];
 
   for (const request of sortedBookings) {
     let isAllocated = false;
     for (const hall of sortedHalls) {
-      console.log("hall available ", isHallAvailable(allocatedRequests, hall, request))
       if (hall.capacity >= request.capacity && isHallAvailable(allocatedRequests, hall, request)) {
-        allocatedRequests.push({ ...request, hall_assigned: hall.id });
+        // construct a result before pushing
+        const allocatedRes = { ...request, hall_assigned: hall.id, space_utilised: `${request.capacity}/${hall.capacity}` }
+        // use the previous result to calculate profits per booking
+        const profit = calculateSingleProfit(allocatedRes);
+        // then push the existing result with profit calculated to the final array
+        allocatedRequests.push({ ...allocatedRes, profit: profit })
         isAllocated = true;
         break;
       }
@@ -83,10 +88,12 @@ const allocateHalls = (bookingMap, hallMap, sortBookingsFn) => {
     }
   }
 
-  console.log("result, ", allocatedRequests, failedRequests)
+  const totalProfit = calculateTotalProfit(allocatedRequests);
+
   return {
     allocatedRequests,
     failedRequests,
+    totalProfit,
   };
 };
 
