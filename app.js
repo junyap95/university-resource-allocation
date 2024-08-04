@@ -7,9 +7,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import indexRouter from "./src/routes/index.js";
 import viewAllBookingsRouter from "./src/routes/viewAllBookings.js";
-import timeGreedyRouter from "./src/routes/greedyAllocation.js";
-import bookingAuthRouter from "./src/routes/auth.js";
-import checkBookingRouter from "./src/routes/checkBooking.js"
+import greedyAllocationRouter from "./src/routes/greedyAllocation.js";
+import insertClientRequestRouter from "./src/routes/insertClientRequest.js";
+import checkBookingRouter from "./src/routes/checkBooking.js";
 
 dotenv.config();
 
@@ -28,8 +28,8 @@ app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use("/", indexRouter);
 app.use("/view-all-bookings", viewAllBookingsRouter);
-app.use("/time-greedy", timeGreedyRouter);
-app.use("/booking-auth", bookingAuthRouter);
+app.use("/allocate-greedy", greedyAllocationRouter);
+app.use("/insert-client-and-request", insertClientRequestRouter);
 app.use("/check-booking", checkBookingRouter);
 
 // catch 404 and forward to error handler

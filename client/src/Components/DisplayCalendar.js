@@ -4,7 +4,7 @@ export default function ResourceManagement() {
   // const [events, setEvents] = useState([]);
   const getEventsArray = async () => {
     try {
-      const response = await fetch("http://localhost:3001/time-greedy", {
+      const response = await fetch("http://localhost:3001/allocate-greedy", {
         method: "GET",
         // headers: {
         //   "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export default function ResourceManagement() {
     } catch (error) {
       console.error("Events allocation error:", error);
     }
-  }
+  };
 
   getEventsArray();
   return (

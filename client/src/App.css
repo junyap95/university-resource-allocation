@@ -39,7 +39,7 @@ a:link {
   justify-content: center;
   align-items: center;
   color: #ffffff;
-  font-size: large;
+  font-size: 1.2rem;
 }
 
 .main-container {
@@ -113,7 +113,7 @@ a:link {
 
 .banner-book-button:hover {
   color: #72243c;
-  background-color: #f0e5e9;
+  background-color: #fff;
   cursor: pointer;
 }
 
@@ -251,7 +251,7 @@ small {
 
 .main-btn {
   background-color: transparent;
-  margin: 0 1em;
+  margin: 0.25em 1em;
   color: #72243c;
   border: solid #72243c 2px;
   transition-duration: 0.3s;
@@ -260,6 +260,8 @@ small {
 
 .main-btn:hover {
   cursor: pointer;
+  background-color: #72243c;
+  color: #fff;
 }
 
 .main-btn:active {
@@ -296,8 +298,9 @@ small {
 }
 
 table {
-  width: 50vw;
+  width: 60rem;
   border-collapse: collapse;
+  margin: 1em 0;
 }
 
 th,
@@ -340,7 +343,6 @@ th {
 /* Footer Component*/
 .footer-box {
   background-color: #72243c;
-  /* width: 100vw; */
   color: white;
   display: flex;
   flex-direction: column;
@@ -386,19 +388,6 @@ li {
   padding: 0 0 20px 0;
 }
 
-.footer-button {
-  border-radius: 50px;
-  background-color: white;
-  color: #00B1B0;
-  font-weight: bolder;
-  border: none;
-  padding: 10px 60px;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  transition-timing-function: ease-in-out;
-  cursor: pointer;
-}
-
 .foot-subscribe>h2 {
   margin: 0 0 10px 0;
   color: white;
@@ -408,14 +397,6 @@ li {
   padding: 10px 0 10px 0;
   font-size: 15px;
 }
-
-/*input {*/
-/*  color: white;*/
-/*  border: none;*/
-/*  background-color: #00B1B0;*/
-/*  border-bottom: 1px white solid;*/
-/*  font-size: 15px;*/
-/*}*/
 
 textarea:focus,
 input:focus {

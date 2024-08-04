@@ -17,7 +17,7 @@ function DynamicTable({ data, highlightedDate }) {
               const fields = Object.values(row);
               const isHighlighted = row.start_date === highlightedDate;
               return (
-                <tr key={rowIndex} style={{ backgroundColor: isHighlighted ? 'yellow' : 'transparent' }}>
+                <tr key={rowIndex} style={{ backgroundColor: isHighlighted ? 'rgba(36, 114, 90, 0.3)' : 'transparent', }}>
                   {fields.map((value, index) => {
                     const header = headers[index];
                     if (header === "start_date") {

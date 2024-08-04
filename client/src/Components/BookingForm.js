@@ -45,17 +45,18 @@ const BookingForm = forwardRef((props, ref) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:3001/booking-auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:3001/insert-client-and-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      // Check if the response is OK (status code 200-299)
       if (response.ok) {
         const data = await response.json();
         setBookingMessage(data);

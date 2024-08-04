@@ -4,7 +4,7 @@ import {
   getAllClients,
   getAllHalls,
   getAllBookingRequests,
-} from "../configs/mysql.js";
+} from "../services/sqlQueriesHelpers.js";
 
 /* GET users listing. */
 router.get("/", async (req, res, next) => {

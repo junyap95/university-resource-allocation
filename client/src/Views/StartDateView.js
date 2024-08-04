@@ -15,6 +15,7 @@ const StartDateView = ({ onChange, selected }) => {
         dateFormat="MM/dd/yyyy"
         minDate={new Date()}
         placeholderText="Click to select a date"
+        required={true}
       />
     </div>
   );

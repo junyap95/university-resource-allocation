@@ -51,6 +51,10 @@ function AllTables() {
 
   }, []);
 
+  const handleAcceptAllocation = useCallback(() => {
+
+  }, [])
+
   return (
     <>
       <NavigationBar color="nav-bar-red" />
@@ -104,6 +108,13 @@ function AllTables() {
 
             {!!allocatedData.failedRequests?.length && <><h3>Failed Request/s</h3> <DynamicTable data={allocatedData.failedRequests} /> </>}
           </div> : null}
+        <button
+          className="btn main-btn"
+          type="button"
+          onClick={handleAcceptAllocation}
+        >
+          Accept Allocation
+        </button>
       </div>
       <Footer />
     </>

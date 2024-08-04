@@ -19,6 +19,7 @@ const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
         timeCaption="Time"
         dateFormat="h:mm "
         placeholderText="Click to Select Start Time"
+        required={true}
       />
 
       <div className="form-title">Select End Time*:</div>
@@ -38,6 +39,7 @@ const TimeView = ({ onChangeStart, onChangeEnd, startTime, endTime }) => {
         placeholderText={
           startTime ? "Select End Time" : "Select Start Time First!"
         }
+        required={true}
       />
     </div>
   );

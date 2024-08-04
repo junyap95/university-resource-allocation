@@ -1,4 +1,3 @@
-import React from "react";
 import FormConfirmationBox from "./FormConfirmationBox";
 
 const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
@@ -6,7 +5,7 @@ const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
     <div className="main-container">
       <div className="confirm-container">
         <div>
-          <h2>Review Your Booking</h2>
+          <h2 style={{ color: '#72243c' }}>Review Your Booking</h2>
           <FormConfirmationBox
             formData={formData?.firstName}
             title={"First Name"}
@@ -38,10 +37,10 @@ const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
           />
         </div>
         <>
-          <button className="main-btn" onClick={onGoBack}>
+          <button className="btn main-btn" onClick={onGoBack}>
             Edit
           </button>
-          <button className="main-btn" onClick={onConfirm}>
+          <button className="btn main-btn" onClick={onConfirm}>
             Confirm
           </button>
         </>
