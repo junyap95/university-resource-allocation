@@ -22,7 +22,6 @@ const insertClient = async (request) => {
     );
 
     if (existingClients.length > 0) {
-      console.log("existing client??");
       const client = existingClients[0];
       return {
         message: `Welcome back, ${client.first_name} ${client.last_name}`,

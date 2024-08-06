@@ -1,28 +1,28 @@
-import FullCalendarView from "./FullCalendarView";
+import FullCalendarView from "../Views/FullCalendarView";
 
-export default function ResourceManagement() {
+export default function DisplayCalendar() {
   // const [events, setEvents] = useState([]);
-  const getEventsArray = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/allocate-greedy", {
-        method: "GET",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-        // body: JSON.stringify(formData),
-      });
+  // const getEventsArray = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:3001/allocate-greedy", {
+  //       method: "GET",
+  //       // headers: {
+  //       //   "Content-Type": "application/json",
+  //       // },
+  //       // body: JSON.stringify(formData),
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data, "data");
-        // setEvents()
-      }
-    } catch (error) {
-      console.error("Events allocation error:", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(data, "data");
+  //       // setEvents()
+  //     }
+  //   } catch (error) {
+  //     console.error("Events allocation error:", error);
+  //   }
+  // };
 
-  getEventsArray();
+  // getEventsArray();
   return (
     <>
       <FullCalendarView eventsArray={[]} />

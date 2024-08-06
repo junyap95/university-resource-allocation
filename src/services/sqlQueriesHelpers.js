@@ -1,5 +1,9 @@
 import { dbPool } from "../configs/mysql.js";
-import { STATUS_PENDING } from "../utilities/constants.js";
+import {
+  STATUS_PENDING,
+  STATUS_FAILED,
+  STATUS_APPROVED,
+} from "../utilities/constants.js";
 
 export const getAllClients = async () => {
   try {
@@ -46,9 +50,32 @@ export const getAllBookingRequestsByDate = async (date) => {
   }
 };
 
-export const updateBookingStatus = async () => {
+export const insertAllocatedRequest = async (allocatedData) => {
   try {
-    await dbPool.query("UPDATE booking_request SET booking_status = ? ");
+    const [rows] = await dbPool.query(
+      "INSERT INTO allocated_bookings (hall_id, request_id) VALUES (?, ?)",
+      [allocatedData.hall_assigned, allocatedData.request_id]
+    );
+    return rows;
+  } catch (err) {
+    console.error("Error executing query:", err.stack);
+    throw err;
+  }
+};
+
+export const updateBookingStatus = async (allocatedData) => {
+  try {
+    const statusMsg = "PENDING";
+    if (allocatedData.failedRequests.length > 0) {
+      statusMsg = STATUS_FAILED;
+    } else {
+      statusMsg = STATUS_APPROVED;
+    }
+    // loop?
+    await dbPool.query(
+      "UPDATE booking_request SET booking_status = ? WHERE request_id = ? ",
+      [statusMsg, allocatedData.request_id]
+    );
   } catch (err) {
     console.error("Error executing query:", err.stack);
     throw err;

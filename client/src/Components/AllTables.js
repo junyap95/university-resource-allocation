@@ -14,6 +14,26 @@ const fetchData = async () => {
   }
 };
 
+const insertAllocRequest = async (allocatedRequests) => {
+  try {
+    const response = await fetch(
+      "http://localhost:3001/insert-allocated-request",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(allocatedRequests),
+      }
+    );
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  }
+};
+
 // the idea of this component is when a button is clicked its corresponding table will be shown
 function AllTables() {
   const [clientData, setClientData] = useState([{}]);
@@ -22,7 +42,8 @@ function AllTables() {
   const [tableName, setTableName] = useState("client");
   const [hasBookings, setHasBookings] = useState(false);
   const [allocatedData, setAllocatedData] = useState({});
-  const [highlightedDate, setHighlightedDate] = useState('');
+  const [highlightedDate, setHighlightedDate] = useState("");
+  const [insertAllocMsg, setInsertAllocMsg] = useState("");
 
   useEffect(() => {
     fetchData().then((data) => {
@@ -39,7 +60,7 @@ function AllTables() {
   };
 
   const handleChangeTable = useCallback((e) => {
-    setHighlightedDate('');
+    setHighlightedDate("");
     const event = e.target.value;
     setTableName(event);
     if (event === "booking") {
@@ -47,13 +68,19 @@ function AllTables() {
     } else {
       setHasBookings(false);
     }
-    setAllocatedData({})
-
+    setAllocatedData({});
   }, []);
 
-  const handleAcceptAllocation = useCallback(() => {
+  const handleAcceptAllocation = useCallback(async () => {
+    // takes allocated requests
+    const [allocatedRequests] = allocatedData.allocatedRequests;
+    // writes into DB
+    const { sqlMessage } = await insertAllocRequest(allocatedRequests);
+    setInsertAllocMsg(sqlMessage);
+    // change booking status to "failed or allocated"
 
-  }, [])
+    // then calendar always retrieves data from DB to display results
+  }, [allocatedData]);
 
   return (
     <>
@@ -90,24 +117,41 @@ function AllTables() {
         </div>
 
         <div className="dynamic-table">
-          <DynamicTable data={tableNames[tableName]} highlightedDate={highlightedDate} />
+          <DynamicTable
+            data={tableNames[tableName]}
+            highlightedDate={highlightedDate}
+          />
         </div>
 
-        {hasBookings ?
+        {hasBookings ? (
           <div>
-            <DateBasedAllocator bookingData={bookingData} setAllocatedData={setAllocatedData} setHighlightedDate={setHighlightedDate} />
+            <DateBasedAllocator
+              bookingData={bookingData}
+              setAllocatedData={setAllocatedData}
+              setHighlightedDate={setHighlightedDate}
+            />
 
-            {!!allocatedData.allocatedRequests?.length &&
+            {!!allocatedData.allocatedRequests?.length && (
               <>
                 <h3>Allocated Request/s</h3>
                 <DynamicTable data={allocatedData.allocatedRequests} />
                 <h4>
-                  Profit based on duration: <span style={{ color: "#24725A", fontSize: "1.5em" }}>£{allocatedData.totalProfit}</span>
+                  Profit based on duration:{" "}
+                  <span style={{ color: "#24725A", fontSize: "1.5em" }}>
+                    £{allocatedData.totalProfit}
+                  </span>
                 </h4>
-              </>}
+              </>
+            )}
 
-            {!!allocatedData.failedRequests?.length && <><h3>Failed Request/s</h3> <DynamicTable data={allocatedData.failedRequests} /> </>}
-          </div> : null}
+            {!!allocatedData.failedRequests?.length && (
+              <>
+                <h3>Failed Request/s</h3>{" "}
+                <DynamicTable data={allocatedData.failedRequests} />{" "}
+              </>
+            )}
+          </div>
+        ) : null}
         <button
           className="btn main-btn"
           type="button"
@@ -115,6 +159,7 @@ function AllTables() {
         >
           Accept Allocation
         </button>
+        <p>{insertAllocMsg ? insertAllocMsg : null}</p>
       </div>
       <Footer />
     </>
