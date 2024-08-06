@@ -1,11 +1,11 @@
 export default function NavigationBar({ color }) {
   return (
-    <div className={color}>
-      <a href="/" className="nav-bar-sub">
+    <div className={`nav-bar ${color}`}>
+      <a href="/">
         <h3>BOOKBBK</h3>
       </a>
-      <div className="nav-bar-sub">
-        <a href="/check-booking" target="blank">
+      <div>
+        <a href="/check-booking" target="blank" className="nav-btn">
           My Booking
         </a>
 

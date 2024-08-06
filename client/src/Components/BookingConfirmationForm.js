@@ -1,11 +1,12 @@
 import FormConfirmationBox from "./FormConfirmationBox";
+import Button from "./Button";
 
 const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
   return (
     <div className="main-container">
       <div className="confirm-container">
         <div>
-          <h2 style={{ color: '#72243c' }}>Review Your Booking</h2>
+          <h2 style={{ color: "#72243c" }}>Review Your Booking</h2>
           <FormConfirmationBox
             formData={formData?.firstName}
             title={"First Name"}
@@ -36,14 +37,13 @@ const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
             formData={formData?.capacity}
           />
         </div>
-        <>
-          <button className="btn main-btn" onClick={onGoBack}>
-            Edit
-          </button>
-          <button className="btn main-btn" onClick={onConfirm}>
-            Confirm
-          </button>
-        </>
+
+        <Button btnClass={"main-btn"} btnText={"Edit"} handlerFn={onGoBack} />
+        <Button
+          btnClass={"main-btn"}
+          btnText={"Confirm"}
+          handlerFn={onConfirm}
+        />
       </div>
     </div>
   );

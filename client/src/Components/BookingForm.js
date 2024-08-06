@@ -13,6 +13,7 @@ import {
   useHandleEndTime,
   useHandleChangeDate,
 } from "../helpers/formHelper";
+import Button from "./Button";
 
 const BookingForm = forwardRef((props, ref) => {
   // data acquired from user input
@@ -152,11 +153,11 @@ const BookingForm = forwardRef((props, ref) => {
             capacity={formData?.capacity}
           />
 
-          <div>
-            <button className="btn main-btn" type="submit">
-              Submit Booking
-            </button>
-          </div>
+          <Button
+            btnText={"Submit Booking"}
+            btnClass={"main-btn"}
+            type={"submit"}
+          />
         </form>
       ) : (
         <BookingConfirmationForm

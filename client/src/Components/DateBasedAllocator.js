@@ -4,12 +4,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Button from "./Button";
 
-export default function DateBasedAllocator({
-  bookingData,
-  setAllocatedData,
-  setHighlightedDate,
-}) {
+export default function DateBasedAllocator({ setAllocatedData, bookingData, setHighlightedDate }) {
   // const [date, setDate] = useState('');
   const [dateAndAlgo, setDateAndAlgo] = useState({
     date: "",
@@ -21,6 +18,7 @@ export default function DateBasedAllocator({
 
   const handleChangeDate = useCallback(
     (event) => {
+      console.log(event.target.value);
       setDateAndAlgo((prev) => ({
         ...prev,
         date: event.target.value,
@@ -61,7 +59,14 @@ export default function DateBasedAllocator({
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "3em",
+      }}
+    >
       <Box sx={{ minWidth: 200 }}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Select a Date</InputLabel>
@@ -83,9 +88,7 @@ export default function DateBasedAllocator({
 
       <Box sx={{ minWidth: 200 }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">
-            Greedy Algorithm
-          </InputLabel>
+          <InputLabel id="demo-simple-select-label">Select Algorithm</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -94,10 +97,10 @@ export default function DateBasedAllocator({
             onChange={handleChangeAlgo}
           >
             <MenuItem key={"startTime"} value={"timeGreedy"}>
-              Earliest Start Time
+              Greedy - Earliest Start Time
             </MenuItem>
             <MenuItem key={"duration"} value={"durationGreedy"}>
-              Longest Duration
+              Greedy - Longest Duration
             </MenuItem>
             <MenuItem key={"random"} value={"randomGreedy"}>
               Random
@@ -106,9 +109,7 @@ export default function DateBasedAllocator({
         </FormControl>
       </Box>
 
-      <button className="btn main-btn allocate-btn" onClick={handleAllocate}>
-        Allocate this Date
-      </button>
+      <Button btnClass={"green-btn"} btnText={"Allocate this Date"} handlerFn={handleAllocate} />
     </div>
   );
 }
