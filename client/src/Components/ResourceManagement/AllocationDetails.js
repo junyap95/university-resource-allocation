@@ -29,7 +29,7 @@ export default function AllocationDetails({ allocatedData }) {
           <AllocatedRequests allocatedData={allocatedData} />
           <FailedRequests allocatedData={allocatedData} />
         </>
-      )}{" "}
+      )}
     </>
   );
 }

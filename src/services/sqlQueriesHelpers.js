@@ -1,9 +1,5 @@
 import { dbPool } from "../configs/mysql.js";
-import {
-  STATUS_PENDING,
-  STATUS_FAILED,
-  STATUS_APPROVED,
-} from "../utilities/constants.js";
+import { STATUS_PENDING, STATUS_FAILED, STATUS_APPROVED } from "../utilities/constants.js";
 
 export const getAllClients = async () => {
   try {
@@ -11,7 +7,6 @@ export const getAllClients = async () => {
     return rows;
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
@@ -21,32 +16,24 @@ export const getAllHalls = async () => {
     return rows;
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
 export const getAllBookingRequests = async () => {
   try {
-    const [rows] = await dbPool.query(
-      "SELECT * FROM booking_request ORDER BY start_date DESC"
-    );
+    const [rows] = await dbPool.query("SELECT * FROM booking_request ORDER BY start_date DESC");
     return rows;
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
 export const getAllBookingRequestsByDate = async (date) => {
   try {
-    const [rows] = await dbPool.query(
-      "SELECT * FROM booking_request WHERE start_date= ?",
-      [date]
-    );
+    const [rows] = await dbPool.query("SELECT * FROM booking_request WHERE start_date= ?", [date]);
     return rows;
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
@@ -58,27 +45,27 @@ export const insertAllocatedRequest = async (allocatedData) => {
     );
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
     throw err;
   }
 };
 
 export const updateBookingStatus = async (allocatedData) => {
   try {
-    const statusMsg = "PENDING";
-    if (allocatedData.failedRequests.length > 0) {
-      statusMsg = STATUS_FAILED;
-    } else {
-      statusMsg = STATUS_APPROVED;
-    }
-    // loop?
-    await dbPool.query(
-      "UPDATE booking_request SET booking_status = ? WHERE request_id = ? ",
-      [statusMsg, allocatedData.request_id]
-    );
+    const successfulRequests = allocatedData.allocatedRequests;
+    const failedRequests = allocatedData.failedRequests;
+    // Function to update booking status
+    const updateStatus = async (requests, status) => {
+      for (const request of requests) {
+        await dbPool.query("UPDATE booking_request SET booking_status = ? WHERE request_id = ?", [
+          status,
+          request.request_id,
+        ]);
+      }
+    };
+    await updateStatus(successfulRequests, STATUS_APPROVED);
+    await updateStatus(failedRequests, STATUS_FAILED);
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
@@ -91,7 +78,6 @@ export const checkBookingRequest = async (reqID) => {
     return rows;
   } catch (err) {
     console.error("Error executing query:", err.stack);
-    throw err;
   }
 };
 
@@ -104,24 +90,12 @@ export const selectClient = async (firstName, lastName, email, phoneNum) => {
   return existingClients;
 };
 
-export const insertClientQuery = async (
-  clientID,
-  firstName,
-  lastName,
-  email,
-  phoneNum
-) => {
+export const insertClientQuery = async (clientID, firstName, lastName, email, phoneNum) => {
   const preparedStatement = `
       INSERT INTO client (client_id, first_name, last_name, email_address, phone_num)
       VALUES (?, ?, ?, ?, ?)
     `;
-  await dbPool.execute(preparedStatement, [
-    clientID,
-    firstName,
-    lastName,
-    email,
-    phoneNum,
-  ]);
+  await dbPool.execute(preparedStatement, [clientID, firstName, lastName, email, phoneNum]);
 };
 
 export const insertBookingQuery = async (

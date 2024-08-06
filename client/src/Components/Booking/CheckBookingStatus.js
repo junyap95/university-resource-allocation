@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import FormInputBox from "./FormInputBox";
-import NavigationBar from "./NavigationBar";
-import Footer from "./Footer";
-import Button from "./Button";
+import NavigationBar from "../NavigationBar";
+import Footer from "../Footer";
+import Button from "../Button";
 
 export default function CheckBookingStatus() {
   const [reqID, setReqID] = useState("");
@@ -12,11 +12,8 @@ export default function CheckBookingStatus() {
     const params = { reqID: reqID };
     const queryString = new URLSearchParams(params).toString();
     try {
-      const response = await fetch(
-        `http://localhost:3001/check-booking?${queryString}`
-      );
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await fetch(`http://localhost:3001/check-booking?${queryString}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const result = await response.json();
       const [parsedClientRequest] = result.bookingRequest;
       setClientRequest(parsedClientRequest);
@@ -32,10 +29,7 @@ export default function CheckBookingStatus() {
   return (
     <>
       <NavigationBar color="nav-bar-red" />
-      <div
-        className="main-container"
-        style={{ minHeight: "60vh", alignItems: "center" }}
-      >
+      <div className="main-container" style={{ minHeight: "60vh", alignItems: "center" }}>
         <div className="confirm-container">
           <FormInputBox
             title="Enter Your Request ID"
@@ -55,10 +49,7 @@ export default function CheckBookingStatus() {
               <h3>
                 Hello {clientRequest.first_name} {clientRequest.last_name}
               </h3>
-              <p>
-                Current Booking Status:{" "}
-                {clientRequest.booking_status?.toUpperCase()}
-              </p>
+              <p>Current Booking Status: {clientRequest.booking_status?.toUpperCase()}</p>
               <p>Booking Date: {clientRequest.start_date}</p>
               <p>Start Time: {clientRequest.start_time}</p>
               <p>End Time: {clientRequest.start_time}</p>

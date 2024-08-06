@@ -3,9 +3,9 @@ import AllTables from "./AllTables";
 import DateBasedAllocator from "./DateBasedAllocator";
 import AllocationDetails from "./AllocationDetails";
 import AcceptAllocAlert from "./AcceptAllocAlert";
-import Button from "./Button";
-import Footer from "./Footer";
-import NavigationBar from "./NavigationBar";
+import Button from "../Button";
+import Footer from "../Footer";
+import NavigationBar from "../NavigationBar";
 
 const fetchData = async () => {
   try {
@@ -38,18 +38,36 @@ export function ResourceManagement() {
 
   const handleAcceptAllocation = useCallback(async () => {
     if (Object.keys(allocatedData).length === 0) return;
-    // takes allocated requests
+    // takes allocated requests only
     const [allocatedRequests] = allocatedData.allocatedRequests;
     // writes into DB
     const message = await insertAllocRequestSQL(allocatedRequests);
     setInsertAllocMsg(message);
     // change booking status to "failed or allocated"
+    await updateBookingStatusSQL(allocatedData);
     // then calendar always retrieves data from DB to display results
   }, [allocatedData]);
 
   const insertAllocRequestSQL = async (allocatedRequests) => {
     try {
       const response = await fetch("http://localhost:3001/insert-allocated-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(allocatedRequests),
+      });
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const updateBookingStatusSQL = async (allocatedRequests) => {
+    try {
+      const response = await fetch("http://localhost:3001/update-booking-status", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

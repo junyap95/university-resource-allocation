@@ -11,6 +11,7 @@ import greedyAllocationRouter from "./src/routes/greedyAllocation.js";
 import insertClientRequestRouter from "./src/routes/insertClientRequest.js";
 import checkBookingRouter from "./src/routes/checkBooking.js";
 import insertAllocatedRequestRouter from "./src/routes/insertAllocatedRequest.js";
+import updateBookingStatusRouter from "./src/routes/updateBookingStatus.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/view-all-bookings", viewAllBookingsRouter);
 app.use("/allocate-greedy", greedyAllocationRouter);
 app.use("/insert-client-and-request", insertClientRequestRouter);
 app.use("/insert-allocated-request", insertAllocatedRequestRouter);
+app.use("/update-booking-status", updateBookingStatusRouter);
 app.use("/check-booking", checkBookingRouter);
 
 // catch 404 and forward to error handler

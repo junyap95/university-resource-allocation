@@ -2,9 +2,8 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import DisplayCalendar from "./Components/DisplayCalendar";
-import AllTables from "./Components/AllTables";
-import CheckBookingStatus from "./Components/CheckBookingStatus";
-import { ResourceManagement } from "./Components/ResourceManagement";
+import CheckBookingStatus from "./Components/Booking/CheckBookingStatus";
+import { ResourceManagement } from "./Components/ResourceManagement/ResourceManagement";
 
 function App() {
   return (

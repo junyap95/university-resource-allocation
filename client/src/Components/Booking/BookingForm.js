@@ -1,9 +1,9 @@
 import "react-datepicker/dist/react-datepicker.css";
 import { useState, forwardRef } from "react";
 import FormInputBox from "./FormInputBox";
-import StartDateView from "../Views/StartDateView";
-import TimeView from "../Views/TimeView";
-import CapacityView from "../Views/CapacityView";
+import StartDateView from "../../Views/StartDateView";
+import TimeView from "../../Views/TimeView";
+import CapacityView from "../../Views/CapacityView";
 import FormSubmitMessage from "./FormSubmitMessage";
 import BookingConfirmationForm from "./BookingConfirmationForm";
 import {
@@ -12,8 +12,8 @@ import {
   useHandleCapacity,
   useHandleEndTime,
   useHandleChangeDate,
-} from "../helpers/formHelper";
-import Button from "./Button";
+} from "../../helpers/formHelper";
+import Button from "../Button";
 
 const BookingForm = forwardRef((props, ref) => {
   // data acquired from user input
@@ -47,16 +47,13 @@ const BookingForm = forwardRef((props, ref) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "http://localhost:3001/insert-client-and-request",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:3001/insert-client-and-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -148,16 +145,9 @@ const BookingForm = forwardRef((props, ref) => {
             endTime={formData?.endTime}
           />
 
-          <CapacityView
-            handleCapacity={handleCapacity}
-            capacity={formData?.capacity}
-          />
+          <CapacityView handleCapacity={handleCapacity} capacity={formData?.capacity} />
 
-          <Button
-            btnText={"Submit Booking"}
-            btnClass={"main-btn"}
-            type={"submit"}
-          />
+          <Button btnText={"Submit Booking"} btnClass={"main-btn"} type={"submit"} />
         </form>
       ) : (
         <BookingConfirmationForm

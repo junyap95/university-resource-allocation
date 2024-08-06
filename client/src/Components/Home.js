@@ -1,7 +1,7 @@
-import Banner from "./Banner";
-import BookingForm from "./BookingForm";
-import NavigationBar from "./NavigationBar";
 import { useRef } from "react";
+import Banner from "./Banner";
+import BookingForm from "./Booking/BookingForm";
+import NavigationBar from "./NavigationBar";
 import Footer from "./Footer";
 
 export default function Home() {

@@ -4,7 +4,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Button from "./Button";
+import Button from "../Button";
+
+const START_TIME_GREEDY = "START_TIME_GREEDY";
+const LONGEST_DURATION_GREEDY = "LONGEST_DURATION_GREEDY";
+const RANDOM_ASSIGNMENT = "RANDOM_ASSIGNMENT";
 
 export default function DateBasedAllocator({ setAllocatedData, bookingData, setHighlightedDate }) {
   // const [date, setDate] = useState('');
@@ -96,13 +100,13 @@ export default function DateBasedAllocator({ setAllocatedData, bookingData, setH
             label="greedy-algorithms"
             onChange={handleChangeAlgo}
           >
-            <MenuItem key={"startTime"} value={"timeGreedy"}>
+            <MenuItem key={"startTime"} value={START_TIME_GREEDY}>
               Greedy - Earliest Start Time
             </MenuItem>
-            <MenuItem key={"duration"} value={"durationGreedy"}>
+            <MenuItem key={"duration"} value={LONGEST_DURATION_GREEDY}>
               Greedy - Longest Duration
             </MenuItem>
-            <MenuItem key={"random"} value={"randomGreedy"}>
+            <MenuItem key={"random"} value={RANDOM_ASSIGNMENT}>
               Random
             </MenuItem>
           </Select>

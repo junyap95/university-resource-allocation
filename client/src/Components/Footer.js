@@ -1,4 +1,5 @@
 import logo from "../images/bbk-logo.png";
+import Button from "./Button";
 
 function Footer() {
   return (
@@ -44,21 +45,14 @@ function Footer() {
         <div className="foot-subscribe">
           <h2>Subscribe for news and offers</h2>
           <form>
-            <input
-              className="input-box"
-              type="text"
-              placeholder="ex. john_doe@gmail.com"
-            />
+            <input className="input-box" type="text" placeholder="ex. john_doe@gmail.com" />
           </form>
           <div>You may unsubscribe from these communications at anytime</div>
           <div>
-            <button className="btn banner-book-button" type="button">
-              SIGN UP
-            </button>
+            <Button btnClass={"banner-book-btn"} btnText={"SIGN UP"} />
           </div>
           <div>
-            By signing up, you agree to BBK's <u>privacy policy</u> and{" "}
-            <u>terms and conditions</u>
+            By signing up, you agree to BBK's <u>privacy policy</u> and <u>terms and conditions</u>
           </div>
         </div>
       </div>

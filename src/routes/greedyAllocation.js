@@ -1,24 +1,20 @@
 import express from "express";
 const router = express.Router();
+import { durationGreedy, timeGreedy, randomGreedy } from "../services/greedyAlgorithms.js";
+import { getAllBookingRequestsByDate, getAllHalls } from "../services/sqlQueriesHelpers.js";
 import {
-  durationGreedy,
-  timeGreedy,
-  randomGreedy,
-} from "../services/greedyAlgorithms.js";
-import {
-  getAllBookingRequestsByDate,
-  getAllHalls,
-} from "../services/sqlQueriesHelpers.js";
-
-// retrieving booking requests from db
-const allHalls = await getAllHalls();
-
-const hallMap = allHalls.map((hall) => ({
-  id: hall.hall_id,
-  capacity: hall.hall_size,
-}));
+  START_TIME_GREEDY,
+  LONGEST_DURATION_GREEDY,
+  RANDOM_ASSIGNMENT,
+} from "../utilities/constants.js";
 
 router.post("/", async (req, res, next) => {
+  // retrieving booking requests from db
+  const allHalls = await getAllHalls();
+  const hallMap = allHalls.map((hall) => ({
+    id: hall.hall_id,
+    capacity: hall.hall_size,
+  }));
   // req.body from the caller: DateBasedAllocator
   // then helper that executes sql queries takes in the date (req.body.date)
   const allBookingsByDate = await getAllBookingRequestsByDate(req.body.date);
@@ -36,15 +32,15 @@ router.post("/", async (req, res, next) => {
     let allocationResults;
 
     switch (algorithm) {
-      case "timeGreedy":
+      case START_TIME_GREEDY:
         allocationResults = timeGreedy(bookingMap, hallMap);
         break;
 
-      case "durationGreedy":
+      case LONGEST_DURATION_GREEDY:
         allocationResults = durationGreedy(bookingMap, hallMap);
         break;
 
-      case "randomGreedy":
+      case RANDOM_ASSIGNMENT:
         allocationResults = randomGreedy(bookingMap, hallMap);
         break;
 

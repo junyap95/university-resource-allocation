@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import DynamicTable from "./DynamicTable";
-import Button from "./Button";
+import Button from "../Button";
 
 // show the corresponding table when a button is clicked
 function AllTables({

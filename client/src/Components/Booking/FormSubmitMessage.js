@@ -1,5 +1,6 @@
-import cross from "../images/icons8-cross.svg";
-import tick from "../images/icons8-tick.svg";
+import cross from "../../images/icons8-cross.svg";
+import tick from "../../images/icons8-tick.svg";
+import Button from "../Button";
 
 const FormSubmitMessage = ({ onGoBack, messages }) => {
   return (
@@ -27,9 +28,8 @@ const FormSubmitMessage = ({ onGoBack, messages }) => {
             <img src={cross} alt="Your Icon" width="50" height="50" />
           </>
         )}
-        <button className="btn main-btn" onClick={onGoBack}>
-          Go Back Home
-        </button>
+
+        <Button btnClass={"main-btn"} btnText={"Back to Home"} handlerFn={onGoBack} />
       </div>
     </div>
   );
