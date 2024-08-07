@@ -23,25 +23,31 @@ export function ResourceManagement() {
   const [hallData, setHallData] = useState([{}]);
   const [bookingData, setBookingData] = useState([{}]);
   const [insertAllocMsg, setInsertAllocMsg] = useState(null);
+  const [tableName, setTableName] = useState("client");
   const [highlightedDate, setHighlightedDate] = useState("");
-
-  //   const [progress, setProgress] = useState(100);
 
   useEffect(() => {
     fetchData().then((data) => {
-      console.log(" in use effect main ");
       setClientData(data.allClients);
       setHallData(data.allHalls);
       setBookingData(data.allRequests);
     });
-  }, []);
+  }, [tableName]);
+
+  const handleChangeTable = useCallback(
+    (e) => {
+      setHighlightedDate("");
+      setTableName(e.target.value);
+      setHasBookings(e.target.value === "booking");
+      setAllocatedData({});
+    },
+    [setAllocatedData, setHasBookings, setHighlightedDate]
+  );
 
   const handleAcceptAllocation = useCallback(async () => {
     if (Object.keys(allocatedData).length === 0) return;
-    // takes allocated requests only
-    const [allocatedRequests] = allocatedData.allocatedRequests;
     // writes into DB
-    const message = await insertAllocRequestSQL(allocatedRequests);
+    const message = await insertAllocRequestSQL(allocatedData);
     setInsertAllocMsg(message);
     // change booking status to "failed or allocated"
     await updateBookingStatusSQL(allocatedData);
@@ -87,13 +93,12 @@ export function ResourceManagement() {
       <NavigationBar color="nav-bar-red" />
       <div className="resource-management-container">
         <AllTables
+          tableName={tableName}
           clientData={clientData}
+          handleChangeTable={handleChangeTable}
           bookingData={bookingData}
           hallData={hallData}
           highlightedDate={highlightedDate}
-          setHighlightedDate={setHighlightedDate}
-          setAllocatedData={setAllocatedData}
-          setHasBookings={setHasBookings}
         />
 
         {hasBookings && (

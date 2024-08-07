@@ -22,7 +22,6 @@ export default function DateBasedAllocator({ setAllocatedData, bookingData, setH
 
   const handleChangeDate = useCallback(
     (event) => {
-      console.log(event.target.value);
       setDateAndAlgo((prev) => ({
         ...prev,
         date: event.target.value,

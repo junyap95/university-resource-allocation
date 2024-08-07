@@ -39,11 +39,14 @@ export const getAllBookingRequestsByDate = async (date) => {
 
 export const insertAllocatedRequest = async (allocatedData) => {
   try {
-    const [rows] = await dbPool.query(
-      "INSERT INTO allocated_bookings (hall_id, request_id) VALUES (?, ?)",
-      [allocatedData.hall_assigned, allocatedData.request_id]
-    );
-    return rows;
+    const successfulRequests = allocatedData.allocatedRequests;
+
+    for (const request of successfulRequests) {
+      await dbPool.query("INSERT INTO allocated_bookings (hall_id, request_id) VALUES (?, ?)", [
+        request.hall_assigned,
+        request.request_id,
+      ]);
+    }
   } catch (err) {
     throw err;
   }
@@ -74,6 +77,35 @@ export const checkBookingRequest = async (reqID) => {
     const [rows] = await dbPool.query(
       "SELECT * FROM booking_request b, client c WHERE b.client_id = c.client_id AND request_id = ? ",
       [reqID]
+    );
+    let myHallName;
+    if (rows[0].booking_status === STATUS_APPROVED) {
+      const [myHall] = await getAllocatedHall(reqID);
+      myHallName = myHall.hall_name;
+      rows[0].alloc_hall = myHallName;
+    }
+    return rows;
+  } catch (err) {
+    console.error("Error executing query:", err.stack);
+  }
+};
+
+export const getAllocatedHall = async (reqID) => {
+  try {
+    const [rows] = await dbPool.query(
+      "SELECT h.hall_name FROM allocated_bookings a, booking_request b, lecture_hall h WHERE a.hall_id = h.hall_id AND a.request_id = b.request_id AND a.request_id = ?",
+      [reqID]
+    );
+    return rows;
+  } catch (err) {
+    console.error("Error executing query:", err.stack);
+  }
+};
+
+export const getAllocatedBookings = async () => {
+  try {
+    const [rows] = await dbPool.query(
+      "SELECT b.request_id, b.client_id, b.start_date, b.start_time, b.end_time, h.hall_id, h.hall_name FROM allocated_bookings a, booking_request b, lecture_hall h WHERE a.hall_id = h.hall_id AND a.request_id = b.request_id"
     );
     return rows;
   } catch (err) {

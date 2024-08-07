@@ -1,34 +1,20 @@
-import { useCallback, useState } from "react";
 import DynamicTable from "./DynamicTable";
 import Button from "../Button";
 
 // show the corresponding table when a button is clicked
 function AllTables({
+  tableName,
+  handleChangeTable,
   clientData,
   bookingData,
   hallData,
   highlightedDate,
-  setHighlightedDate,
-  setHasBookings,
-  setAllocatedData,
 }) {
-  const [tableName, setTableName] = useState("client");
-
   const tableNames = {
     client: clientData,
     booking: bookingData,
     hall: hallData,
   };
-
-  const handleChangeTable = useCallback(
-    (e) => {
-      setHighlightedDate("");
-      setTableName(e.target.value);
-      setHasBookings(e.target.value === "booking");
-      setAllocatedData({});
-    },
-    [setAllocatedData, setHasBookings, setHighlightedDate]
-  );
 
   return (
     <>
@@ -56,31 +42,6 @@ function AllTables({
       </div>
 
       <DynamicTable data={tableNames[tableName]} highlightedDate={highlightedDate} />
-
-      {/* {hasBookings && (
-          <AllocationDetails
-            bookingData={bookingData}
-            setAllocatedData={setAllocatedData}
-            setHighlightedDate={setHighlightedDate}
-            allocatedData={allocatedData}
-          />
-        )}
-
-        {Object.keys(allocatedData).length !== 0 && (
-          <Button
-            btnText="Accept Allocation"
-            btnClass="green-btn"
-            handlerFn={handleAcceptAllocation}
-          />
-        )}
-
-        {insertAllocMsg && (
-          <AcceptAllocAlert
-            severity={insertAllocMsg.sqlOperation ? "success" : "error"}
-            message={insertAllocMsg.sqlMessage}
-            progress={progress}
-          />
-        )} */}
     </>
   );
 }

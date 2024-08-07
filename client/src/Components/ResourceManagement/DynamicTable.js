@@ -27,9 +27,9 @@ function DynamicTable({ data, highlightedDate }) {
                     const header = headers[index];
                     if (header === "start_date") {
                       const date = new Date(value).toLocaleDateString();
-                      return <td>{date}</td>;
+                      return <td key={index}>{date}</td>;
                     }
-                    return <td>{value}</td>;
+                    return <td key={index}>{value}</td>;
                   })}
                 </tr>
               );

@@ -13,10 +13,11 @@ export default function CheckBookingStatus() {
     const queryString = new URLSearchParams(params).toString();
     try {
       const response = await fetch(`http://localhost:3001/check-booking?${queryString}`);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const result = await response.json();
-      const [parsedClientRequest] = result.bookingRequest;
-      setClientRequest(parsedClientRequest);
+      if (response.ok) {
+        const result = await response.json();
+        const [parsedClientRequest] = result.bookingRequest;
+        setClientRequest(parsedClientRequest);
+      }
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -31,8 +32,8 @@ export default function CheckBookingStatus() {
       <NavigationBar color="nav-bar-red" />
       <div className="main-container" style={{ minHeight: "60vh", alignItems: "center" }}>
         <div className="confirm-container">
+          <h3>Enter Your Request ID</h3>
           <FormInputBox
-            title="Enter Your Request ID"
             placeholder="Your Request ID"
             onChange={handleChangeInput}
             value={reqID}
@@ -49,11 +50,29 @@ export default function CheckBookingStatus() {
               <h3>
                 Hello {clientRequest.first_name} {clientRequest.last_name}
               </h3>
-              <p>Current Booking Status: {clientRequest.booking_status?.toUpperCase()}</p>
-              <p>Booking Date: {clientRequest.start_date}</p>
-              <p>Start Time: {clientRequest.start_time}</p>
-              <p>End Time: {clientRequest.start_time}</p>
-              <p>Capacity: {clientRequest.capacity}</p>
+              <div>
+                {" "}
+                <strong>Current Booking Status: </strong>{" "}
+                {clientRequest.booking_status?.toUpperCase()}
+              </div>
+              {clientRequest.hasOwnProperty("alloc_hall") && (
+                <div>
+                  <strong>Hall Reserved: </strong>
+                  <strong style={{ color: "#24725a" }}>{clientRequest.alloc_hall} Hall</strong>
+                </div>
+              )}
+              <div>
+                <strong>Booking Date:</strong> {clientRequest.start_date}
+              </div>
+              <div>
+                <strong>Start Time:</strong> {clientRequest.start_time}
+              </div>
+              <div>
+                <strong>End Time:</strong> {clientRequest.end_time}
+              </div>
+              <div>
+                <strong>Capacity:</strong> {clientRequest.capacity}
+              </div>
             </>
           )}
         </div>

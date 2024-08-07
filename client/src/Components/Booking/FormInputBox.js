@@ -1,15 +1,7 @@
-export default function FormInputBox({
-  title,
-  type,
-  id,
-  placeholder,
-  onChange,
-  error,
-  value,
-}) {
+export default function FormInputBox({ title, type, id, placeholder, onChange, error, value }) {
   return (
     <div className="form-container">
-      <div className="form-title">{title}*</div>
+      <div className="form-title">{title}</div>
       <input
         className="input-box"
         type={type}
@@ -19,7 +11,6 @@ export default function FormInputBox({
         required={true}
         value={value}
       />
-
       <small>{error}</small>
     </div>
   );
