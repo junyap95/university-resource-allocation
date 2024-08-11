@@ -35,7 +35,7 @@ test("test", async ({ page }) => {
   await page.getByRole("button", { name: "Allocate this Date" }).click();
 
   const allocatedTable = page.locator("#alloc-table");
-  await allocatedTable.waitFor();
+
   if (await allocatedTable.isVisible()) {
     await expect(allocatedTable.locator("thead > tr > th")).toContainText([
       "request_id",
