@@ -1,19 +1,14 @@
 import DynamicTable from "./DynamicTable";
 import Button from "../Button";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 // show the corresponding table when a button is clicked
-function AllTables({
-  tableName,
-  handleChangeTable,
-  clientData,
-  bookingData,
-  hallData,
-  highlightedDate,
-}) {
+function AllTables({ tableName, handleChangeTable, dataFromDB, highlightedDate, loading }) {
   const tableNames = {
-    client: clientData,
-    booking: bookingData,
-    hall: hallData,
+    client: dataFromDB.allClients,
+    booking: dataFromDB.allRequests,
+    hall: dataFromDB.allHalls,
   };
 
   return (
@@ -40,8 +35,11 @@ function AllTables({
           value="hall"
         />
       </div>
-
-      <DynamicTable data={tableNames[tableName]} highlightedDate={highlightedDate} />
+      {loading ? (
+        <CircularProgress color="inherit" />
+      ) : (
+        <DynamicTable data={tableNames[tableName]} highlightedDate={highlightedDate} />
+      )}
     </>
   );
 }

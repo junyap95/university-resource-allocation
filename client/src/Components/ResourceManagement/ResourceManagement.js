@@ -5,33 +5,47 @@ import AllocationDetails from "./AllocationDetails";
 import AcceptAllocAlert from "./AcceptAllocAlert";
 import Button from "../Button";
 import Footer from "../Footer";
+import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
 
 const fetchData = async () => {
   try {
-    const response = await fetch("http://localhost:3001/view-all-bookings");
+    const response = await fetch("http://localhost:3001/view-entry");
     return await response.json();
   } catch (error) {
-    console.error("Error fetching data: ", error);
+    console.error("Error fetching data from DB, check if DB is online: ", error);
   }
+};
+
+const isObjectEmpty = (obj) => {
+  return Object.keys(obj).length === 0;
 };
 
 export function ResourceManagement() {
   const [hasBookings, setHasBookings] = useState(false);
   const [allocatedData, setAllocatedData] = useState({});
-  const [clientData, setClientData] = useState([{}]);
-  const [hallData, setHallData] = useState([{}]);
-  const [bookingData, setBookingData] = useState([{}]);
+  const [dataFromDB, setDataFromDB] = useState(null);
   const [insertAllocMsg, setInsertAllocMsg] = useState(null);
   const [tableName, setTableName] = useState("client");
   const [highlightedDate, setHighlightedDate] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [resultGenerating, setResultGenerating] = useState(true);
 
   useEffect(() => {
-    fetchData().then((data) => {
-      setClientData(data.allClients);
-      setHallData(data.allHalls);
-      setBookingData(data.allRequests);
-    });
+    fetchData()
+      .then((data) => {
+        if (!isObjectEmpty(data)) {
+          setDataFromDB(data);
+          setLoading(false);
+          setResultGenerating(false);
+        } else {
+          console.warn("Data object is empty, check if DB is online");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
   }, [tableName]);
 
   const handleChangeTable = useCallback(
@@ -40,6 +54,7 @@ export function ResourceManagement() {
       setTableName(e.target.value);
       setHasBookings(e.target.value === "booking");
       setAllocatedData({});
+      setInsertAllocMsg(null);
     },
     [setAllocatedData, setHasBookings, setHighlightedDate]
   );
@@ -67,7 +82,7 @@ export function ResourceManagement() {
         return await response.json();
       }
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error inserting allocated request in ResourceManagement Component: ", error);
     }
   };
 
@@ -84,7 +99,7 @@ export function ResourceManagement() {
         return await response.json();
       }
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error updating booking status in ResourceManagement Component: ", error);
     }
   };
 
@@ -92,38 +107,53 @@ export function ResourceManagement() {
     <>
       <NavigationBar color="nav-bar-red" />
       <div className="resource-management-container">
-        <AllTables
-          tableName={tableName}
-          clientData={clientData}
-          handleChangeTable={handleChangeTable}
-          bookingData={bookingData}
-          hallData={hallData}
-          highlightedDate={highlightedDate}
-        />
+        {loading ? (
+          <>
+            <CircularProgress color="inherit" />
+            Loading from database
+          </>
+        ) : (
+          <>
+            <AllTables
+              tableName={tableName}
+              dataFromDB={dataFromDB}
+              handleChangeTable={handleChangeTable}
+              highlightedDate={highlightedDate}
+              loading={loading}
+            />
 
-        {hasBookings && (
-          <DateBasedAllocator
-            bookingData={bookingData}
-            setAllocatedData={setAllocatedData}
-            setHighlightedDate={setHighlightedDate}
-          />
-        )}
+            {hasBookings && (
+              <DateBasedAllocator
+                bookingData={dataFromDB.allRequests}
+                setAllocatedData={setAllocatedData}
+                setHighlightedDate={setHighlightedDate}
+                setResultGenerating={setResultGenerating}
+              />
+            )}
+            {!resultGenerating ? (
+              <AllocationDetails allocatedData={allocatedData} />
+            ) : (
+              <>
+                <CircularProgress color="inherit" />
+                Generating Result...
+              </>
+            )}
 
-        <AllocationDetails allocatedData={allocatedData} />
-
-        {Object.keys(allocatedData).length !== 0 && (
-          <Button
-            btnText="Accept Allocation"
-            btnClass="green-btn"
-            handlerFn={handleAcceptAllocation}
-          />
-        )}
-        {insertAllocMsg && (
-          <AcceptAllocAlert
-            severity={insertAllocMsg.sqlOperation ? "success" : "error"}
-            message={insertAllocMsg.sqlMessage}
-            onClose={setInsertAllocMsg}
-          />
+            {!isObjectEmpty(allocatedData) && !resultGenerating && (
+              <Button
+                btnText="Accept Allocation"
+                btnClass="green-btn"
+                handlerFn={handleAcceptAllocation}
+              />
+            )}
+            {insertAllocMsg && (
+              <AcceptAllocAlert
+                severity={insertAllocMsg.sqlOperation ? "success" : "error"}
+                message={insertAllocMsg.sqlMessage}
+                onClose={setInsertAllocMsg}
+              />
+            )}
+          </>
         )}
       </div>
       <Footer />

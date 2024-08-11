@@ -1,4 +1,3 @@
-// I initially installed this to help importing modules in Components
 {
   "compilerOptions": {
     "module": "commonjs",

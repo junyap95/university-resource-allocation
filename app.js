@@ -6,8 +6,8 @@ import logger from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import indexRouter from "./src/routes/index.js";
-import viewAllBookingsRouter from "./src/routes/viewAllBookings.js";
-import greedyAllocationRouter from "./src/routes/greedyAllocation.js";
+import viewEntryRouter from "./src/routes/viewAllBookings.js";
+import executeAlgorithmRouter from "./src/routes/executeAlgorithms.js";
 import insertClientRequestRouter from "./src/routes/insertClientRequest.js";
 import checkBookingRouter from "./src/routes/checkBooking.js";
 import insertAllocatedRequestRouter from "./src/routes/insertAllocatedRequest.js";
@@ -29,8 +29,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use("/", indexRouter);
-app.use("/view-all-bookings", viewAllBookingsRouter);
-app.use("/allocate-greedy", greedyAllocationRouter);
+app.use("/view-entry", viewEntryRouter);
+app.use("/view-entry/client/:id", viewEntryRouter);
+
+app.use("/execute-algorithm", executeAlgorithmRouter);
 app.use("/insert-client-and-request", insertClientRequestRouter);
 app.use("/insert-allocated-request", insertAllocatedRequestRouter);
 app.use("/update-booking-status", updateBookingStatusRouter);

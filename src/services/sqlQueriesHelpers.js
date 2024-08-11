@@ -6,7 +6,7 @@ export const getAllClients = async () => {
     const [rows] = await dbPool.query("SELECT * FROM client");
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllClients query:", err.code);
   }
 };
 
@@ -15,7 +15,7 @@ export const getAllHalls = async () => {
     const [rows] = await dbPool.query("SELECT * FROM lecture_hall");
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllHalls query:", err.code);
   }
 };
 
@@ -24,7 +24,7 @@ export const getAllBookingRequests = async () => {
     const [rows] = await dbPool.query("SELECT * FROM booking_request ORDER BY start_date DESC");
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllBookingRequests query:", err.code);
   }
 };
 
@@ -33,7 +33,7 @@ export const getAllBookingRequestsByDate = async (date) => {
     const [rows] = await dbPool.query("SELECT * FROM booking_request WHERE start_date= ?", [date]);
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllBookingRequestsByDate query:", err.code);
   }
 };
 
@@ -68,7 +68,7 @@ export const updateBookingStatus = async (allocatedData) => {
     await updateStatus(successfulRequests, STATUS_APPROVED);
     await updateStatus(failedRequests, STATUS_FAILED);
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing updateBookingStatus query:", err.code);
   }
 };
 
@@ -86,7 +86,7 @@ export const checkBookingRequest = async (reqID) => {
     }
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing checkBookingRequest query:", err.code);
   }
 };
 
@@ -98,7 +98,7 @@ export const getAllocatedHall = async (reqID) => {
     );
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllocatedHall query:", err.code);
   }
 };
 
@@ -109,7 +109,7 @@ export const getAllocatedBookings = async () => {
     );
     return rows;
   } catch (err) {
-    console.error("Error executing query:", err.stack);
+    console.error("Error executing getAllocatedBookings query:", err.code);
   }
 };
 
@@ -120,6 +120,15 @@ export const selectClient = async (firstName, lastName, email, phoneNum) => {
     [firstName, lastName, email, phoneNum]
   );
   return existingClients;
+};
+
+// select a client using clientID
+export const selectClientbyID = async (clientID) => {
+  const [client] = await dbPool.execute(
+    "SELECT CONCAT(first_name, ' ', last_name) AS client_name FROM client WHERE client_id = ?",
+    [clientID]
+  );
+  return client;
 };
 
 export const insertClientQuery = async (clientID, firstName, lastName, email, phoneNum) => {

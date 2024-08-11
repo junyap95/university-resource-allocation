@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { nanoid } from "nanoid";
-import { convertDateToSQLFormat, generateClientID } from "../services/utils.js";
+import { convertDateToSQLFormat, generateClientID } from "../utilities/utils.js";
 import {
   selectClient,
   insertClientQuery,
@@ -14,12 +14,7 @@ const insertClient = async (request) => {
 
   try {
     // Check if a client with the same details already exists
-    const existingClients = await selectClient(
-      firstName,
-      lastName,
-      email,
-      phoneNum
-    );
+    const existingClients = await selectClient(firstName, lastName, email, phoneNum);
 
     if (existingClients.length > 0) {
       const client = existingClients[0];
@@ -43,8 +38,7 @@ const insertClient = async (request) => {
     // no new row will be created
     if (error.code === "ER_DUP_ENTRY") {
       return {
-        message:
-          "This email already exists, please use a different email address!",
+        message: "This email already exists, please use a different email address!",
         operation: false,
         clientID: undefined,
       };
@@ -96,9 +90,7 @@ router.post("/", async (req, res) => {
       res.send(clientRes);
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Internal server error", error: error.message });
+    res.status(500).send({ message: "Internal server error", error: error.message });
   }
 });
 

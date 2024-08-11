@@ -1,12 +1,15 @@
 import express from "express";
 const router = express.Router();
-import { durationGreedy, timeGreedy, randomGreedy } from "../services/greedyAlgorithms.js";
+import { durationGreedy, timeGreedy, randomAssignment } from "../services/algorithms.js";
+import { allocateRecursive } from "../services/dynamicAllocation.js";
 import { getAllBookingRequestsByDate, getAllHalls } from "../services/sqlQueriesHelpers.js";
 import {
   START_TIME_GREEDY,
   LONGEST_DURATION_GREEDY,
   RANDOM_ASSIGNMENT,
+  DYNAMIC_PROGRAMMING,
 } from "../utilities/constants.js";
+import { performance } from "perf_hooks";
 
 router.post("/", async (req, res, next) => {
   // retrieving booking requests from db
@@ -16,7 +19,7 @@ router.post("/", async (req, res, next) => {
     capacity: hall.hall_size,
   }));
   // req.body from the caller: DateBasedAllocator
-  // then helper that executes sql queries takes in the date (req.body.date)
+  // then executes sql queries with the provided date (req.body.date)
   const allBookingsByDate = await getAllBookingRequestsByDate(req.body.date);
 
   const bookingMap = allBookingsByDate.map((booking) => ({
@@ -41,7 +44,13 @@ router.post("/", async (req, res, next) => {
         break;
 
       case RANDOM_ASSIGNMENT:
-        allocationResults = randomGreedy(bookingMap, hallMap);
+        allocationResults = randomAssignment(bookingMap, hallMap);
+        break;
+
+      case DYNAMIC_PROGRAMMING:
+        const s = performance.now();
+        allocationResults = allocateRecursive(0, [], bookingMap, hallMap);
+        const e = performance.now();
         break;
 
       default:

@@ -5,13 +5,13 @@ export const calculateTotalProfit = (data) => {
   let totalProfit = 0;
 
   data.forEach((result) => {
-    const startTimeInSeconds = timeStringToSeconds(result.start_time);
-    const endTimeInSeconds = timeStringToSeconds(result.end_time);
-    const durationInSeconds = endTimeInSeconds - startTimeInSeconds;
-    const durationInHours = durationInSeconds / 3600; // Convert seconds to hours
-    const profit = durationInHours * 100; // £100 per hour
+    //   const startTimeInSeconds = timeStringToSeconds(result.start_time);
+    //   const endTimeInSeconds = timeStringToSeconds(result.end_time);
+    //   const durationInSeconds = endTimeInSeconds - startTimeInSeconds;
+    //   const durationInHours = durationInSeconds / 3600; // Convert seconds to hours
+    //   const profit = durationInHours * 100; // £100 per hour
 
-    totalProfit += profit;
+    totalProfit += result.profit;
   });
 
   return totalProfit;

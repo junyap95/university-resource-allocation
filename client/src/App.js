@@ -11,7 +11,7 @@ function App() {
       <Route path="/" element={<Home />}></Route>
       <Route path="/check-booking" element={<CheckBookingStatus />}></Route>
       <Route path="/view-schedule" element={<DisplayCalendar />}></Route>
-      <Route path="/view-all-bookings" element={<ResourceManagement />}></Route>
+      <Route path="/view-tables" element={<ResourceManagement />}></Route>
     </Routes>
   );
 }

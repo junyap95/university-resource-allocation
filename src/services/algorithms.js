@@ -1,8 +1,5 @@
-import { timeStringToSeconds, timeStringParser } from "./utils.js";
-import {
-  calculateTotalProfit,
-  calculateSingleProfit,
-} from "./allocationCalculator.js";
+import { timeStringToSeconds, timeStringToHoursAndMinutes } from "../utilities/utils.js";
+import { calculateTotalProfit, calculateSingleProfit } from "../utilities/allocationCalculator.js";
 
 const sortHallsByCapacity = (hallMap) => {
   return [...hallMap].sort((a, b) => a.capacity - b.capacity);
@@ -10,14 +7,12 @@ const sortHallsByCapacity = (hallMap) => {
 
 // Helper function to check hall availability
 // time is converted from string HH:MM:SS to seconds to compare
-const isHallAvailable = (result, hall, booking) => {
-  return result.every((assigned) => {
+export const isHallAvailable = (assignedRequests, hall, booking) => {
+  return assignedRequests.every((assigned) => {
     return (
       assigned.hall_assigned !== hall.id ||
-      timeStringToSeconds(booking.start_time) >=
-        timeStringToSeconds(assigned.end_time) ||
-      timeStringToSeconds(booking.end_time) <=
-        timeStringToSeconds(assigned.start_time)
+      timeStringToSeconds(booking.start_time) >= timeStringToSeconds(assigned.end_time) ||
+      timeStringToSeconds(booking.end_time) <= timeStringToSeconds(assigned.start_time)
     );
   });
 };
@@ -25,26 +20,22 @@ const isHallAvailable = (result, hall, booking) => {
 // Helper function to sort bookings by duration
 const sortBookingsByDuration = (bookingMap) => {
   return [...bookingMap].sort((a, b) => {
-    const duration1 =
-      timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
-    const duration2 =
-      timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
+    const duration1 = timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
+    const duration2 = timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
     if (duration1 !== duration2) {
       return duration2 - duration1;
     }
-    return timeStringParser(a.start_time) - timeStringParser(b.start_time);
+    return timeStringToHoursAndMinutes(a.start_time) - timeStringToHoursAndMinutes(b.start_time);
   });
 };
 
 // Helper function to sort bookings by start time
 const sortBookingsByStartTime = (bookingMap) => {
   return [...bookingMap].sort((a, b) => {
-    const duration1 =
-      timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
-    const duration2 =
-      timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
+    const duration1 = timeStringToSeconds(a.end_time) - timeStringToSeconds(a.start_time);
+    const duration2 = timeStringToSeconds(b.end_time) - timeStringToSeconds(b.start_time);
     if (a.start_time === b.start_time) return duration2 - duration1;
-    return timeStringParser(a.start_time) - timeStringParser(b.start_time);
+    return timeStringToHoursAndMinutes(a.start_time) - timeStringToHoursAndMinutes(b.start_time);
   });
 };
 
@@ -69,10 +60,7 @@ const allocateHalls = (bookingMap, hallMap, sortBookingsFn) => {
   for (const request of sortedBookings) {
     let isAllocated = false;
     for (const hall of sortedHalls) {
-      if (
-        hall.capacity >= request.capacity &&
-        isHallAvailable(allocatedRequests, hall, request)
-      ) {
+      if (hall.capacity >= request.capacity && isHallAvailable(allocatedRequests, hall, request)) {
         // construct a result before pushing
         const allocatedRes = {
           ...request,
@@ -112,6 +100,6 @@ export const timeGreedy = (bookingMap, hallMap) => {
 };
 
 // Function to allocate requests randomly
-export const randomGreedy = (bookingMap, hallMap) => {
+export const randomAssignment = (bookingMap, hallMap) => {
   return allocateHalls(bookingMap, hallMap, sortBookingsRandomly);
 };

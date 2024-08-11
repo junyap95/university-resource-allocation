@@ -5,12 +5,19 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "../Button";
+import {
+  START_TIME_GREEDY,
+  LONGEST_DURATION_GREEDY,
+  RANDOM_ASSIGNMENT,
+  DYNAMIC_PROGRAMMING,
+} from "../../helpers/client-constants";
 
-const START_TIME_GREEDY = "START_TIME_GREEDY";
-const LONGEST_DURATION_GREEDY = "LONGEST_DURATION_GREEDY";
-const RANDOM_ASSIGNMENT = "RANDOM_ASSIGNMENT";
-
-export default function DateBasedAllocator({ setAllocatedData, bookingData, setHighlightedDate }) {
+export default function DateBasedAllocator({
+  setAllocatedData,
+  bookingData,
+  setHighlightedDate,
+  setResultGenerating,
+}) {
   // const [date, setDate] = useState('');
   const [dateAndAlgo, setDateAndAlgo] = useState({
     date: "",
@@ -42,10 +49,11 @@ export default function DateBasedAllocator({ setAllocatedData, bookingData, setH
     [setDateAndAlgo]
   );
 
-  const handleAllocate = async () => {
+  const handleAllocate = useCallback(async () => {
     // prepare the payload
     try {
-      const response = await fetch("http://localhost:3001/allocate-greedy", {
+      if (dateAndAlgo.algorithm === DYNAMIC_PROGRAMMING) setResultGenerating(true);
+      const response = await fetch("http://localhost:3001/execute-algorithm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,11 +63,12 @@ export default function DateBasedAllocator({ setAllocatedData, bookingData, setH
       if (response.ok) {
         const data = await response.json();
         setAllocatedData(data);
+        setResultGenerating(false);
       }
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error("Handling allocate error in DateBasedAllocator component:", error);
     }
-  };
+  }, [dateAndAlgo, setAllocatedData, setResultGenerating]);
 
   return (
     <div
@@ -107,6 +116,9 @@ export default function DateBasedAllocator({ setAllocatedData, bookingData, setH
             </MenuItem>
             <MenuItem key={"random"} value={RANDOM_ASSIGNMENT}>
               Random
+            </MenuItem>
+            <MenuItem key={"dynamic"} value={DYNAMIC_PROGRAMMING}>
+              Dynamic Programming
             </MenuItem>
           </Select>
         </FormControl>
