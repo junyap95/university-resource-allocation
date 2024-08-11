@@ -102,6 +102,7 @@ export function ResourceManagement() {
       console.error("Error updating booking status in ResourceManagement Component: ", error);
     }
   };
+  console.log(dataFromDB);
 
   return (
     <>

@@ -38,7 +38,11 @@ function AllTables({ tableName, handleChangeTable, dataFromDB, highlightedDate, 
       {loading ? (
         <CircularProgress color="inherit" />
       ) : (
-        <DynamicTable data={tableNames[tableName]} highlightedDate={highlightedDate} />
+        <DynamicTable
+          data={tableNames[tableName]}
+          highlightedDate={highlightedDate}
+          tableKey={tableName}
+        />
       )}
     </>
   );

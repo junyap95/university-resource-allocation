@@ -4,7 +4,11 @@ const AllocatedRequests = ({ allocatedData }) =>
   !!allocatedData.allocatedRequests?.length && (
     <>
       <h2>Allocated Request/s</h2>
-      <DynamicTable data={allocatedData.allocatedRequests} />
+      <DynamicTable
+        data={allocatedData.allocatedRequests}
+        highlightedDate={null}
+        tableKey={"alloc-table"}
+      />
       <h3>
         Profit based on duration:
         <span style={{ fontSize: "1.5em" }}> £{allocatedData.totalProfit}</span>
@@ -16,7 +20,11 @@ const FailedRequests = ({ allocatedData }) =>
   !!allocatedData.failedRequests?.length && (
     <>
       <h2 style={{ color: "red" }}>Failed Request/s</h2>
-      <DynamicTable data={allocatedData.failedRequests} />
+      <DynamicTable
+        data={allocatedData.failedRequests}
+        highlightedDate={null}
+        tableKey={"failed-table"}
+      />
     </>
   );
 

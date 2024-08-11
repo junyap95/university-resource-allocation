@@ -1,9 +1,9 @@
-function DynamicTable({ data, highlightedDate }) {
+function DynamicTable({ data, highlightedDate, tableKey }) {
   const headers = Object.keys(data[0]);
 
   return (
     <div>
-      <table>
+      <table id={tableKey}>
         <thead>
           <tr>
             {headers.map((key) => (

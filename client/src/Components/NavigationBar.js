@@ -9,7 +9,7 @@ export default function NavigationBar({ color }) {
           My Booking
         </a>
 
-        <a href="/view-entry" className="nav-btn">
+        <a href="/view-tables" className="nav-btn">
           BBK Staff
         </a>
       </div>
