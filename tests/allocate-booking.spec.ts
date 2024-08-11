@@ -34,33 +34,27 @@ test("test", async ({ page }) => {
   await page.getByRole("option", { name: "Greedy - Earliest Start Time" }).click();
   await page.getByRole("button", { name: "Allocate this Date" }).click();
 
-  const allocatedTable = page.locator("#alloc-table");
+  const allocatedTable = await page.locator("#alloc-table");
 
-  if (await allocatedTable.isVisible()) {
-    await expect(allocatedTable.locator("thead > tr > th")).toContainText([
-      "request_id",
-      "client_id",
-      "start_time",
-      "end_time",
-      "capacity",
-      "hall_assigned",
-      "space_utilised",
-      "profit",
-    ]);
-  } else {
-    console.log("Element is not visible, skipping this part of the test.");
-  }
+  await expect(allocatedTable.locator("thead > tr > th")).toContainText([
+    "request_id",
+    "client_id",
+    "start_time",
+    "end_time",
+    "capacity",
+    "hall_assigned",
+    "space_utilised",
+    "profit",
+  ]);
+ 
+  const failedTable = await page.locator("#failed-table");
 
-  const failedTable = page.locator("#failed-table");
-  if (await failedTable.isVisible()) {
-    await expect(failedTable.locator("thead > tr > th")).toContainText([
-      "request_id",
-      "client_id",
-      "start_time",
-      "end_time",
-      "capacity",
-    ]);
-  } else {
-    console.log("Element is not visible, skipping this part of the test.");
-  }
+  await expect(failedTable.locator("thead > tr > th")).toContainText([
+    "request_id",
+    "client_id",
+    "start_time",
+    "end_time",
+    "capacity",
+  ]);
+ 
 });
