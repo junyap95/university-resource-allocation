@@ -77,7 +77,7 @@ export default defineConfig({
       reuseExistingServer: true,
     },
     {
-      command: "npm run start",
+      command: "npm run server",
       url: "http://localhost:3001",
       timeout: 120 * 1000,
       reuseExistingServer: true,

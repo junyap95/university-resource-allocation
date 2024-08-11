@@ -13,6 +13,7 @@ export const getAllClients = async () => {
 export const getAllHalls = async () => {
   try {
     const [rows] = await dbPool.query("SELECT * FROM lecture_hall");
+    console.log("db rows", rows);
     return rows;
   } catch (err) {
     console.error("Error executing getAllHalls query:", err.code);
