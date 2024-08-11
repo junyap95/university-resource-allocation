@@ -30,14 +30,12 @@ test("test", async ({ page }) => {
 
   await page.getByLabel("").first().click();
   await page.getByRole("option").first().click();
-  // await page.getByRole("option", { name: "-08-14" }).click();
-  // await page.getByLabel("-08-14").nth(1).click();
   await page.getByLabel("").nth(1).click();
   await page.getByRole("option", { name: "Greedy - Earliest Start Time" }).click();
   await page.getByRole("button", { name: "Allocate this Date" }).click();
-  // await expect(page.locator("h2")).toContainText(["Allocated Request/s"]);
 
   const allocatedTable = page.locator("#alloc-table");
+  await allocatedTable.waitFor();
   if (await allocatedTable.isVisible()) {
     await expect(allocatedTable.locator("thead > tr > th")).toContainText([
       "request_id",
