@@ -97,3 +97,29 @@ export const MOCK_REQUESTS = {
     },
   ],
 };
+
+export const MOCK_RESULTS_TIME = {
+  allocatedRequests: [
+    {
+      request_id: "Zy2HH8-GiFap",
+      client_id: "JSP5d4HLhc",
+      start_time: "08:30:00",
+      end_time: "10:00:00",
+      capacity: "80",
+      hall_assigned: "1",
+      space_utilised: "80/100",
+      profit: 150,
+    },
+  ],
+  failedRequests: [
+    {
+      request_id: "5FKt8dghicHO",
+      client_id: "JSP5d4HLhc",
+      start_date: "2024-10-8",
+      start_time: "08:30:00",
+      end_time: "10:00:00",
+      capacity: "80",
+    },
+  ],
+  totalProfit: 150,
+};

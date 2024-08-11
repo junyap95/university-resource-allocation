@@ -1,7 +1,6 @@
 name: Playwright Tests
-on:
-  push:
-    branches: [main, master]
+on: [push]
+
 jobs:
   test:
     timeout-minutes: 60
@@ -13,6 +12,8 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci
+      - name: Change directory to client and Install client dependencies
+        run: cd client && npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
