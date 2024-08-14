@@ -1,7 +1,17 @@
-import { useEffect, useState } from "react";
-import FullCalendarView from "../Views/FullCalendarView";
-import CircularProgress from "@mui/material/CircularProgress";
-import { INITIAL_EVENTS } from "../helpers/event-utils";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Button from "../Button";
+import { useState, useCallback, useEffect } from "react";
+import {
+  START_TIME_GREEDY,
+  LONGEST_DURATION_GREEDY,
+  RANDOM_ASSIGNMENT,
+  DYNAMIC_PROGRAMMING,
+} from "../../helpers/client-constants";
+import FullCalendarView from "../../Views/FullCalendarView";
 
 const fetchAllocatedBookings = async () => {
   try {
@@ -28,9 +38,13 @@ const getClientName = async (clientID) => {
   }
 };
 
-export default function DisplayCalendar() {
+export default function HallSelector({ hallData }) {
   const [loading, setLoading] = useState(true);
   const [calEvents, setCalEvents] = useState([]);
+  const [hallID, setHallID] = useState("1");
+  const [displayCal, setDisplayCal] = useState(false);
+
+  //   const allHalls = [...new Set(hallData.map((e) => `${e.hall_id} - ${e.hall_name}`))];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,16 +77,44 @@ export default function DisplayCalendar() {
     fetchData();
   }, []);
 
+  const handleChangeHall = useCallback((event) => {
+    setHallID(event.target.value);
+    //   setHighlightedDate(event.target.value);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    displayCal ? setDisplayCal(false) : setDisplayCal(true);
+  }, [displayCal]);
+
   return (
     <>
-      {loading ? (
-        <>
-          <CircularProgress color="inherit" />
-          Loading from database
-        </>
-      ) : (
-        <FullCalendarView eventsArray={calEvents?.length ? calEvents : INITIAL_EVENTS} />
-      )}
+      <Box sx={{ minWidth: 200 }}>
+        <FormControl fullWidth>
+          <InputLabel id="">Select a Hall</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id=""
+            value={hallID}
+            label="hall"
+            onChange={handleChangeHall}
+          >
+            {hallData.map((hall, index) => (
+              <MenuItem key={index} value={hall.hall_id}>
+                {hall.hall_id} - {hall.hall_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
+      <Button
+        btnClass={"green-btn"}
+        btnText={displayCal ? "Hide Calendar" : "View Calendar"}
+        handlerFn={handleClick}
+      />
+      {displayCal ? (
+        <FullCalendarView eventsArray={calEvents.filter((e) => e.hall_id === hallID)} />
+      ) : null}
     </>
   );
 }

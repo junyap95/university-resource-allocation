@@ -11,6 +11,8 @@ export default function FullCalendarView({ eventsArray }) {
     `<div>
       <div><strong>Client Details</strong></div>
       <p>${e.event._def.title} </p>
+      <div><strong>Hall Allocated</strong></div>
+      <p>${e.event._def.extendedProps.hall_id} </p>
       <div><strong>Request ID</strong></div>
       <p>${e.event._def.publicId}</p>
       <div><strong>Start Time</strong></div>
@@ -21,31 +23,34 @@ export default function FullCalendarView({ eventsArray }) {
   const handleToolTip = (e) => {
     return tippy(e.el, {
       content: htmlContent(e),
-      interactive: true,
       allowHTML: true,
       arrow: true,
       delay: 0,
-      // duration: 1,
+      duration: 1,
       appendTo: document.body,
     });
   };
 
+  const handleClickandCopyReqID = (e) => {
+    navigator.clipboard.writeText(e.event._def.publicId);
+  };
+
   return (
     <div className="calendar-manager">
+      <h1>ALL EVENTS</h1>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        dayMaxEventRows={true}
         headerToolbar={{
-          left: "prev next today", // will normally be on the left. if RTL, will be on the right
+          left: "prev next today",
           center: "title",
-          right: "dayGridMonth timeGridWeek timeGridDay", // will normally be on the right. if RTL, will be on the left
+          right: "dayGridMonth timeGridWeek timeGridDay",
         }}
         events={eventsArray.map((event, index) => ({
           ...event,
           backgroundColor: randomColor(),
         }))}
-        // events={eventsArray}
-        // eventColor="yellow"
         displayEventEnd={true}
         eventTimeFormat={{
           hour: "numeric",
@@ -53,7 +58,7 @@ export default function FullCalendarView({ eventsArray }) {
           meridiem: "short",
         }}
         eventMouseEnter={handleToolTip}
-        // eventClick={handleToolTip}
+        eventClick={handleClickandCopyReqID}
         // eventDidMount={handleToolTip}
       />
     </div>

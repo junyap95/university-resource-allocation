@@ -18,7 +18,6 @@ export default function DateBasedAllocator({
   setHighlightedDate,
   setResultGenerating,
 }) {
-  // const [date, setDate] = useState('');
   const [dateAndAlgo, setDateAndAlgo] = useState({
     date: "",
     algorithm: "",

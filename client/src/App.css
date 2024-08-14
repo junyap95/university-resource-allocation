@@ -299,6 +299,8 @@ th {
 
 .calendar-manager {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .resource-management-container {

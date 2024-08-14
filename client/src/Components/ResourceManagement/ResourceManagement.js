@@ -7,6 +7,7 @@ import Button from "../Button";
 import Footer from "../Footer";
 import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
+import HallSelector from "./HallSelector";
 
 const fetchData = async () => {
   try {
@@ -22,7 +23,6 @@ const isObjectEmpty = (obj) => {
 };
 
 export function ResourceManagement() {
-  const [hasBookings, setHasBookings] = useState(false);
   const [allocatedData, setAllocatedData] = useState({});
   const [dataFromDB, setDataFromDB] = useState(null);
   const [insertAllocMsg, setInsertAllocMsg] = useState(null);
@@ -30,6 +30,7 @@ export function ResourceManagement() {
   const [highlightedDate, setHighlightedDate] = useState("");
   const [loading, setLoading] = useState(true);
   const [resultGenerating, setResultGenerating] = useState(true);
+  const [selectedRow, setSelectedRow] = useState({});
 
   useEffect(() => {
     fetchData()
@@ -52,11 +53,10 @@ export function ResourceManagement() {
     (e) => {
       setHighlightedDate("");
       setTableName(e.target.value);
-      setHasBookings(e.target.value === "booking");
       setAllocatedData({});
       setInsertAllocMsg(null);
     },
-    [setAllocatedData, setHasBookings, setHighlightedDate]
+    [setAllocatedData, setHighlightedDate]
   );
 
   const handleAcceptAllocation = useCallback(async () => {
@@ -122,7 +122,7 @@ export function ResourceManagement() {
               loading={loading}
             />
 
-            {hasBookings && (
+            {tableName === "booking" && (
               <DateBasedAllocator
                 bookingData={dataFromDB.allRequests}
                 setAllocatedData={setAllocatedData}
@@ -130,6 +130,9 @@ export function ResourceManagement() {
                 setResultGenerating={setResultGenerating}
               />
             )}
+
+            {tableName === "hall" && <HallSelector hallData={dataFromDB.allHalls} />}
+
             {!resultGenerating ? (
               <AllocationDetails allocatedData={allocatedData} />
             ) : (
