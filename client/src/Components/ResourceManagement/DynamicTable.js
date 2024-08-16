@@ -1,4 +1,4 @@
-function DynamicTable({ data, highlightedDate, tableKey }) {
+function DynamicTable({ data, highlighted, tableKey }) {
   const headers = Object.keys(data[0]);
 
   return (
@@ -14,12 +14,12 @@ function DynamicTable({ data, highlightedDate, tableKey }) {
         <tbody>
           {data.map((row, rowIndex) => {
             const fields = Object.values(row);
-            const isHighlighted = row.start_date === highlightedDate;
+            const isHighlighted = row.start_date === highlighted || row.hall_id === highlighted;
             return (
               <tr
                 key={rowIndex}
                 style={{
-                  backgroundColor: isHighlighted ? "rgba(36, 114, 90, 0.3)" : "transparent",
+                  backgroundColor: isHighlighted ? "rgba(114, 36, 60, 0.3)" : "transparent",
                 }}
               >
                 {fields.map((value, index) => {

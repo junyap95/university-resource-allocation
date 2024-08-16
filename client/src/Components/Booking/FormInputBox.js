@@ -11,7 +11,7 @@ export default function FormInputBox({ title, type, id, placeholder, onChange, e
         required={true}
         value={value}
       />
-      <small>{error}</small>
+      {error && <div className="small-error">{error}</div>}
     </div>
   );
 }

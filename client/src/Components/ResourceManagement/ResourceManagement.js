@@ -27,10 +27,9 @@ export function ResourceManagement() {
   const [dataFromDB, setDataFromDB] = useState(null);
   const [insertAllocMsg, setInsertAllocMsg] = useState(null);
   const [tableName, setTableName] = useState("client");
-  const [highlightedDate, setHighlightedDate] = useState("");
+  const [highlighted, setHighlighted] = useState("");
   const [loading, setLoading] = useState(true);
   const [resultGenerating, setResultGenerating] = useState(true);
-  const [selectedRow, setSelectedRow] = useState({});
 
   useEffect(() => {
     fetchData()
@@ -51,12 +50,12 @@ export function ResourceManagement() {
 
   const handleChangeTable = useCallback(
     (e) => {
-      setHighlightedDate("");
+      setHighlighted("");
       setTableName(e.target.value);
       setAllocatedData({});
       setInsertAllocMsg(null);
     },
-    [setAllocatedData, setHighlightedDate]
+    [setAllocatedData, setHighlighted]
   );
 
   const handleAcceptAllocation = useCallback(async () => {
@@ -118,7 +117,7 @@ export function ResourceManagement() {
               tableName={tableName}
               dataFromDB={dataFromDB}
               handleChangeTable={handleChangeTable}
-              highlightedDate={highlightedDate}
+              highlighted={highlighted}
               loading={loading}
             />
 
@@ -126,12 +125,14 @@ export function ResourceManagement() {
               <DateBasedAllocator
                 bookingData={dataFromDB.allRequests}
                 setAllocatedData={setAllocatedData}
-                setHighlightedDate={setHighlightedDate}
+                setHighlighted={setHighlighted}
                 setResultGenerating={setResultGenerating}
               />
             )}
 
-            {tableName === "hall" && <HallSelector hallData={dataFromDB.allHalls} />}
+            {tableName === "hall" && (
+              <HallSelector hallData={dataFromDB.allHalls} setHighlighted={setHighlighted} />
+            )}
 
             {!resultGenerating ? (
               <AllocationDetails allocatedData={allocatedData} />

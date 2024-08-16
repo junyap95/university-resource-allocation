@@ -15,7 +15,7 @@ import {
 export default function DateBasedAllocator({
   setAllocatedData,
   bookingData,
-  setHighlightedDate,
+  setHighlighted,
   setResultGenerating,
 }) {
   const [dateAndAlgo, setDateAndAlgo] = useState({
@@ -32,9 +32,9 @@ export default function DateBasedAllocator({
         ...prev,
         date: event.target.value,
       }));
-      setHighlightedDate(event.target.value);
+      setHighlighted(event.target.value);
     },
-    [setHighlightedDate]
+    [setHighlighted]
   );
 
   // choose which greedy to apply in payload
@@ -49,9 +49,10 @@ export default function DateBasedAllocator({
   );
 
   const handleAllocate = useCallback(async () => {
-    // prepare the payload
     try {
-      if (dateAndAlgo.algorithm === DYNAMIC_PROGRAMMING) setResultGenerating(true);
+      setResultGenerating(true);
+      if (dateAndAlgo.algorithm !== DYNAMIC_PROGRAMMING)
+        await new Promise((resolve) => setTimeout(resolve, 300));
       const response = await fetch("http://localhost:3001/execute-algorithm", {
         method: "POST",
         headers: {

@@ -72,18 +72,18 @@ export const updateBookingStatus = async (allocatedData) => {
   }
 };
 
-export const checkBookingRequest = async (reqID) => {
+export const checkBookingRequest = async (clientID) => {
   try {
-    const [rows] = await dbPool.query(
-      "SELECT * FROM booking_request b, client c WHERE b.client_id = c.client_id AND request_id = ? ",
-      [reqID]
-    );
-    let myHallName;
-    if (rows[0].booking_status === STATUS_APPROVED) {
-      const [myHall] = await getAllocatedHall(reqID);
-      myHallName = myHall.hall_name;
-      rows[0].alloc_hall = myHallName;
+    const [rows] = await dbPool.query("SELECT * FROM booking_request b WHERE b.client_id = ? ", [
+      clientID,
+    ]);
+    for (const row of rows) {
+      if (row.booking_status === STATUS_APPROVED) {
+        const [myHall] = await getAllocatedHall(row.request_id);
+        row.alloc_hall = myHall.hall_name;
+      }
     }
+
     return rows;
   } catch (err) {
     console.error("Error executing checkBookingRequest query:", err.code);

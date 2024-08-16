@@ -5,12 +5,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "../Button";
 import { useState, useCallback, useEffect } from "react";
-import {
-  START_TIME_GREEDY,
-  LONGEST_DURATION_GREEDY,
-  RANDOM_ASSIGNMENT,
-  DYNAMIC_PROGRAMMING,
-} from "../../helpers/client-constants";
 import FullCalendarView from "../../Views/FullCalendarView";
 
 const fetchAllocatedBookings = async () => {
@@ -38,13 +32,10 @@ const getClientName = async (clientID) => {
   }
 };
 
-export default function HallSelector({ hallData }) {
-  const [loading, setLoading] = useState(true);
+export default function HallSelector({ hallData, setHighlighted }) {
   const [calEvents, setCalEvents] = useState([]);
   const [hallID, setHallID] = useState("1");
   const [displayCal, setDisplayCal] = useState(false);
-
-  //   const allHalls = [...new Set(hallData.map((e) => `${e.hall_id} - ${e.hall_name}`))];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +43,6 @@ export default function HallSelector({ hallData }) {
 
       if (!allocatedBookings || allocatedBookings.length === 0) {
         console.warn("No bookings found or error occurred during fetch.");
-        setLoading(false);
         return;
       }
 
@@ -69,51 +59,64 @@ export default function HallSelector({ hallData }) {
           };
         })
       );
-
+      setHighlighted(hallID);
       setCalEvents(eventsArr);
-      setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [hallID, setHighlighted]);
 
-  const handleChangeHall = useCallback((event) => {
-    setHallID(event.target.value);
-    //   setHighlightedDate(event.target.value);
-  }, []);
+  const handleChangeHall = useCallback(
+    (event) => {
+      setHallID(event.target.value);
+      setHighlighted(event.target.value);
+    },
+    [setHighlighted]
+  );
 
-  const handleClick = useCallback(() => {
-    displayCal ? setDisplayCal(false) : setDisplayCal(true);
-  }, [displayCal]);
+  const handleClick = useCallback(
+    (e) => (displayCal ? setDisplayCal(false) : setDisplayCal(true)),
+    [displayCal]
+  );
 
   return (
     <>
-      <Box sx={{ minWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="">Select a Hall</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id=""
-            value={hallID}
-            label="hall"
-            onChange={handleChangeHall}
-          >
-            {hallData.map((hall, index) => (
-              <MenuItem key={index} value={hall.hall_id}>
-                {hall.hall_id} - {hall.hall_name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+      <div style={{ display: "flex", gap: "1em", alignItems: "center" }}>
+        <Box sx={{ minWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="">Select a Hall</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id=""
+              value={hallID}
+              label="hall"
+              onChange={handleChangeHall}
+            >
+              {hallData.map((hall, index) => (
+                <MenuItem key={index} value={hall.hall_id}>
+                  {hall.hall_id} - {hall.hall_name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
 
-      <Button
-        btnClass={"green-btn"}
-        btnText={displayCal ? "Hide Calendar" : "View Calendar"}
-        handlerFn={handleClick}
-      />
+        <Button
+          btnClass={"main-btn"}
+          btnText={displayCal ? "Hide Calendar" : "View Calendar"}
+          handlerFn={handleClick}
+        />
+      </div>
       {displayCal ? (
-        <FullCalendarView eventsArray={calEvents.filter((e) => e.hall_id === hallID)} />
+        <>
+          <hr style={{ width: "70rem" }} />
+          <div className="calendar-manager">
+            <FullCalendarView
+              headerText={`Hall ${hallID} (${hallData.find((e) => e.hall_id === hallID).hall_name}) - ${calEvents.filter((e) => e.hall_id === hallID).length} Event/s`}
+              eventsArray={calEvents.filter((e) => e.hall_id === hallID)}
+            />
+          </div>
+        </>
       ) : null}
     </>
   );

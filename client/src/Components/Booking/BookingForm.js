@@ -61,7 +61,6 @@ const BookingForm = forwardRef((props, ref) => {
         setIsSubmitted(true);
       }
     } catch (error) {
-      // Handle errors gracefully, e.g., by setting an error message state
       console.error("Submission error:", error);
       setBookingMessage({
         message: "Failed to submit booking. Please try again later.",

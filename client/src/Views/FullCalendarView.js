@@ -6,7 +6,7 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import randomColor from "randomcolor";
 
-export default function FullCalendarView({ eventsArray }) {
+export default function FullCalendarView({ eventsArray, headerText }) {
   const htmlContent = (e) =>
     `<div>
       <div><strong>Client Details</strong></div>
@@ -36,8 +36,8 @@ export default function FullCalendarView({ eventsArray }) {
   };
 
   return (
-    <div className="calendar-manager">
-      <h1>ALL EVENTS</h1>
+    <>
+      <h1>{headerText}</h1>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -61,6 +61,6 @@ export default function FullCalendarView({ eventsArray }) {
         eventClick={handleClickandCopyReqID}
         // eventDidMount={handleToolTip}
       />
-    </div>
+    </>
   );
 }

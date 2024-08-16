@@ -64,15 +64,18 @@ export default function DisplayCalendar() {
   }, []);
 
   return (
-    <>
+    <div className="calendar-manager full-screen">
       {loading ? (
         <>
           <CircularProgress color="inherit" />
           Loading from database
         </>
       ) : (
-        <FullCalendarView eventsArray={calEvents?.length ? calEvents : INITIAL_EVENTS} />
+        <FullCalendarView
+          headerText="ALL EVENTS"
+          eventsArray={calEvents?.length ? calEvents : INITIAL_EVENTS}
+        />
       )}
-    </>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ const AllocatedRequests = ({ allocatedData }) =>
       <h2>Allocated Request/s</h2>
       <DynamicTable
         data={allocatedData.allocatedRequests}
-        highlightedDate={null}
+        highlighted={null}
         tableKey={"alloc-table"}
       />
       <h3>
@@ -22,7 +22,7 @@ const FailedRequests = ({ allocatedData }) =>
       <h2 style={{ color: "red" }}>Failed Request/s</h2>
       <DynamicTable
         data={allocatedData.failedRequests}
-        highlightedDate={null}
+        highlighted={null}
         tableKey={"failed-table"}
       />
     </>
@@ -33,7 +33,7 @@ export default function AllocationDetails({ allocatedData }) {
     <>
       {Object.keys(allocatedData).length !== 0 && (
         <>
-          <hr style={{ width: "60rem" }} />
+          <hr style={{ width: "70rem" }} />
           <AllocatedRequests allocatedData={allocatedData} />
           <FailedRequests allocatedData={allocatedData} />
         </>
