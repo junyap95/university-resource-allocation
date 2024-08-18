@@ -5,5 +5,5 @@ export const DYNAMIC_PROGRAMMING = "DYNAMIC_PROGRAMMING";
 
 export const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://api.yourproductiondomain.com"
+    ? "https://bookbbk-server.adaptable.app"
     : "http://localhost:3001";
