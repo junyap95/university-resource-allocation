@@ -31,11 +31,6 @@ router.post("/", async (req, res, next) => {
     booking_status: booking.booking_status,
   }));
 
-  console.log(
-    "filtered",
-    bookingMap.filter((e) => e.booking_status === "PENDING")
-  );
-
   // switch statement for greedy algorithm chosen by user
   function handleRequest(algorithm) {
     let allocationResults;

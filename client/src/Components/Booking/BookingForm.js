@@ -14,6 +14,7 @@ import {
   useHandleChangeDate,
 } from "../../helpers/formHelper";
 import Button from "../Button";
+import { API_URL } from "helpers/client-constants";
 
 const BookingForm = forwardRef((props, ref) => {
   // data acquired from user input
@@ -47,7 +48,7 @@ const BookingForm = forwardRef((props, ref) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/insert-client-and-request", {
+      const response = await fetch(`${API_URL}/insert-client-and-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

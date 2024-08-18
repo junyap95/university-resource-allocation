@@ -8,10 +8,11 @@ import Footer from "../Footer";
 import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
 import HallSelector from "./HallSelector";
+import { API_URL } from "helpers/client-constants";
 
 const fetchData = async () => {
   try {
-    const response = await fetch("http://localhost:3001/view-entry");
+    const response = await fetch(`${API_URL}/view-entry`);
     return await response.json();
   } catch (error) {
     console.error("Error fetching data from DB, check if DB is online: ", error);
@@ -70,7 +71,7 @@ export function ResourceManagement() {
 
   const insertAllocRequestSQL = async (allocatedRequests) => {
     try {
-      const response = await fetch("http://localhost:3001/insert-allocated-request", {
+      const response = await fetch(`${API_URL}/insert-allocated-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +88,7 @@ export function ResourceManagement() {
 
   const updateBookingStatusSQL = async (allocatedRequests) => {
     try {
-      const response = await fetch("http://localhost:3001/update-booking-status", {
+      const response = await fetch(`${API_URL}/update-booking-status`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

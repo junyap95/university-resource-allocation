@@ -10,6 +10,7 @@ import {
   LONGEST_DURATION_GREEDY,
   RANDOM_ASSIGNMENT,
   DYNAMIC_PROGRAMMING,
+  API_URL,
 } from "../../helpers/client-constants";
 
 export default function DateBasedAllocator({
@@ -53,7 +54,7 @@ export default function DateBasedAllocator({
       setResultGenerating(true);
       if (dateAndAlgo.algorithm !== DYNAMIC_PROGRAMMING)
         await new Promise((resolve) => setTimeout(resolve, 300));
-      const response = await fetch("http://localhost:3001/execute-algorithm", {
+      const response = await fetch(`${API_URL}/execute-algorithm`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

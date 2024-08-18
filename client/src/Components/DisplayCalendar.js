@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import FullCalendarView from "../Views/FullCalendarView";
 import CircularProgress from "@mui/material/CircularProgress";
 import { INITIAL_EVENTS } from "../helpers/event-utils";
+import { API_URL } from "helpers/client-constants";
 
 const fetchAllocatedBookings = async () => {
   try {
-    const response = await fetch("http://localhost:3001/get-allocated-bookings");
+    const response = await fetch(`${API_URL}/get-allocated-bookings`);
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -19,7 +20,7 @@ const getClientName = async (clientID) => {
   try {
     const params = { clientID: clientID };
     const queryString = new URLSearchParams(params).toString();
-    const response = await fetch(`http://localhost:3001/view-entry/client?${queryString}`);
+    const response = await fetch(`${API_URL}//view-entry/client?${queryString}`);
     if (response.ok) {
       return await response.json();
     }

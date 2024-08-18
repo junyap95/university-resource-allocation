@@ -17,10 +17,6 @@ dotenv.config();
 
 const app = express();
 
-// view engine setup
-app.set("views", path.join(process.cwd(), "views"));
-app.set("view engine", "pug");
-
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
@@ -44,15 +40,12 @@ app.use((req, res, next) => {
   next(createError(404));
 });
 
-// error handler
 app.use((err, req, res, next) => {
-  // render the error page
   res.status(500).send("Something went wrong! Please try again...");
 });
 
-app.listen(3001, () => {
-  // demonstrates server is working
-  console.log("Server Running...");
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`Server Running On Port ${process.env.PORT}`);
 });
 
 export default app;

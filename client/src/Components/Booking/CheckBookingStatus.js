@@ -3,6 +3,7 @@ import FormInputBox from "./FormInputBox";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 import Button from "../Button";
+import { API_URL } from "helpers/client-constants";
 
 export default function CheckBookingStatus() {
   const [clientID, setClientID] = useState("");
@@ -14,7 +15,7 @@ export default function CheckBookingStatus() {
     };
     const queryString = new URLSearchParams(params).toString();
     try {
-      const response = await fetch(`http://localhost:3001/check-booking?${queryString}`);
+      const response = await fetch(`${API_URL}/check-booking?${queryString}`);
       if (response.ok) {
         const result = await response.json();
         setClientRequest(result.bookingRequest);
