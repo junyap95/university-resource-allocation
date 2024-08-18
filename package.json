@@ -7,8 +7,7 @@
     "dev": "concurrently \"npm run server\" \"cd client && npm start\"",
     "start": "node app.js",
     "server": "nodemon app.js",
-    "test": "jest",
-    "build": "cd client && npm run build"
+    "test": "jest"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

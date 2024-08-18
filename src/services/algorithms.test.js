@@ -1,4 +1,4 @@
-import { timeGreedy, durationGreedy, randomAssignment } from "./greedyAlgorithms";
+import { timeGreedy, durationGreedy, randomAssignment } from "./algorithms";
 
 describe("Greedy Algorithms - No Time Overlapping", () => {
   const bookings = [
