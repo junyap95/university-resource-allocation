@@ -70,8 +70,9 @@ a:link {
   align-items: center;
   border-radius: 20px;
   width: fit-content;
+  min-width: 20rem;
   gap: 1.5em;
-  padding: 2em 3em;
+  padding: 2em 1em;
 }
 
 .banner-main {
@@ -284,6 +285,27 @@ a:link {
 table {
   width: 70rem;
   border-collapse: collapse;
+}
+
+.scrollable-table {
+  max-height: 25rem; /* or whatever height you want */
+  overflow-y: scroll;
+  scrollbar-width: auto;
+}
+.scrollable-table::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+}
+.scrollable-table::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
+.fixed-header thead {
+  position: sticky;
+  top: 0;
+  background: white; /* or another background color */
+  z-index: 1;
 }
 
 th,

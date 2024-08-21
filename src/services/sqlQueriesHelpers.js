@@ -74,19 +74,21 @@ export const updateBookingStatus = async (allocatedData) => {
 
 export const checkBookingRequest = async (clientID) => {
   try {
-    const [rows] = await dbPool.query("SELECT * FROM booking_request b WHERE b.client_id = ? ", [
-      clientID,
-    ]);
+    const [rows] = await dbPool.query(
+      'SELECT b.*, CONCAT(c.first_name," ", c.last_name) as client_name FROM booking_request b, client c WHERE b.client_id = c.client_id and b.client_id = ? ',
+      [clientID]
+    );
+    if (rows.length === 0) throw new Error("Client ID not found!", { cause: "404" });
     for (const row of rows) {
       if (row.booking_status === STATUS_APPROVED) {
         const [myHall] = await getAllocatedHall(row.request_id);
         row.alloc_hall = myHall.hall_name;
       }
     }
-
     return rows;
   } catch (err) {
-    console.error("Error executing checkBookingRequest query:", err.code);
+    console.error("Error executing checkBookingRequest query:", err);
+    return err.cause;
   }
 };
 

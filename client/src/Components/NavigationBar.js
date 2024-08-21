@@ -15,7 +15,7 @@ export default function NavigationBar({ color }) {
         <h3>BOOKBBK</h3>
       </a>
       <div>
-        <a href="/view-tables" className="nav-btn">
+        <a href="/staff-login" className="nav-btn">
           BBK Staff
         </a>
       </div>

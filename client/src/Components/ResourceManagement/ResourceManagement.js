@@ -135,7 +135,7 @@ export function ResourceManagement() {
               <HallSelector hallData={dataFromDB.allHalls} setHighlighted={setHighlighted} />
             )}
 
-            {!resultGenerating ? (
+            {isObjectEmpty(allocatedData) && !resultGenerating ? null : !resultGenerating ? (
               <AllocationDetails allocatedData={allocatedData} />
             ) : (
               <>

@@ -34,8 +34,9 @@ export default function DateBasedAllocator({
         date: event.target.value,
       }));
       setHighlighted(event.target.value);
+      setAllocatedData({});
     },
-    [setHighlighted]
+    [setAllocatedData, setHighlighted]
   );
 
   // choose which greedy to apply in payload

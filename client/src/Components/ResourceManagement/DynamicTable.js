@@ -2,8 +2,8 @@ function DynamicTable({ data, highlighted, tableKey }) {
   const headers = Object.keys(data[0]);
 
   return (
-    <div>
-      <table id={tableKey}>
+    <div className="scrollable-table">
+      <table id={tableKey} className="fixed-header">
         <thead>
           <tr>
             {headers.map((key) => (
