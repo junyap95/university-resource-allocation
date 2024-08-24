@@ -1,4 +1,4 @@
-import { timeStringToSeconds, timeStringParser } from "./utils";
+import { timeStringToSeconds, timeStringToHoursAndMinutes } from "./utils";
 
 describe("Time String Convertor Test", () => {
   const midnight = "00:00:00";
@@ -27,19 +27,19 @@ describe("Time String Convertor Test", () => {
 
   describe("HH:MM:SS string to HHMM number", () => {
     it("CONVERT midnight string TO 0000", () => {
-      const midnightResult = timeStringParser(midnight);
+      const midnightResult = timeStringToHoursAndMinutes(midnight);
       expect(midnightResult).toEqual(0);
     });
     it("CONVERT noon string TO 1200", () => {
-      const noonResult = timeStringParser(noon);
+      const noonResult = timeStringToHoursAndMinutes(noon);
       expect(noonResult).toEqual(1200);
     });
     it("CONVERT morning string TO 0300", () => {
-      const morningResult = timeStringParser(morning);
+      const morningResult = timeStringToHoursAndMinutes(morning);
       expect(morningResult).toEqual(300);
     });
     it("CONVERT night string TO 2100", () => {
-      const nightResult = timeStringParser(night);
+      const nightResult = timeStringToHoursAndMinutes(night);
       expect(nightResult).toEqual(2100);
     });
   });

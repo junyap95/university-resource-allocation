@@ -262,12 +262,7 @@ describe("Random Greedy Algorithm - Time Overlapping", () => {
     },
   ];
 
-  const lectureHalls = [
-    {
-      id: 1,
-      capacity: 50,
-    },
-  ];
+  const lectureHalls = [{ id: 1, capacity: 50 }];
 
   const expectedAllocation = {
     allocatedRequests: [

@@ -55,8 +55,10 @@ export default function BookingCard({ clientRequest, setBookingLoaded }) {
             </div>
           ))}
       </div>
-      <Button btnClass={"green-btn"} btnText={"Go Back"} handlerFn={handleGoBack} />
-      <Button btnClass={"green-btn"} btnText={"Accept Bookings"} handlerFn={handleGoBack} />
+      <div style={{ display: "flex", flexDirection: "column", minWidth: "20rem", gap: "1em" }}>
+        <Button btnClass={"green-btn"} btnText={"Accept Bookings"} handlerFn={handleGoBack} />
+        <Button btnClass={"main-btn"} btnText={"Go Back"} handlerFn={handleGoBack} />
+      </div>
     </>
   );
 }

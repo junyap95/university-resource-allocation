@@ -1,41 +1,73 @@
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { renderTableRows } from "helpers/event-utils";
+
+// Custom hook for managing the expand/collapse logic
+const useExpandButton = (tableBodyRef, tableContainerRef, isTableExpanded, data) => {
+  const [showExpandButton, setShowExpandButton] = useState(false);
+
+  useEffect(() => {
+    const tableBody = tableBodyRef.current;
+    const container = tableContainerRef.current;
+
+    if (tableBody && !isTableExpanded) {
+      setShowExpandButton(tableBody.scrollHeight > container.clientHeight);
+    }
+  }, [data, isTableExpanded, tableBodyRef, tableContainerRef]);
+
+  return showExpandButton;
+};
+
 function DynamicTable({ data, highlighted, tableKey }) {
-  const headers = Object.keys(data[0]);
+  const headers = useMemo(() => Object.keys(data[0] || {}), [data]);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const tableContainerRef = useRef(null);
+  const tableBodyRef = useRef(null);
+
+  const showExpandButton = useExpandButton(tableBodyRef, tableContainerRef, isTableExpanded, data);
+
+  const handleExpand = useCallback(() => {
+    setIsTableExpanded((prev) => !prev);
+  }, []);
+
+  useEffect(() => {
+    setIsTableExpanded(false);
+  }, [tableKey]);
 
   return (
-    <div className="scrollable-table">
-      <table id={tableKey} className="fixed-header">
-        <thead>
-          <tr>
-            {headers.map((key) => (
-              <th key={key}>{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, rowIndex) => {
-            const fields = Object.values(row);
-            const isHighlighted = row.start_date === highlighted || row.hall_id === highlighted;
-            return (
-              <tr
-                key={rowIndex}
-                style={{
-                  backgroundColor: isHighlighted ? "rgba(114, 36, 60, 0.3)" : "transparent",
-                }}
-              >
-                {fields.map((value, index) => {
-                  const header = headers[index];
-                  if (header === "start_date") {
-                    const date = new Date(value).toLocaleDateString();
-                    return <td key={index}>{date}</td>;
-                  }
-                  return <td key={index}>{value}</td>;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <div
+        ref={tableContainerRef}
+        className="scrollable-table"
+        style={{
+          maxHeight: isTableExpanded ? "fit-content" : "25rem",
+          overflow: "auto",
+          position: "relative",
+        }}
+      >
+        <table id={tableKey} className="fixed-header">
+          <thead>
+            <tr>
+              {headers.map((key) => (
+                <th key={key}>{key}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody ref={tableBodyRef}>{renderTableRows(data, headers, highlighted)}</tbody>
+        </table>
+      </div>
+      {showExpandButton && (
+        <div
+          onClick={handleExpand}
+          style={{
+            cursor: "pointer",
+          }}
+        >
+          {isTableExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </div>
+      )}
+    </>
   );
 }
 

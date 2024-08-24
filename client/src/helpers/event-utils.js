@@ -18,3 +18,23 @@ export const INITIAL_EVENTS = [
 export function createEventId() {
   return String(eventGuid++);
 }
+
+export const renderTableRows = (data, headers, highlighted) => {
+  return data.map((row, rowIndex) => {
+    const isHighlighted = row.start_date === highlighted || row.hall_id === highlighted;
+    return (
+      <tr
+        key={rowIndex}
+        style={{
+          backgroundColor: isHighlighted ? "rgba(114, 36, 60, 0.3)" : "transparent",
+        }}
+      >
+        {Object.values(row).map((value, index) => (
+          <td key={index}>
+            {headers[index] === "start_date" ? new Date(value).toLocaleDateString() : value}
+          </td>
+        ))}
+      </tr>
+    );
+  });
+};

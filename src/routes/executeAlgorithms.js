@@ -10,6 +10,7 @@ import {
   DYNAMIC_PROGRAMMING,
 } from "../utilities/constants.js";
 import { performance } from "perf_hooks";
+import logger from "../utilities/logger.js";
 
 router.post("/", async (req, res, next) => {
   // retrieving booking requests from db
@@ -28,7 +29,7 @@ router.post("/", async (req, res, next) => {
     start_time: booking.start_time,
     end_time: booking.end_time,
     capacity: booking.capacity,
-    booking_status: booking.booking_status,
+    // booking_status: booking.booking_status,
   }));
 
   // switch statement for greedy algorithm chosen by user
@@ -55,7 +56,7 @@ router.post("/", async (req, res, next) => {
         break;
 
       default:
-        console.log("Unknown algorithm");
+        logger.log(logger.level, "Unknown algorithm");
         break;
     }
     return allocationResults;

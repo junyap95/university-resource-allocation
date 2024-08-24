@@ -32,10 +32,9 @@ a:link {
 .btn {
   font-weight: 700;
   height: 3em;
-  width: 12em;
-  border: solid #ffffff 2px;
+  min-width: 12em;
   border-radius: 1em;
-  display: flex;
+  border: solid #ffffff 2px;
   justify-content: center;
   align-items: center;
   color: #ffffff;
@@ -288,7 +287,7 @@ table {
 }
 
 .scrollable-table {
-  max-height: 25rem; /* or whatever height you want */
+  max-height: 25rem;
   overflow-y: scroll;
   scrollbar-width: auto;
 }

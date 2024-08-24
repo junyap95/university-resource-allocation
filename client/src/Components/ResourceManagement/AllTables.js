@@ -1,6 +1,5 @@
 import DynamicTable from "./DynamicTable";
 import Button from "../Button";
-
 import CircularProgress from "@mui/material/CircularProgress";
 
 // show the corresponding table when a button is clicked
