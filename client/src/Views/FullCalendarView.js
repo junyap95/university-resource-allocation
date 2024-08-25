@@ -6,7 +6,7 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import randomColor from "randomcolor";
 
-export default function FullCalendarView({ eventsArray, headerText }) {
+export default function FullCalendarView({ eventsArray, headerText, initalView }) {
   const htmlContent = (e) =>
     `<div>
       <div><strong>Client Details</strong></div>
@@ -20,8 +20,8 @@ export default function FullCalendarView({ eventsArray, headerText }) {
       <div><strong>End Time</strong></div>
       <p>${e.event._instance.range.end.toTimeString()}</p>
     </div>`;
-  const handleToolTip = (e) => {
-    return tippy(e.el, {
+  const handleToolTip = (e) =>
+    tippy(e.el, {
       content: htmlContent(e),
       allowHTML: true,
       arrow: true,
@@ -29,18 +29,15 @@ export default function FullCalendarView({ eventsArray, headerText }) {
       duration: 1,
       appendTo: document.body,
     });
-  };
 
-  const handleClickandCopyReqID = (e) => {
-    navigator.clipboard.writeText(e.event._def.publicId);
-  };
-
+  const handleClickandCopyReqID = (e) => navigator.clipboard.writeText(e.event._def.publicId);
+  console.log(eventsArray, "eArrs");
   return (
     <>
       <h1>{headerText}</h1>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
+        initialView={initalView ?? "dayGridMonth"}
         dayMaxEventRows={true}
         headerToolbar={{
           left: "prev next today",

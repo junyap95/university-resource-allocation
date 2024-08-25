@@ -3,7 +3,7 @@ import AllTables from "./AllTables";
 import DateBasedAllocator from "./DateBasedAllocator";
 import AllocationDetails from "./AllocationDetails";
 import AcceptAllocAlert from "./AcceptAllocAlert";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 import Footer from "../Footer";
 import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
@@ -19,9 +19,7 @@ const fetchData = async () => {
   }
 };
 
-const isObjectEmpty = (obj) => {
-  return Object.keys(obj).length === 0;
-};
+const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
 
 export function ResourceManagement() {
   const [allocatedData, setAllocatedData] = useState({});
@@ -145,7 +143,7 @@ export function ResourceManagement() {
             )}
 
             {!isObjectEmpty(allocatedData) && !resultGenerating && (
-              <Button
+              <BBKbutton
                 btnText="Accept Allocation"
                 btnClass="green-btn"
                 handlerFn={handleAcceptAllocation}

@@ -1,6 +1,6 @@
 import cross from "../../images/icons8-cross.svg";
 import tick from "../../images/icons8-tick.svg";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 
 const FormSubmitMessage = ({ onGoBack, messages }) => {
   return (
@@ -35,7 +35,7 @@ const FormSubmitMessage = ({ onGoBack, messages }) => {
           </>
         )}
 
-        <Button btnClass={"main-btn"} btnText={"Back to Home"} handlerFn={onGoBack} />
+        <BBKbutton btnClass={"main-btn"} btnText={"Back to Home"} handlerFn={onGoBack} />
       </div>
     </div>
   );

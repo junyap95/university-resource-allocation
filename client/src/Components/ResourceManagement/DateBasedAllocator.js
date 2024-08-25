@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 import {
   START_TIME_GREEDY,
   LONGEST_DURATION_GREEDY,
@@ -126,7 +126,7 @@ export default function DateBasedAllocator({
         </FormControl>
       </Box>
 
-      <Button btnClass={"green-btn"} btnText={"Allocate this Date"} handlerFn={handleAllocate} />
+      <BBKbutton btnClass={"green-btn"} btnText={"Allocate this Date"} handlerFn={handleAllocate} />
     </div>
   );
 }

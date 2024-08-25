@@ -13,7 +13,7 @@ import {
   useHandleEndTime,
   useHandleChangeDate,
 } from "../../helpers/formHelper";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 import { API_URL } from "helpers/client-constants";
 
 const BookingForm = forwardRef((props, ref) => {
@@ -147,7 +147,7 @@ const BookingForm = forwardRef((props, ref) => {
 
           <CapacityView handleCapacity={handleCapacity} capacity={formData?.capacity} />
 
-          <Button btnText={"Submit Booking"} btnClass={"main-btn"} type={"submit"} />
+          <BBKbutton btnText={"Submit Booking"} btnClass={"main-btn"} type={"submit"} />
         </form>
       ) : (
         <BookingConfirmationForm

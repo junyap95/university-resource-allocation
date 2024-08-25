@@ -1,5 +1,5 @@
 import DynamicTable from "./DynamicTable";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 import CircularProgress from "@mui/material/CircularProgress";
 
 // show the corresponding table when a button is clicked
@@ -14,20 +14,20 @@ function AllTables({ tableName, handleChangeTable, dataFromDB, highlighted, load
     <>
       <h1 style={{ color: "#72243c" }}>Select a Table to View</h1>
       <div style={{ display: "flex", alignItems: "center", gap: "3em" }}>
-        <Button
+        <BBKbutton
           btnText="Clients"
           btnClass="main-btn"
           handlerFn={handleChangeTable}
           value="client"
         />
-        <Button
+        <BBKbutton
           btnText="All Bookings"
           btnClass="main-btn"
           handlerFn={handleChangeTable}
           value="booking"
         />
 
-        <Button
+        <BBKbutton
           btnText="All Halls"
           btnClass="main-btn"
           handlerFn={handleChangeTable}

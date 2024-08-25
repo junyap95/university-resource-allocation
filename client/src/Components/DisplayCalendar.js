@@ -28,7 +28,6 @@ const getClientName = async (clientID) => {
     console.error("Allocated bookings fetching error in DisplayCalendar component:", error);
   }
 };
-
 export default function DisplayCalendar() {
   const [loading, setLoading] = useState(true);
   const [calEvents, setCalEvents] = useState([]);
@@ -63,6 +62,7 @@ export default function DisplayCalendar() {
 
     fetchData();
   }, []);
+  console.log("real cal events ", calEvents);
 
   return (
     <div className="calendar-manager full-screen">

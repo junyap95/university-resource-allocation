@@ -1,5 +1,5 @@
 import birkbeckEvening from "../images/birkbeck-evening.jpg";
-import Button from "./Button";
+import BBKbutton from "./BBKbutton";
 import { useNavigate } from "react-router-dom";
 
 export default function Banner({ handlerFn }) {
@@ -15,8 +15,8 @@ export default function Banner({ handlerFn }) {
       </h2>
       <img className="banner-background" src={birkbeckEvening} alt="university" />
 
-      <Button btnText="Make a Booking" btnClass="banner-book-btn" handlerFn={handlerFn} />
-      <Button btnText="Check My Booking" btnClass="banner-book-btn" handlerFn={handleClick} />
+      <BBKbutton btnText="Make a Booking" btnClass="banner-book-btn" handlerFn={handlerFn} />
+      <BBKbutton btnText="Check My Booking" btnClass="banner-book-btn" handlerFn={handleClick} />
     </div>
   );
 }

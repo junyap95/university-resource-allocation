@@ -4,19 +4,19 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { renderTableRows } from "helpers/event-utils";
 
 // Custom hook for managing the expand/collapse logic
-const useExpandButton = (tableBodyRef, tableContainerRef, isTableExpanded, data) => {
-  const [showExpandButton, setShowExpandButton] = useState(false);
+const useExpandBBKbutton = (tableBodyRef, tableContainerRef, isTableExpanded, data) => {
+  const [showExpandBBKbutton, setShowExpandBBKbutton] = useState(false);
 
   useEffect(() => {
     const tableBody = tableBodyRef.current;
     const container = tableContainerRef.current;
 
     if (tableBody && !isTableExpanded) {
-      setShowExpandButton(tableBody.scrollHeight > container.clientHeight);
+      setShowExpandBBKbutton(tableBody.scrollHeight > container.clientHeight);
     }
   }, [data, isTableExpanded, tableBodyRef, tableContainerRef]);
 
-  return showExpandButton;
+  return showExpandBBKbutton;
 };
 
 function DynamicTable({ data, highlighted, tableKey }) {
@@ -25,7 +25,12 @@ function DynamicTable({ data, highlighted, tableKey }) {
   const tableContainerRef = useRef(null);
   const tableBodyRef = useRef(null);
 
-  const showExpandButton = useExpandButton(tableBodyRef, tableContainerRef, isTableExpanded, data);
+  const showExpandBBKbutton = useExpandBBKbutton(
+    tableBodyRef,
+    tableContainerRef,
+    isTableExpanded,
+    data
+  );
 
   const handleExpand = useCallback(() => {
     setIsTableExpanded((prev) => !prev);
@@ -57,7 +62,7 @@ function DynamicTable({ data, highlighted, tableKey }) {
           <tbody ref={tableBodyRef}>{renderTableRows(data, headers, highlighted)}</tbody>
         </table>
       </div>
-      {showExpandButton && (
+      {showExpandBBKbutton && (
         <div
           onClick={handleExpand}
           style={{

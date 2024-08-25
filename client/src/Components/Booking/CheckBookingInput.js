@@ -1,6 +1,6 @@
 import FormInputBox from "./FormInputBox";
 import { Alert } from "@mui/material";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 import { useCallback } from "react";
 import { API_URL } from "helpers/client-constants";
 
@@ -60,7 +60,7 @@ export default function CheckBookingInput({
           title="Enter Your Email Address"
           required={false}
         />
-        <Button btnClass={"green-btn"} btnText={"Check My Booking"} type={"submit"} />
+        <BBKbutton btnClass={"green-btn"} btnText={"Check My Booking"} type={"submit"} />
         {errorMsg ? (
           <div style={{ position: "absolute", bottom: "-4rem" }}>
             <Alert severity={"error"} onClose={() => setErrorMsg("")}>

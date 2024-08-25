@@ -1,5 +1,5 @@
 import logo from "../images/bbk-logo.png";
-import Button from "./Button";
+import BBKbutton from "./BBKbutton";
 
 function Footer() {
   return (
@@ -49,7 +49,7 @@ function Footer() {
           </form>
           <div>You may unsubscribe from these communications at anytime</div>
           <div>
-            <Button btnClass={"banner-book-btn"} btnText={"SIGN UP"} />
+            <BBKbutton btnClass={"banner-book-btn"} btnText={"SIGN UP"} />
           </div>
           <div>
             By signing up, you agree to BBK's <u>privacy policy</u> and <u>terms and conditions</u>

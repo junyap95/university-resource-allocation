@@ -3,35 +3,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Button from "../Button";
-import { useState, useCallback, useEffect } from "react";
+import BBKbutton from "../BBKbutton";
 import FullCalendarView from "../../Views/FullCalendarView";
+import { useState, useCallback, useEffect } from "react";
 import { API_URL } from "helpers/client-constants";
-
-const fetchAllocatedBookings = async () => {
-  try {
-    const response = await fetch(`${API_URL}/get-allocated-bookings`);
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    }
-  } catch (error) {
-    console.error("Allocated bookings fetching error in DisplayCalendar component:", error);
-  }
-};
-
-const getClientName = async (clientID) => {
-  try {
-    const params = { clientID: clientID };
-    const queryString = new URLSearchParams(params).toString();
-    const response = await fetch(`${API_URL}/view-entry/client?${queryString}`);
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error("Allocated bookings fetching error in DisplayCalendar component:", error);
-  }
-};
+import { fetchAllocatedBookings, getClientName } from "helpers/event-utils";
 
 export default function HallSelector({ hallData, setHighlighted }) {
   const [calEvents, setCalEvents] = useState([]);
@@ -40,7 +16,7 @@ export default function HallSelector({ hallData, setHighlighted }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { allocatedBookings } = (await fetchAllocatedBookings()) || {};
+      const { allocatedBookings } = (await fetchAllocatedBookings(API_URL)) || {};
 
       if (!allocatedBookings || allocatedBookings.length === 0) {
         console.warn("No bookings found or error occurred during fetch.");
@@ -49,7 +25,7 @@ export default function HallSelector({ hallData, setHighlighted }) {
 
       const eventsArr = await Promise.all(
         allocatedBookings.map(async (booking) => {
-          const [clientNameData] = await getClientName(booking.client_id);
+          const [clientNameData] = await getClientName(booking.client_id, API_URL);
           const clientName = clientNameData ? clientNameData.client_name : "Unknown Client";
           return {
             id: booking.request_id,
@@ -75,10 +51,7 @@ export default function HallSelector({ hallData, setHighlighted }) {
     [setHighlighted]
   );
 
-  const handleClick = useCallback(
-    (e) => (displayCal ? setDisplayCal(false) : setDisplayCal(true)),
-    [displayCal]
-  );
+  const handleClick = useCallback((e) => setDisplayCal(!displayCal), [displayCal]);
 
   return (
     <>
@@ -102,7 +75,7 @@ export default function HallSelector({ hallData, setHighlighted }) {
           </FormControl>
         </Box>
 
-        <Button
+        <BBKbutton
           btnClass={"main-btn"}
           btnText={displayCal ? "Hide Calendar" : "View Calendar"}
           handlerFn={handleClick}

@@ -1,5 +1,5 @@
 import FormConfirmationBox from "./FormConfirmationBox";
-import Button from "../Button";
+import BBKbutton from "../BBKbutton";
 
 const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
   return (
@@ -17,8 +17,8 @@ const BookingConfirmationForm = ({ formData, onConfirm, onGoBack }) => {
           <FormConfirmationBox title={"Capacity"} formData={formData?.capacity} />
         </div>
 
-        <Button btnClass={"main-btn"} btnText={"Edit"} handlerFn={onGoBack} />
-        <Button btnClass={"main-btn"} btnText={"Confirm"} handlerFn={onConfirm} />
+        <BBKbutton btnClass={"main-btn"} btnText={"Edit"} handlerFn={onGoBack} />
+        <BBKbutton btnClass={"main-btn"} btnText={"Confirm"} handlerFn={onConfirm} />
       </div>
     </div>
   );
