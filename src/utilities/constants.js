@@ -122,3 +122,29 @@ export const MOCK_RESULTS_TIME = {
   ],
   totalProfit: 150,
 };
+
+export const MOCK_REQUESTS_FOR_CHECKING = {
+  bookingRequest: [
+    {
+      alloc_hall: "Ecruteak",
+      booking_status: "APPROVED",
+      capacity: "70",
+      client_id: "JSP5d4HLhc",
+      client_name: "John Smith",
+      end_time: "17:00:00",
+      request_id: "4UDPCeTgk0o9",
+      start_date: "2024-10-08",
+      start_time: "13:00:00",
+    },
+    {
+      booking_status: "FAILED",
+      capacity: "80",
+      client_id: "JSP5d4HLhc",
+      client_name: "John Smith",
+      end_time: "10:00:00",
+      request_id: "5FKt8dghicHO",
+      start_date: "2024-10-08",
+      start_time: "08:30:00",
+    },
+  ],
+};

@@ -1,6 +1,23 @@
 import { test, expect } from "@playwright/test";
+import { MOCK_REQUESTS_FOR_CHECKING } from "../src/utilities/constants";
 const CURRENT_YEAR = new Date().getFullYear();
+
 test("test", async ({ page }) => {
+  await page.route("http://localhost:3001/check-booking?clientID=Jsfhjsdff", (route) => {
+    route.fulfill({
+      status: 404,
+      contentType: "application/json",
+      body: "Not Found!",
+    });
+  });
+  await page.route("http://localhost:3001/check-booking?clientID=JSP5d4HLhc", (route) => {
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(MOCK_REQUESTS_FOR_CHECKING),
+    });
+  });
+
   await page.goto("http://localhost:3000/");
   await page.getByRole("button", { name: "Check My Booking" }).click();
   await page.getByPlaceholder("ex. JSabcdefg").fill("Jsfhjsdff");
@@ -11,6 +28,7 @@ test("test", async ({ page }) => {
   await page.getByPlaceholder("ex. john_smith@gmail.com").click();
   await page.getByPlaceholder("ex. john_smith@gmail.com").fill("johnsmith@gmail.com");
   await page.getByRole("button", { name: "Check My Booking" }).click();
+
   await expect(page.getByText("Welcome To Your Bookings")).toBeVisible();
   await page.getByRole("button", { name: "Calendar" }).click();
   await expect(page.locator(".fc-toolbar-title")).toContainText(`${CURRENT_YEAR}`);

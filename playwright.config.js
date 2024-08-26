@@ -72,10 +72,11 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "npm run dev", // This assumes the concurrently command runs both client and server
-    url: "http://localhost:3000", // URL of the React client (assuming Playwright tests interact with it)
-    timeout: 120 * 1000,
-    reuseExistingServer: true,
-  },
+  webServer: [
+    {
+      command: "cd client && npm start",
+      port: 3000,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
