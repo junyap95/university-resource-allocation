@@ -3,9 +3,9 @@ const CURRENT_YEAR = new Date().getFullYear();
 test("test", async ({ page }) => {
   await page.goto("http://localhost:3000/");
   await page.getByRole("button", { name: "Check My Booking" }).click();
-  // await page.getByPlaceholder("ex. JSabcdefg").fill("Jsfhjsdff");
-  // await page.getByRole("button", { name: "Check My Booking" }).click();
-  // await expect(page.locator(".MuiAlert-message")).toBeVisible({ timeout: 10000 });
+  await page.getByPlaceholder("ex. JSabcdefg").fill("Jsfhjsdff");
+  await page.getByRole("button", { name: "Check My Booking" }).click();
+  await expect(page.locator(".MuiAlert-message")).toBeVisible();
   await page.getByPlaceholder("ex. JSabcdefg").click();
   await page.getByPlaceholder("ex. JSabcdefg").fill("JSP5d4HLhc");
   await page.getByPlaceholder("ex. john_smith@gmail.com").click();
