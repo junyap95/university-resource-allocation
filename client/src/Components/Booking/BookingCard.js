@@ -1,6 +1,6 @@
-export default function BookingCard({ clientRequest, key }) {
+export default function BookingCard({ clientRequest }) {
   return (
-    <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }} key={key}>
+    <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
       {clientRequest &&
         clientRequest.map((r, index) => (
           <div

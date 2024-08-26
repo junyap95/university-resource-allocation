@@ -32,8 +32,9 @@ export default function CheckBookingInput({
         setClientRequest(result.bookingRequest);
         setBookingLoaded(true);
       } else {
-        setErrorMsg("User not Found!");
-        return;
+        const errorMsg = `User ID [${clientID}] Not Found!`;
+        setErrorMsg(errorMsg);
+        throw new Error(errorMsg);
       }
     } catch (error) {
       console.error("Error fetching data: ", error);

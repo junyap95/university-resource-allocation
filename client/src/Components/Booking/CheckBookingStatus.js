@@ -42,6 +42,7 @@ export default function CheckBookingStatus() {
 }
 
 function BookingContent({ clientRequest, handleGoBack }) {
+  console.log("client ", clientRequest);
   const [calendarMode, setCalendarMode] = useState(false);
   return (
     <>
@@ -82,7 +83,7 @@ function BookingContent({ clientRequest, handleGoBack }) {
         {calendarMode ? (
           <IndividualCalendarView clientRequest={fullCalEventObjParser(clientRequest)} />
         ) : (
-          <BookingCard clientRequest={clientRequest} key={clientRequest[0].client_name} />
+          <BookingCard clientRequest={clientRequest} />
         )}
       </ContentContainer>
 
