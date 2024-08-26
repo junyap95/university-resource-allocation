@@ -82,7 +82,7 @@ function BookingContent({ clientRequest, handleGoBack }) {
         {calendarMode ? (
           <IndividualCalendarView clientRequest={fullCalEventObjParser(clientRequest)} />
         ) : (
-          <BookingCard clientRequest={clientRequest} key={clientRequest[0].client_name} />
+          <BookingCard clientRequest={clientRequest} uniqueID={clientRequest[0].client_name} />
         )}
       </ContentContainer>
 
