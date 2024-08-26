@@ -45,36 +45,38 @@ function BookingContent({ clientRequest, handleGoBack }) {
   const [calendarMode, setCalendarMode] = useState(false);
   return (
     <>
-      <Title>
-        <strong>Welcome To Your Bookings</strong> {clientRequest[0].client_name}
-      </Title>
+      <ToggleContainer>
+        <Title>
+          <strong>Welcome To Your Bookings</strong> {clientRequest[0].client_name}
+        </Title>
 
-      <ToggleButtonGroup size="small">
-        <ToggleButton
-          value="toggle-cal"
-          selected={calendarMode}
-          onChange={() => {
-            setCalendarMode(true);
-          }}
-        >
-          <ToggleContainer>
-            Calendar
-            <EventIcon />
-          </ToggleContainer>
-        </ToggleButton>
-        <ToggleButton
-          value="toggle-cards"
-          selected={!calendarMode}
-          onChange={() => {
-            setCalendarMode(false);
-          }}
-        >
-          <ToggleContainer>
-            Card
-            <DashboardIcon />
-          </ToggleContainer>
-        </ToggleButton>
-      </ToggleButtonGroup>
+        <ToggleButtonGroup size="small" sx={{ paddingLeft: "2em" }}>
+          <ToggleButton
+            value="toggle-cal"
+            selected={calendarMode}
+            onChange={() => {
+              setCalendarMode(true);
+            }}
+          >
+            <ToggleContainer>
+              Calendar
+              <EventIcon />
+            </ToggleContainer>
+          </ToggleButton>
+          <ToggleButton
+            value="toggle-cards"
+            selected={!calendarMode}
+            onChange={() => {
+              setCalendarMode(false);
+            }}
+          >
+            <ToggleContainer>
+              Card
+              <DashboardIcon />
+            </ToggleContainer>
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </ToggleContainer>
 
       <ContentContainer>
         {calendarMode ? (
@@ -100,7 +102,7 @@ const Title = styled.div`
 const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
-  margin: 2rem 0;
+  margin: 1rem 0;
   display: flex;
   justify-content: center;
 `;
@@ -114,6 +116,7 @@ const BBKbuttonContainer = styled.div`
 
 const ContentContainer = styled.div`
   min-height: 65vh;
+  padding: 1em;
   display: flex;
   align-items: center;
   justify-content: center;

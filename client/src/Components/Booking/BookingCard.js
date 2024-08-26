@@ -2,8 +2,10 @@ export default function BookingCard({ clientRequest, key }) {
   return (
     <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }} key={key}>
       {clientRequest &&
-        clientRequest.map((r) => (
+        clientRequest.map((r, index) => (
           <div
+            key={index}
+            title={`container-${index}`}
             className="confirm-container"
             style={{
               display: "flex",

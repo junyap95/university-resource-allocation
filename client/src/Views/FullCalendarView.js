@@ -31,7 +31,6 @@ export default function FullCalendarView({ eventsArray, headerText, initalView }
     });
 
   const handleClickandCopyReqID = (e) => navigator.clipboard.writeText(e.event._def.publicId);
-  console.log(eventsArray, "eArrs");
   return (
     <>
       <h1>{headerText}</h1>

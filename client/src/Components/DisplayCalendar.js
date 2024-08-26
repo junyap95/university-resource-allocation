@@ -62,7 +62,6 @@ export default function DisplayCalendar() {
 
     fetchData();
   }, []);
-  console.log("real cal events ", calEvents);
 
   return (
     <div className="calendar-manager full-screen">

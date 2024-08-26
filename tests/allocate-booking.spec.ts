@@ -19,9 +19,10 @@ test("test", async ({ page }) => {
   });
   await page.goto("http://localhost:3000/");
   await page.getByRole("link", { name: "BBK Staff" }).click();
+  await page.getByRole("button", { name: "LOG IN" }).click();
   await page.getByRole("button", { name: "All Bookings" }).click();
   const bookingTable = await page.locator("#booking");
-  // if (await bookingTable.isVisible()) {
+
   await expect(bookingTable.locator("thead > tr > th")).toContainText([
     "request_id",
     "client_id",

@@ -18,7 +18,7 @@ const FormSubmitMessage = ({ onGoBack, messages }) => {
                 marginBottom: "0",
               }}
             >
-              Use this Booking ID to check <br />
+              Use this ID to check <br />
               the status of your booking:
             </h3>
             <h2
@@ -26,7 +26,7 @@ const FormSubmitMessage = ({ onGoBack, messages }) => {
                 userSelect: "all",
               }}
             >
-              {messages.requestID}
+              {messages.clientID}
             </h2>
           </>
         ) : (
