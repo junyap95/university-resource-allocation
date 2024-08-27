@@ -33,6 +33,7 @@
     "@types/node": "^22.1.0",
     "babel-jest": "^29.7.0",
     "concurrently": "^8.2.2",
+    "netlify-cli": "^17.34.3",
     "prettier": "^3.3.0"
   },
   "jest": {

@@ -71,7 +71,7 @@ function BookingContent({ clientRequest, handleGoBack }) {
             }}
           >
             <ToggleContainer>
-              Card
+              Cards
               <DashboardIcon />
             </ToggleContainer>
           </ToggleButton>
