@@ -1,0 +1,31 @@
+name: Deploy To Netlify
+on:
+  workflow_run:
+    workflows: [Unit Tests, Playwright Tests]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+
+      - name: Install Dependencies
+        run: cd client && npm ci
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: netlify deploy --prod --dir=client/build
