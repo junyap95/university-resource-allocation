@@ -2,10 +2,12 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import randomColor from "randomcolor";
-
+let currentColor = randomColor();
+let lastHallId = null;
 export default function FullCalendarView({ eventsArray, headerText, initalView }) {
   const htmlContent = (e) =>
     `<div>
@@ -35,18 +37,34 @@ export default function FullCalendarView({ eventsArray, headerText, initalView }
     <>
       <h1>{headerText}</h1>
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        showNonCurrentDates={false}
+        plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={initalView ?? "dayGridMonth"}
         dayMaxEventRows={true}
         headerToolbar={{
           left: "prev next today",
           center: "title",
-          right: "dayGridMonth timeGridWeek timeGridDay",
+          right: "dayGridMonth timeGridWeek timeGridDay listYear",
         }}
-        events={eventsArray.map((event, index) => ({
-          ...event,
-          backgroundColor: randomColor(),
-        }))}
+        events={eventsArray.map((event) => {
+          if (event.hall_id !== lastHallId) {
+            currentColor = randomColor();
+            lastHallId = event.hall_id;
+          }
+          return {
+            ...event,
+            backgroundColor: currentColor,
+          };
+        })}
+        eventOrder={(a, b) => {
+          // Extract hall numbers from titles
+          const hallA = parseInt(a.title.split("Hall ")[1], 10);
+          const hallB = parseInt(b.title.split("Hall ")[1], 10);
+          // Compare hall numbers
+          if (hallA < hallB) return -1;
+          if (hallA > hallB) return 1;
+          return 0;
+        }}
         displayEventEnd={true}
         eventTimeFormat={{
           hour: "numeric",

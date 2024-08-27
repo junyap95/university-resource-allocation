@@ -20,16 +20,24 @@ test("test", async ({ page }) => {
 
   await page.goto("http://localhost:3000/");
   await page.getByRole("button", { name: "Check My Booking" }).click();
+  // scenario 1: wrong client ID entered
   await page.getByPlaceholder("ex. JSabcdefg").fill("Jsfhjsdff");
+  await page.getByPlaceholder("ex. john_smith@gmail.com").click();
+  await page.getByPlaceholder("ex. john_smith@gmail.com").fill("johnsmith@gmail.com");
   await page.getByRole("button", { name: "Check My Booking" }).click();
   await expect(page.locator(".MuiAlert-message")).toBeVisible();
+
+  // scenario 1: correct client ID entered
   await page.getByPlaceholder("ex. JSabcdefg").click();
   await page.getByPlaceholder("ex. JSabcdefg").fill("JSP5d4HLhc");
   await page.getByPlaceholder("ex. john_smith@gmail.com").click();
   await page.getByPlaceholder("ex. john_smith@gmail.com").fill("johnsmith@gmail.com");
   await page.getByRole("button", { name: "Check My Booking" }).click();
 
-  await expect(page.getByText("Welcome To Your Bookings")).toBeVisible();
+  const welcomeHeader = page.locator("div > strong");
+  await expect(welcomeHeader).toContainText(["Welcome To Your Bookings"]);
+
+  // calendar view
   await page.getByRole("button", { name: "Calendar" }).click();
   await expect(page.locator(".fc-toolbar-title")).toContainText(`${CURRENT_YEAR}`);
   await expect(page.getByRole("button", { name: "today" })).toBeVisible();
@@ -38,8 +46,9 @@ test("test", async ({ page }) => {
   await page.getByRole("button", { name: "Month" }).click();
   await expect(page.locator(".fc")).toBeVisible();
 
+  // card view
   await page.getByRole("button", { name: "Card" }).click();
-  await expect(page.getByTitle("container-0")).toContainText("Booking ID");
+  // in general a card contains these fields
   await expect(page.getByTitle("container-0").locator("div")).toContainText([
     "Booking ID",
     "Current Booking Status",
@@ -47,8 +56,11 @@ test("test", async ({ page }) => {
     "Start Time",
     "End Time",
     "No. of Participants",
-    "Hall Reserved",
   ]);
+  const cardContainer = await page.getByTitle("container-0");
+  const booking_status = await cardContainer.locator("div").nth(1).innerText();
+  if (booking_status === "Current Booking Status: APPROVED")
+    await expect(cardContainer.locator("div")).toContainText(["Hall Reserved:"]);
 
   await page.getByRole("button", { name: "GO BACK" }).click();
   await expect(page.locator(".confirm-container > h3")).toContainText("CHECK BOOKING STATUS");

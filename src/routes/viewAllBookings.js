@@ -27,6 +27,16 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/all-bookings", async (req, res, next) => {
+  try {
+    // better to execute asynchronous operations in parallel using Promise.all if they don't depend on each other.
+    const allBookings = await getAllBookingRequests();
+    res.send(allBookings);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // New endpoint to get client by ID
 router.get("/client/", async (req, res, next) => {
   try {

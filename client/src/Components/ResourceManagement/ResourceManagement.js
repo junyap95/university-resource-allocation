@@ -9,6 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
 import HallSelector from "./HallSelector";
 import { API_URL } from "helpers/client-constants";
+import { isObjectEmpty } from "helpers/event-utils";
 
 const fetchData = async () => {
   try {
@@ -18,8 +19,6 @@ const fetchData = async () => {
     console.error("Error fetching data from DB, check if DB is online: ", error);
   }
 };
-
-const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
 
 export function ResourceManagement() {
   const [allocatedData, setAllocatedData] = useState({});
@@ -147,6 +146,8 @@ export function ResourceManagement() {
                 btnText="Accept Allocation"
                 btnClass="green-btn"
                 handlerFn={handleAcceptAllocation}
+                value={undefined}
+                type={undefined}
               />
             )}
             {insertAllocMsg && (

@@ -14,6 +14,8 @@ export const INITIAL_EVENTS = [
   },
 ];
 
+export const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
+
 export const fullCalEventObjParser = (events) => {
   return events.map((event) => ({
     id: event.request_id,

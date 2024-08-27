@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { useCallback } from "react";
-import FormInputBox from "../Booking/FormInputBox";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 import BBKbutton from "../BBKbutton";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import FormInputBox from "Components/Booking/FormInputBox";
 
 /**
  * NOTE!! This component is only a placeholder
@@ -13,12 +14,7 @@ import { Alert } from "@mui/material";
  */
 export default function StaffLogin() {
   const navigate = useNavigate();
-  const handleLogin = useCallback(
-    (e) => {
-      navigate("/view-tables");
-    },
-    [navigate]
-  );
+  const handleLogin = useCallback((e) => navigate("/view-tables"), [navigate]);
 
   return (
     <>
