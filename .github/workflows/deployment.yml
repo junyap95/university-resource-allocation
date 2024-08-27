@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,10 +17,7 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: Install Dependencies
-        run: cd client && npm ci
-
-      - name: Run Build
-        run: npm run build
+        run: cd client && npm ci && npm run build
 
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
