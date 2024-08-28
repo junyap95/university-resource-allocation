@@ -54,6 +54,7 @@ export const fetchAllocatedBookings = async (URL) => {
       const data = await response.json();
       return data;
     }
+    throw new Error("Something went wrong during fetching");
   } catch (error) {
     console.error("Allocated bookings fetching error in DisplayCalendar component:", error);
   }
