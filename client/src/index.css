@@ -5,9 +5,6 @@
   --fc-button-hover-bg-color: #72243c;
   --fc-button-hover-border-color: #1a252f;
   --fc-button-active-bg-color: #72243c;
-  button {
-    padding: 0;
-  }
 }
 
 body {

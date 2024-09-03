@@ -6,8 +6,11 @@ import listPlugin from "@fullcalendar/list";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import randomColor from "randomcolor";
+import styled from "styled-components";
+
 let currentColor = randomColor();
 let lastHallId = null;
+
 export default function FullCalendarView({ eventsArray, headerText, initalView }) {
   const htmlContent = (e) =>
     `<div>
@@ -22,6 +25,7 @@ export default function FullCalendarView({ eventsArray, headerText, initalView }
       <div><strong>End Time</strong></div>
       <p>${e.event._instance.range.end.toTimeString()}</p>
     </div>`;
+
   const handleToolTip = (e) =>
     tippy(e.el, {
       content: htmlContent(e),
@@ -34,8 +38,8 @@ export default function FullCalendarView({ eventsArray, headerText, initalView }
 
   const handleClickandCopyReqID = (e) => navigator.clipboard.writeText(e.event._def.publicId);
   return (
-    <>
-      <h1>{headerText}</h1>
+    <div className="calendar-manager">
+      <HeaderText>{headerText}</HeaderText>
       <FullCalendar
         showNonCurrentDates={false}
         plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -73,8 +77,11 @@ export default function FullCalendarView({ eventsArray, headerText, initalView }
         }}
         eventMouseEnter={handleToolTip}
         eventClick={handleClickandCopyReqID}
-        // eventDidMount={handleToolTip}
       />
-    </>
+    </div>
   );
 }
+
+const HeaderText = styled.h1`
+  text-align: center;
+`;

@@ -84,12 +84,10 @@ export default function HallSelector({ hallData, setHighlighted }) {
       {displayCal ? (
         <>
           <hr style={{ width: "70rem" }} />
-          <div className="calendar-manager">
-            <FullCalendarView
-              headerText={`Hall ${hallID} (${hallData.find((e) => e.hall_id === hallID).hall_name}) - ${calEvents.filter((e) => e.hall_id === hallID).length} Event/s`}
-              eventsArray={calEvents.filter((e) => e.hall_id === hallID)}
-            />
-          </div>
+          <FullCalendarView
+            headerText={`Hall ${hallID} (${hallData.find((e) => e.hall_id === hallID).hall_name}) - ${calEvents.filter((e) => e.hall_id === hallID).length} Event/s`}
+            eventsArray={calEvents.filter((e) => e.hall_id === hallID)}
+          />
         </>
       ) : null}
     </>

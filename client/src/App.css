@@ -36,8 +36,9 @@ a:link {
 
 .btn {
   font-weight: 700;
-  height: 3em;
+  min-height: 3em;
   min-width: 12em;
+  padding: 0 1em;
   border-radius: 1em;
   border: solid #ffffff 2px;
   justify-content: center;
@@ -324,9 +325,6 @@ th {
 }
 
 .calendar-manager {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 70rem;
 }
 

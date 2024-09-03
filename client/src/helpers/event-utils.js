@@ -5,12 +5,14 @@ export const INITIAL_EVENTS = [
     id: "FAKE ID 1",
     title: "All-day event",
     start: "2024-08-16",
+    editable: false,
   },
   {
     id: "FAKE ID 2",
     title: "Timed event",
     start: todayStr + "T12:00:00",
     end: todayStr + "T16:00:00",
+    editable: false,
   },
 ];
 
@@ -20,7 +22,7 @@ export const fullCalEventObjParser = (events) => {
   return events.map((event) => ({
     id: event.request_id,
     title: event.alloc_hall
-      ? `Event to be held at: ${event.alloc_hall} Hall`
+      ? `Request [${event.request_id}] approved. Event to be held at: ${event.alloc_hall} Hall.`
       : `Request [${event.request_id}] failed. Please check your email inbox or call the university for more info`,
     start: `${event.start_date}T${event.start_time}`,
     end: `${event.start_date}T${event.end_time}`,
@@ -71,4 +73,33 @@ export const getClientName = async (clientID, URL) => {
   } catch (error) {
     console.error("Allocated bookings fetching error in DisplayCalendar component:", error);
   }
+};
+
+export const timeStringToHoursAndMinutes = (timeStr) => {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  return hours * 100 + minutes;
+};
+
+export const timeDifference = (start_time, end_time) => {
+  // Parse hours and minutes from the start time
+  const [startHours, startMinutes] = start_time.split(":").map(Number);
+
+  // Parse hours and minutes from the end time
+  const [endHours, endMinutes] = end_time.split(":").map(Number);
+
+  // Calculate the difference in hours and minutes
+  let diffHours = endHours - startHours;
+  let diffMinutes = endMinutes - startMinutes;
+
+  // If minutes difference is negative, adjust the hours and minutes
+  if (diffMinutes < 0) {
+    diffHours -= 1;
+    diffMinutes += 60;
+  }
+
+  // Format the result as 'HH:MM'
+  const formattedHours = String(diffHours).padStart(2, "0");
+  const formattedMinutes = String(diffMinutes).padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes}`;
 };

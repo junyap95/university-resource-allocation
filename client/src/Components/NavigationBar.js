@@ -1,14 +1,31 @@
+import { useEffect } from "react";
+
 export default function NavigationBar({ color }) {
-  let prevScrollpos = window.pageYOffset;
-  window.onscroll = function () {
-    var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-      document.querySelector(".nav-bar").style.top = "0";
-    } else {
-      document.querySelector(".nav-bar").style.top = "-100px";
+  useEffect(() => {
+    let prevScrollpos = window.pageYOffset;
+
+    function handleScroll() {
+      var currentScrollPos = window.pageYOffset;
+      const navBar = document.querySelector(".nav-bar");
+
+      if (navBar) {
+        // Check if .nav-bar exists
+        if (prevScrollpos > currentScrollPos) {
+          navBar.style.top = "0";
+        } else {
+          navBar.style.top = "-100px";
+        }
+      }
+      prevScrollpos = currentScrollPos;
     }
-    prevScrollpos = currentScrollPos;
-  };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll); // Clean up the event listener
+    };
+  }, []); // Empty dependency array means this runs only on mount and unmount
+
   return (
     <div className={`nav-bar ${color}`}>
       <a href="/">

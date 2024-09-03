@@ -6,6 +6,7 @@ import CheckBookingStatus from "./Components/Booking/CheckBookingStatus";
 import { ResourceManagement } from "./Components/ResourceManagement/ResourceManagement";
 import StaffLogin from "Components/ResourceManagement/StaffLogin";
 import AdminDashboard from "Components/ResourceManagement/AdminDashboard";
+import TestCal from "Components/TestCal";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/view-tables" element={<ResourceManagement />}></Route>
       <Route path="/staff-login" element={<StaffLogin />}></Route>
       <Route path="/admin-dashboard" element={<AdminDashboard />}></Route>
+      <Route path="/test-cal" element={<TestCal />}></Route>
     </Routes>
   );
 }

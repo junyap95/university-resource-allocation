@@ -1,92 +1,103 @@
-import solver from 'javascript-lp-solver';
-
-export const lpSolve = (model) => {
-    solver.Solve(model)
-    // console.log(solver.Solve(model));
-}
+import solver from "javascript-lp-solver";
 
 // const model = {
-//     "optimize": "profit",
-//     "opType": "max",
-//     "constraints": {
-//         "wood": { "max": 300 },
-//         "labor": { "max": 110 },
-//         "storage": { "max": 400 }
-//     },
-//     "variables": {
-//         "table": { "wood": 30, "labor": 5, "profit": 1200, "table": 1, "storage": 30 },
-//         "dresser": { "wood": 20, "labor": 10, "profit": 1600, "dresser": 1, "storage": 50 }
-//     },
-//     "ints": { "table": 1, "dresser": 1 }
+//   optimize: "profit",
+//   opType: "max",
+//   constraints: {
+//     wood: { max: 300 },
+//     labor: { max: 110 },
+//     storage: { max: 400 },
+//   },
+//   variables: {
+//     table: { wood: 30, labor: 5, profit: 1200, table: 1, storage: 30 },
+//     dresser: { wood: 20, labor: 10, profit: 1600, dresser: 1, storage: 50 },
+//   },
+//   ints: { table: 1, dresser: 1 },
 // };
 // {feasible: true, result: 14400, table: 8, dresser: 3}
 
-// Sample booking data (replace with your actual data)
 const bookingRequests = [
-    { id: 'booking1', start: 9, end: 11, capacity: 30, profit: 500 },
-    { id: 'booking5', start: 10, end: 12, capacity: 40, profit: 700 },
-    { id: 'booking3', start: 11, end: 13, capacity: 20, profit: 300 },
-    { id: 'booking4', start: 14, end: 15, capacity: 60, profit: 300 },
-    { id: 'booking2', start: 14, end: 15, capacity: 50, profit: 300 },
-    { id: 'booking6', start: 14, end: 15, capacity: 20, profit: 250 },
-    // Add more bookings as needed
+  { id: "booking1", start: 10, end: 12, capacity: 30, profit: 200 },
+  { id: "booking2", start: 11, end: 13, capacity: 10, profit: 200 },
+  { id: "booking3", start: 12, end: 14, capacity: 40, profit: 200 },
+  { id: "booking4", start: 13, end: 15, capacity: 20, profit: 200 },
 ];
 
-const halls = [
-    { id: 'hall1', capacity: 50 },
-    { id: 'hall2', capacity: 40 },
-    // Add more halls as needed
-];
-
-// Construct the model dynamically based on the booking requests and halls
-const model = {
-    "optimize": "profit",
-    "opType": "max",
-    "constraints": {},
-    "variables": {},
-    "ints": {}
+const intervalsSorter = (br) => {
+  const res = [];
+  for (let i = 0; i < br.length; i++) {
+    const temp = [];
+    for (let j = i + 1; j < br.length; j++) {
+      if (j >= br.length) break;
+      if (i === 0) {
+        temp.push(br[i]);
+      }
+      if (br[j].start > br[i].end || br[j].end < br[i].start) {
+        temp.push(br[j]);
+      }
+    }
+    res.push(temp);
+  }
+  return res;
 };
 
-// Add constraints to ensure each booking is assigned only once
-bookingRequests.forEach(booking => {
-    const bookingConstraint = {};
-    halls.forEach(hall => {
-        const variableName = `${booking.id}_${hall.id}`;
-        bookingConstraint[variableName] = 1;
+const isOverlapping = (booking1, booking2) => {
+  return booking1.start < booking2.end && booking2.start < booking1.end;
+};
 
-        model.variables[variableName] = {
-            "profit": booking.profit,
-            [`${hall.id}_capacity`]: booking.capacity,
-        };
+const findNonOverlappingCombinations = (bookings, start = 0, currentCombination = []) => {
+  const results = [];
 
-        bookingRequests.forEach(otherBooking => {
-            if (otherBooking.id !== booking.id &&
-                ((otherBooking.start >= booking.start && otherBooking.start < booking.end) ||
-                    (otherBooking.end > booking.start && otherBooking.end <= booking.end) ||
-                    (otherBooking.start < booking.start && otherBooking.end > booking.end))) {
-                const otherVariableName = `${otherBooking.id}_${hall.id}`;
-                if (!model.constraints[`${hall.id}_${variableName}_overlap`]) {
-                    model.constraints[`${hall.id}_${variableName}_overlap`] = { "max": 1 };
-                }
-                model.constraints[`${hall.id}_${variableName}_overlap`][variableName] = 1;
-                model.constraints[`${hall.id}_${variableName}_overlap`][otherVariableName] = 1;
-            }
-        });
+  for (let i = start; i < bookings.length; i++) {
+    const booking = bookings[i];
 
-        model.ints[variableName] = 1;
-    });
-    model.constraints[`assign_${booking.id}`] = { ...bookingConstraint, "max": 1 };
-});
+    // Check if the current booking overlaps with any in the current combination
+    if (currentCombination.every((b) => !isOverlapping(b, booking))) {
+      const newCombination = [...currentCombination, booking];
 
-// Add constraints to ensure hall capacities are not exceeded
-halls.forEach(hall => {
-    const hallConstraint = {};
-    bookingRequests.forEach(booking => {
-        const variableName = `${booking.id}_${hall.id}`;
-        hallConstraint[variableName] = booking.capacity;
-    });
-    model.constraints[`${hall.id}_capacity`] = { ...hallConstraint, "max": hall.capacity };
-});
+      // Add this valid combination to the results
+      results.push(newCombination);
 
-// console.log(model);
-lpSolve(model);
+      // Recurse to find further combinations
+      results.push(...findNonOverlappingCombinations(bookings, i + 1, newCombination));
+    }
+  }
+
+  return results;
+};
+
+console.log(findNonOverlappingCombinations(bookingRequests));
+
+// const halls = [{ id: "hall1", capacity: 50 }];
+
+// const model = {
+//   optimize: "profit",
+//   opType: "max",
+//   constraints: {
+//     capacity: { max: 300 },
+//   },
+//   variables: {},
+//   ints: {},
+// };
+
+// const results = solver.Solve(model);
+// console.log("Solver Results:", results);
+
+[
+  [{ id: "booking1", start: 10, end: 12, capacity: 30, profit: 200 }],
+  [
+    { id: "booking1", start: 10, end: 12, capacity: 30, profit: 200 },
+    { id: "booking3", start: 12, end: 14, capacity: 40, profit: 200 },
+  ],
+  [
+    { id: "booking1", start: 10, end: 12, capacity: 30, profit: 200 },
+    { id: "booking4", start: 13, end: 15, capacity: 20, profit: 200 },
+  ],
+  [{ id: "booking2", start: 11, end: 13, capacity: 10, profit: 200 }],
+  [
+    { id: "booking2", start: 11, end: 13, capacity: 10, profit: 200 },
+    { id: "booking4", start: 13, end: 15, capacity: 20, profit: 200 },
+  ],
+  [{ id: "booking3", start: 12, end: 14, capacity: 40, profit: 200 }],
+  [{ id: "booking4", start: 13, end: 15, capacity: 20, profit: 200 }],
+];
