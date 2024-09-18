@@ -1,7 +1,7 @@
 import { timeStringToSeconds, timeStringToHoursAndMinutes } from "../utilities/utils.js";
 import { calculateTotalProfit, calculateSingleProfit } from "../utilities/allocationCalculator.js";
 
-const sortHallsByCapacity = (hallMap) => {
+export const sortHallsByCapacity = (hallMap) => {
   return [...hallMap].sort((a, b) => a.capacity - b.capacity);
 };
 
@@ -40,20 +40,19 @@ const sortBookingsByStartTime = (bookingMap) => {
 };
 
 // Helper function to sort bookings randomly
-// TODO: should we randomise hall as well?
-const sortBookingsRandomly = (bookingMap) => {
-  const bookingResult = [...bookingMap];
-  for (let i = bookingResult.length - 1; i > 0; i--) {
+const shuffleArray = (array) => {
+  const shuffledResult = [...array];
+  for (let i = shuffledResult.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [bookingResult[i], bookingResult[j]] = [bookingResult[j], bookingResult[i]];
+    [shuffledResult[i], shuffledResult[j]] = [shuffledResult[j], shuffledResult[i]];
   }
-  return bookingResult;
+  return shuffledResult;
 };
 
 // General algorithm to allocate halls based on a sorting strategy
-const allocateHalls = (bookingMap, hallMap, sortBookingsFn) => {
+const allocateHalls = (bookingMap, hallMap, sortBookingsFn, sortHallsFn = sortHallsByCapacity) => {
   const sortedBookings = sortBookingsFn(bookingMap);
-  const sortedHalls = sortHallsByCapacity(hallMap);
+  const sortedHalls = sortHallsFn(hallMap);
   const allocatedRequests = [];
   const failedRequests = [];
 
@@ -101,5 +100,5 @@ export const timeGreedy = (bookingMap, hallMap) => {
 
 // Function to allocate requests randomly
 export const randomAssignment = (bookingMap, hallMap) => {
-  return allocateHalls(bookingMap, hallMap, sortBookingsRandomly);
+  return allocateHalls(bookingMap, hallMap, shuffleArray, shuffleArray);
 };

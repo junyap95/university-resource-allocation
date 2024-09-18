@@ -9,8 +9,9 @@ import {
   START_TIME_GREEDY,
   LONGEST_DURATION_GREEDY,
   RANDOM_ASSIGNMENT,
-  DYNAMIC_PROGRAMMING,
+  BACKTRACKING,
   API_URL,
+  INTEGER_PROGRAMMING,
 } from "../../helpers/client-constants";
 
 export default function DateBasedAllocator({
@@ -53,7 +54,7 @@ export default function DateBasedAllocator({
   const handleAllocate = useCallback(async () => {
     try {
       setResultGenerating(true);
-      if (dateAndAlgo.algorithm !== DYNAMIC_PROGRAMMING)
+      if (dateAndAlgo.algorithm !== BACKTRACKING)
         await new Promise((resolve) => setTimeout(resolve, 300));
       const response = await fetch(`${API_URL}/execute-algorithm`, {
         method: "POST",
@@ -119,8 +120,11 @@ export default function DateBasedAllocator({
             <MenuItem key={"random"} value={RANDOM_ASSIGNMENT}>
               Random
             </MenuItem>
-            <MenuItem key={"dynamic"} value={DYNAMIC_PROGRAMMING}>
-              Dynamic Programming
+            <MenuItem key={"backtracking"} value={BACKTRACKING}>
+              Backtracking Algorithm
+            </MenuItem>
+            <MenuItem key={"ILP"} value={INTEGER_PROGRAMMING}>
+              Integer Programming
             </MenuItem>
           </Select>
         </FormControl>

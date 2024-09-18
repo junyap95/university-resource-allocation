@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 const isEmail = (email) => {
   return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-    email,
+    email
   );
 };
 
@@ -27,7 +27,7 @@ const formSetter = (setFormData, key, value) => {
 const useHandleChangeDetail = (setFormData, setError) =>
   useCallback(
     (e) => {
-      const value = e.target.value;
+      const value = e.target.value.trim();
       const key = e.target.id;
 
       // Update the form data state with the new value
@@ -38,16 +38,13 @@ const useHandleChangeDetail = (setFormData, setError) =>
         errorSetter(setError, key, "This field cannot be blank");
       } else if (key === "email" && !isEmail(value)) {
         errorSetter(setError, key, "Invalid Email");
-      } else if (
-        key === "phoneNum" &&
-        (!isPhoneNum(value) || value.length < 8)
-      ) {
+      } else if (key === "phoneNum" && (!isPhoneNum(value) || value.length < 8)) {
         errorSetter(setError, key, "Invalid Phone Number");
       } else {
         errorSetter(setError, key, "");
       }
     },
-    [setFormData, setError],
+    [setFormData, setError]
   );
 
 const useHandleChangeDate = (setFormData) =>
@@ -56,7 +53,7 @@ const useHandleChangeDate = (setFormData) =>
       const dateString = new Date(e).toLocaleDateString();
       formSetter(setFormData, "startDate", dateString);
     },
-    [setFormData],
+    [setFormData]
   );
 
 const useHandleStartTime = (setFormData, formData) =>
@@ -71,7 +68,7 @@ const useHandleStartTime = (setFormData, formData) =>
         formSetter(setFormData, "endTime", "");
       }
     },
-    [setFormData, formData],
+    [setFormData, formData]
   );
 
 const useHandleEndTime = (setFormData) =>
@@ -82,7 +79,7 @@ const useHandleEndTime = (setFormData) =>
       });
       formSetter(setFormData, "endTime", timeString);
     },
-    [setFormData],
+    [setFormData]
   );
 
 const useHandleCapacity = (setFormData) =>
@@ -94,7 +91,7 @@ const useHandleCapacity = (setFormData) =>
         formSetter(setFormData, key, value);
       }
     },
-    [setFormData],
+    [setFormData]
   );
 
 export {

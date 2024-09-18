@@ -50,7 +50,7 @@ function BookingContent({ clientRequest, handleGoBack }) {
           <strong>Welcome To Your Bookings</strong> {clientRequest[0].client_name}
         </Title>
 
-        <ToggleButtonGroup size="small" sx={{ paddingLeft: "2em" }}>
+        <ToggleButtonGroup size="small" sx={{ paddingLeft: "2em", marginLeft: "auto" }}>
           <ToggleButton
             value="toggle-cal"
             selected={calendarMode}
@@ -100,11 +100,12 @@ const Title = styled.div`
 `;
 
 const MainContainer = styled.div`
-  flex-direction: column;
-  align-items: center;
-  margin: 1rem 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  margin: 2rem auto;
+  width: 65rem;
 `;
 
 const BBKbuttonContainer = styled.div`
@@ -115,20 +116,18 @@ const BBKbuttonContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  display: flex;
   min-height: 65vh;
   padding: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70rem;
-  overflowx: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 65rem;
+  border: solid #72243c 1px;
+  border-radius: 20px;
 `;
 
 const ToggleContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.5em;
+  width: 100%;
 `;

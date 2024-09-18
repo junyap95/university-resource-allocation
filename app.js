@@ -25,7 +25,6 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.use("/", indexRouter);
 app.use("/view-entry", viewEntryRouter);
 app.use("/view-entry/all-bookings", viewEntryRouter);
-
 app.use("/execute-algorithm", executeAlgorithmRouter);
 app.use("/insert-client-and-request", insertClientRequestRouter);
 app.use("/insert-allocated-request", insertAllocatedRequestRouter);

@@ -5,7 +5,7 @@ const CapacityView = ({ handleCapacity, capacity }) => {
       <input
         type="range"
         min="5"
-        max="500"
+        max="100"
         step="5"
         id="capacity"
         placeholder="Please enter a value"
@@ -17,7 +17,7 @@ const CapacityView = ({ handleCapacity, capacity }) => {
         <input
           type="number"
           min="5"
-          max="500"
+          max="100"
           id="capacity"
           value={capacity}
           onChange={handleCapacity}
