@@ -49,18 +49,21 @@ test("test", async ({ page }) => {
   // card view
   await page.getByRole("button", { name: "Card" }).click();
   // in general a card contains these fields
-  await expect(page.getByTitle("container-0").locator("div")).toContainText([
+  const cardContainer1 = await page.getByTitle("booking-0");
+  await expect(cardContainer1.locator("div")).toContainText([
     "Booking ID",
-    "Current Booking Status",
+    "Current Status",
     "Booking Date",
     "Start Time",
     "End Time",
     "No. of Participants",
+    "Hall Reserved",
   ]);
-  const cardContainer = await page.getByTitle("container-0");
-  const booking_status = await cardContainer.locator("div").nth(1).innerText();
-  if (booking_status === "Current Booking Status: APPROVED")
-    await expect(cardContainer.locator("div")).toContainText(["Hall Reserved:"]);
+  const cardContainer2 = await page.getByTitle("booking-1");
+
+  await expect(cardContainer1.locator("div")).toContainText(["Hall Reserved:"]);
+
+  await expect(cardContainer2.locator("button")).toContainText(["Check Other Timeslots"]);
 
   await page.getByRole("button", { name: "GO BACK" }).click();
   await expect(page.locator(".confirm-container > h3")).toContainText("CHECK BOOKING STATUS");

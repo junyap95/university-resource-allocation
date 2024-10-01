@@ -1,7 +1,7 @@
 import express from "express";
 import { durationGreedy, timeGreedy, randomAssignment } from "../services/algorithms.js";
 import { lpSolve } from "../services/lpSolver.js";
-import { allocateRecursive } from "../services/dynamicAllocation.js";
+import { allocateRecursive } from "../services/backtrackingAlgorithm.js";
 import { getAllBookingRequestsByDate, getAllHalls } from "../services/sqlQueriesHelpers.js";
 import {
   START_TIME_GREEDY,
@@ -31,10 +31,9 @@ router.post("/", async (req, res, next) => {
     start_time: booking.start_time,
     end_time: booking.end_time,
     capacity: booking.capacity,
-    // booking_status: booking.booking_status,
   }));
 
-  // switch statement for greedy algorithm chosen by user
+  // switch statement for the algorithm chosen by user
   function handleRequest(algorithm) {
     let allocationResults;
     const s = performance.now();

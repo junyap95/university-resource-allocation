@@ -52,7 +52,6 @@ export function parseBookings(bookingMap) {
 
     parsedBookings[currentBookingID] = createBookingObject(booking);
   });
-
   return { parsedBookings, ints };
 }
 

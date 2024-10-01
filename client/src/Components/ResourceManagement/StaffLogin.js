@@ -40,7 +40,7 @@ export default function StaffLogin() {
         </div>
         <>
           <Alert style={{ margin: "1rem" }} severity="warning">
-            NOTE!! This component is only a placeholder and is not fully developed
+            NOTE!! This component is disabled for demo purpose, just press LOG IN
           </Alert>
         </>
       </div>

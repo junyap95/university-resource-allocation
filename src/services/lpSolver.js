@@ -42,6 +42,7 @@ export const lpSolve = (bookingMap, hallMap) => {
             ...booking,
             hall_assigned: hall.id,
             profit: calculateSingleProfit(booking),
+            space_utilised: `${booking.capacity}/${hall.capacity}`,
           });
         }
       });

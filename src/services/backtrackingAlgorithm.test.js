@@ -1,4 +1,4 @@
-import { allocateRecursive } from "./dynamicAllocation";
+import { allocateRecursive } from "./backtrackingAlgorithm";
 
 describe("allocateRecursive", () => {
   const bookingMap = [
@@ -80,16 +80,7 @@ describe("allocateRecursive", () => {
     expect(result.failedRequests).toEqual(bookingMap);
   });
 
-  test("should return memoized result on re-computation with the same state", () => {
-    // Run the function twice with the same input
-    const result1 = allocateRecursive(0, [], bookingMap, hallMap);
-    const result2 = allocateRecursive(0, [], bookingMap, hallMap);
-
-    // Ensure memoization works by comparing results
-    expect(result1).toEqual(result2);
-  });
-
-  test("should prioritize higher profit bookings and maximize space utilization", () => {
+  test("should prioritize higher profit bookings and maximise space utilization", () => {
     const bookingMap2 = [
       { request_id: "req1", capacity: 100, start_time: "9:00:00", end_time: "12:00:00" }, // 3 hours
       { request_id: "req2", capacity: 150, start_time: "9:00:00", end_time: "12:00:00" }, // 3 hours, higher capacity
