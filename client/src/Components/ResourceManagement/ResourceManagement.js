@@ -8,12 +8,12 @@ import Footer from "../Footer";
 import CircularProgress from "@mui/material/CircularProgress";
 import NavigationBar from "../NavigationBar";
 import HallSelector from "./HallSelector";
-import { API_URL } from "helpers/client-constants";
-import { isObjectEmpty } from "helpers/event-utils";
+import { API_URL, TABLE_NAMES } from "helpers/client-constants";
+import { isObjectEmpty, makeApiRequest } from "helpers/event-utils";
 
 const fetchData = async () => {
   try {
-    const response = await fetch(`${API_URL}/view-entry`);
+    const response = await fetch(`${API_URL}/view-entry`); /** all tables data */
     return await response.json();
   } catch (error) {
     console.error("Error fetching data from DB, check if DB is online: ", error);
@@ -59,46 +59,16 @@ export function ResourceManagement() {
   const handleAcceptAllocation = useCallback(async () => {
     if (Object.keys(allocatedData).length === 0) return;
     // writes into DB
-    const message = await insertAllocRequestSQL(allocatedData);
+    const message = await makeApiRequest(
+      `${API_URL}/insert-allocated-request`,
+      "POST",
+      allocatedData
+    );
     setInsertAllocMsg(message);
     // change booking status to "failed or allocated"
-    await updateBookingStatusSQL(allocatedData);
+    await makeApiRequest(`${API_URL}/update-booking-status`, "POST", allocatedData);
     // then calendar always retrieves data from DB to display results
   }, [allocatedData]);
-
-  const insertAllocRequestSQL = async (allocatedRequests) => {
-    try {
-      const response = await fetch(`${API_URL}/insert-allocated-request`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(allocatedRequests),
-      });
-      if (response.ok) {
-        return await response.json();
-      }
-    } catch (error) {
-      console.error("Error inserting allocated request in ResourceManagement Component: ", error);
-    }
-  };
-
-  const updateBookingStatusSQL = async (allocatedRequests) => {
-    try {
-      const response = await fetch(`${API_URL}/update-booking-status`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(allocatedRequests),
-      });
-      if (response.ok) {
-        return await response.json();
-      }
-    } catch (error) {
-      console.error("Error updating booking status in ResourceManagement Component: ", error);
-    }
-  };
 
   return (
     <>
@@ -119,7 +89,7 @@ export function ResourceManagement() {
               loading={loading}
             />
 
-            {tableName === "booking" && (
+            {tableName === TABLE_NAMES.BOOKING && (
               <DateBasedAllocator
                 bookingData={dataFromDB.allRequests}
                 setAllocatedData={setAllocatedData}
@@ -128,7 +98,7 @@ export function ResourceManagement() {
               />
             )}
 
-            {tableName === "hall" && (
+            {tableName === TABLE_NAMES.HALL && (
               <HallSelector hallData={dataFromDB.allHalls} setHighlighted={setHighlighted} />
             )}
 

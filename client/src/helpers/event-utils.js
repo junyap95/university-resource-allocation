@@ -62,6 +62,23 @@ export const fetchAllocatedBookings = async (URL) => {
   }
 };
 
+export const makeApiRequest = async (url, method, body) => {
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error(`Error making API request to ${url}: `, error);
+  }
+};
+
 export const getClientName = async (clientID, URL) => {
   try {
     const params = { clientID: clientID };
